@@ -6,7 +6,7 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ["Dean", "Sam"]
+            people: ['Dean', 'Sam']
         },
         assets: [],
         priceCache: {
@@ -24,8 +24,9 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
 
-    function init() {
+    async function init() {
         loadState();
+        
         setupEventListeners();
         render();
     }
@@ -129,6 +130,8 @@
 
         document.getElementById('p1Qty').value = asset.holdings.p1.qty;
         document.getElementById('p2Qty').value = asset.holdings.p2.qty;
+        document.getElementById('p1Dividend').value = asset.holdings.p1.dividend || 0;
+        document.getElementById('p2Dividend').value = asset.holdings.p2.dividend || 0;
 
         handleTypeChange();
         document.getElementById('assetModal').classList.add('active');
@@ -141,7 +144,15 @@
     function handleTypeChange() {
         const type = document.getElementById('assetType').value;
         const unitGroup = document.getElementById('unitGroup');
+        const p1DividendGroup = document.getElementById('p1DividendGroup');
+        const p2DividendGroup = document.getElementById('p2DividendGroup');
+        
         unitGroup.style.display = type === 'metal' ? 'block' : 'none';
+        
+        // Show dividend fields only for stocks
+        const showDividend = type === 'stock';
+        if (p1DividendGroup) p1DividendGroup.style.display = showDividend ? 'block' : 'none';
+        if (p2DividendGroup) p2DividendGroup.style.display = showDividend ? 'block' : 'none';
     }
 
     function handleFormSubmit(e) {
@@ -155,6 +166,9 @@
 
         const p1Qty = parseFloat(document.getElementById('p1Qty').value) || 0;
         const p2Qty = parseFloat(document.getElementById('p2Qty').value) || 0;
+        
+        const p1Dividend = type === 'stock' ? (parseFloat(document.getElementById('p1Dividend').value) || 0) : 0;
+        const p2Dividend = type === 'stock' ? (parseFloat(document.getElementById('p2Dividend').value) || 0) : 0;
 
         const asset = {
             id: assetId || `asset_${Date.now()}`,
@@ -162,8 +176,8 @@
             symbol,
             name,
             holdings: {
-                p1: { qty: p1Qty, avgCost: 0 },
-                p2: { qty: p2Qty, avgCost: 0 }
+                p1: { qty: p1Qty, avgCost: 0, dividend: p1Dividend },
+                p2: { qty: p2Qty, avgCost: 0, dividend: p2Dividend }
             }
         };
 
@@ -423,9 +437,9 @@
 
     function calculateTotals() {
         const totals = {
-            p1: { value: 0 },
-            p2: { value: 0 },
-            combined: { value: 0 },
+            p1: { value: 0, dividend: 0 },
+            p2: { value: 0, dividend: 0 },
+            combined: { value: 0, dividend: 0 },
             byType: {
                 stock: 0,
                 crypto: 0,
@@ -452,6 +466,13 @@
             totals.p1.value += calc.p1.value;
             totals.p2.value += calc.p2.value;
             
+            // Add dividends
+            const p1Dividend = asset.holdings?.p1?.dividend || 0;
+            const p2Dividend = asset.holdings?.p2?.dividend || 0;
+            totals.p1.dividend += p1Dividend;
+            totals.p2.dividend += p2Dividend;
+            totals.combined.dividend += p1Dividend + p2Dividend;
+            
             // Track by asset type (combined)
             if (totals.byType[asset.type] !== undefined) {
                 totals.byType[asset.type] += calc.combined.value;
@@ -473,10 +494,7 @@
 
     // Formatting
     function formatCurrency(value) {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: state.settings.baseCurrency
-        }).format(value);
+        return `$${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
     }
 
     function getPriceChange(cacheKey, currentPrice) {
@@ -508,6 +526,7 @@
         renderSummary();
         renderTable();
         renderLastUpdated();
+        renderQuickStats();
         renderSnapshots();
     }
 
@@ -517,6 +536,11 @@
         document.getElementById('personATotal').textContent = formatCurrency(totals.p1.value);
         document.getElementById('personBTotal').textContent = formatCurrency(totals.p2.value);
         document.getElementById('combinedTotal').textContent = formatCurrency(totals.combined.value);
+        
+        // Render dividends
+        document.getElementById('deanDividends').textContent = formatCurrency(totals.p1.dividend);
+        document.getElementById('samDividends').textContent = formatCurrency(totals.p2.dividend);
+        document.getElementById('totalDividends').textContent = formatCurrency(totals.combined.dividend);
         
         // Render asset type totals with percentages
         const total = totals.combined.value;
@@ -651,6 +675,63 @@
             const date = new Date(lastUpdated);
             el.textContent = `Last updated: ${date.toLocaleString()}`;
         }
+        
+        // Update assets count
+        const count = state.assets.length;
+        document.getElementById('assetsCount').textContent = `${count} Asset${count !== 1 ? 's' : ''}`;
+    }
+
+    function renderQuickStats() {
+        const section = document.getElementById('quickStats');
+        
+        if (state.assets.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        
+        section.style.display = 'grid';
+        
+        // Find best and worst performers
+        let bestChange = { asset: null, percent: -Infinity };
+        let worstChange = { asset: null, percent: Infinity };
+        
+        state.assets.forEach(asset => {
+            const cacheKey = `${asset.type}:${asset.symbol}`;
+            const currentPrice = state.priceCache.prices[cacheKey];
+            const previousPrice = state.priceCache.previousPrices[cacheKey];
+            
+            if (currentPrice && previousPrice && previousPrice !== currentPrice) {
+                const changePercent = ((currentPrice - previousPrice) / previousPrice) * 100;
+                
+                if (changePercent > bestChange.percent) {
+                    bestChange = { asset, percent: changePercent };
+                }
+                if (changePercent < worstChange.percent) {
+                    worstChange = { asset, percent: changePercent };
+                }
+            }
+        });
+        
+        // Update best performer
+        const bestEl = document.getElementById('bestPerformer');
+        if (bestChange.asset) {
+            bestEl.textContent = `${bestChange.asset.name} (+${bestChange.percent.toFixed(2)}%)`;
+        } else {
+            bestEl.textContent = 'No change data';
+        }
+        
+        // Update worst performer
+        const worstEl = document.getElementById('worstPerformer');
+        if (worstChange.asset) {
+            worstEl.textContent = `${worstChange.asset.name} (${worstChange.percent.toFixed(2)}%)`;
+        } else {
+            worstEl.textContent = 'No change data';
+        }
+        
+        // Update total value and count
+        const totals = calculateTotals();
+        document.getElementById('quickTotalValue').textContent = formatCurrency(totals.combined.value);
+        document.getElementById('quickAssetsCount').textContent = state.assets.length;
     }
 
     // Historical Snapshots

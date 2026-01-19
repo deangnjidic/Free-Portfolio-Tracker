@@ -15,6 +15,8 @@
                 <button id="refreshBtn" class="btn btn-primary">Refresh Prices</button>
                 <button id="snapshotBtn" class="btn btn-secondary">Save Snapshot</button>
                 <button onclick="window.location.href='charts.html'" class="btn btn-secondary">📊 Charts</button>
+                <button onclick="window.location.href='compare.html'" class="btn btn-secondary">🔄 Compare</button>
+                <button onclick="window.location.href='news.html'" class="btn btn-secondary">📰 News</button>
                 <button id="exportBtn" class="btn btn-secondary">Export</button>
                 <button id="importBtn" class="btn btn-secondary">Import</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;">
@@ -23,8 +25,29 @@
         <div class="header-status">
             <span id="lastUpdated">Last updated: Never</span>
             <span id="updateStatus"></span>
+            <span id="assetsCount" class="assets-count">0 Assets</span>
         </div>
     </header>
+
+    <!-- Quick Stats Card -->
+    <section class="quick-stats" id="quickStats" style="display: none;">
+        <div class="stat-item stat-positive">
+            <span class="stat-label">📈 Best Performer</span>
+            <span class="stat-value" id="bestPerformer">-</span>
+        </div>
+        <div class="stat-item stat-negative">
+            <span class="stat-label">📉 Worst Performer</span>
+            <span class="stat-value" id="worstPerformer">-</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">💰 Total Value</span>
+            <span class="stat-value" id="quickTotalValue">$0.00</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">📊 Assets</span>
+            <span class="stat-value" id="quickAssetsCount">0</span>
+        </div>
+    </section>
 
     <!-- Summary Cards -->
     <section class="summary">
@@ -108,6 +131,28 @@
         <div class="card">
             <h3>Sam's Savings</h3>
             <div class="card-value" id="samSavings">$0.00</div>
+        </div>
+    </section>
+
+    <!-- Dividend Summary -->
+    <section class="dividend-summary">
+        <h2>💰 Annual Dividend Income</h2>
+        <div class="summary summary-grid-3">
+            <div class="card">
+                <h3>Dean's Dividends</h3>
+                <div class="card-value" id="deanDividends">$0.00</div>
+                <div class="card-label">per year</div>
+            </div>
+            <div class="card">
+                <h3>Sam's Dividends</h3>
+                <div class="card-value" id="samDividends">$0.00</div>
+                <div class="card-label">per year</div>
+            </div>
+            <div class="card">
+                <h3>Total Dividends</h3>
+                <div class="card-value" id="totalDividends">$0.00</div>
+                <div class="card-label">per year</div>
+            </div>
         </div>
     </section>
 
@@ -204,6 +249,10 @@
                             <label for="p1Qty">Quantity</label>
                             <input type="number" id="p1Qty" step="any" value="0" min="0">
                         </div>
+                        <div class="form-group" id="p1DividendGroup" style="display: none;">
+                            <label for="p1Dividend">Annual Dividend ($)</label>
+                            <input type="number" id="p1Dividend" step="any" value="0" min="0">
+                        </div>
                     </div>
                 </div>
 
@@ -213,6 +262,10 @@
                         <div class="form-group">
                             <label for="p2Qty">Quantity</label>
                             <input type="number" id="p2Qty" step="any" value="0" min="0">
+                        </div>
+                        <div class="form-group" id="p2DividendGroup" style="display: none;">
+                            <label for="p2Dividend">Annual Dividend ($)</label>
+                            <input type="number" id="p2Dividend" step="any" value="0" min="0">
                         </div>
                     </div>
                 </div>

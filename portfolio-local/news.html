@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market News - Portfolio Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>📰 Market News</h1>
+            <div class="header-controls">
+                <button id="backBtn" class="btn btn-secondary">← Back</button>
+                <button id="refreshNewsBtn" class="btn btn-primary">🔄 Refresh</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="news-filters">
+            <button class="filter-btn active" data-category="general">General</button>
+            <button class="filter-btn" data-category="portfolio">My Portfolio</button>
+        </div>
+
+        <div id="newsStatus" class="news-status"></div>
+        
+        <div id="newsContainer" class="news-container">
+            <!-- News articles will be inserted here -->
+        </div>
+    </div>
+
+    <script src="config.example.js"></script>
+    <script src="config.js"></script>
+    <script src="news.js"></script>
+</body>
+</html>

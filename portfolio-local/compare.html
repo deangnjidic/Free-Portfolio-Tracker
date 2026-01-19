@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Comparison - Portfolio Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>📊 Asset Comparison</h1>
+            <div class="header-controls">
+                <button id="backBtn" class="btn btn-secondary">← Back</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="compare-selector">
+            <h3>Select Assets to Compare (2-3)</h3>
+            <div id="assetCheckboxes" class="asset-checkboxes"></div>
+            <button id="compareNow" class="btn-primary">Compare Selected</button>
+        </div>
+
+        <div id="comparisonResults" class="comparison-results" style="display: none;">
+            <h2>Comparison Results</h2>
+            
+            <div class="compare-grid">
+                <!-- Asset cards will be inserted here -->
+            </div>
+
+            <div class="compare-section">
+                <h3>Performance Metrics</h3>
+                <table class="holdings-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th id="asset1Header">Asset 1</th>
+                            <th id="asset2Header">Asset 2</th>
+                            <th id="asset3Header" style="display: none;">Asset 3</th>
+                        </tr>
+                    </thead>
+                    <tbody id="metricsBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="compare-section">
+                <h3>Price History</h3>
+                <canvas id="priceHistoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+    <script src="compare.js"></script>
+</body>
+</html>
