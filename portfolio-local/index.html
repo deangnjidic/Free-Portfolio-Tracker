@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Tracker (Local)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Portfolio (Local)</h1>
+            <div class="header-controls">
+                <button id="refreshBtn" class="btn btn-primary">Refresh Prices</button>
+                <button id="exportBtn" class="btn btn-secondary">Export</button>
+                <button id="importBtn" class="btn btn-secondary">Import</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+        </div>
+        <div class="header-status">
+            <span id="lastUpdated">Last updated: Never</span>
+            <span id="updateStatus"></span>
+        </div>
+    </header>
+
+    <!-- Summary Cards -->
+    <section class="summary">
+        <div class="card">
+            <h3>Dean's Total</h3>
+            <div class="card-value" id="personATotal">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Sam's Total</h3>
+            <div class="card-value" id="personBTotal">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Combined Total</h3>
+            <div class="card-value" id="combinedTotal">$0.00</div>
+        </div>
+    </section>
+
+    <!-- Asset Type Summary Cards -->
+    <section class="summary">
+        <div class="card">
+            <h3>Stocks Total</h3>
+            <div class="card-value" id="stocksTotal">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Crypto Total</h3>
+            <div class="card-value" id="cryptoTotal">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Metals Total</h3>
+            <div class="card-value" id="metalsTotal">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Savings Total</h3>
+            <div class="card-value" id="savingsTotal">$0.00</div>
+        </div>
+    </section>
+
+    <!-- Person by Asset Type Breakdown -->
+    <section class="summary summary-grid">
+        <div class="card">
+            <h3>Dean's Stocks</h3>
+            <div class="card-value" id="deanStocks">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Sam's Stocks</h3>
+            <div class="card-value" id="samStocks">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Dean's Crypto</h3>
+            <div class="card-value" id="deanCrypto">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Sam's Crypto</h3>
+            <div class="card-value" id="samCrypto">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Dean's Metals</h3>
+            <div class="card-value" id="deanMetals">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Sam's Metals</h3>
+            <div class="card-value" id="samMetals">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Dean's Savings</h3>
+            <div class="card-value" id="deanSavings">$0.00</div>
+        </div>
+        <div class="card">
+            <h3>Sam's Savings</h3>
+            <div class="card-value" id="samSavings">$0.00</div>
+        </div>
+    </section>
+
+    <!-- Holdings Controls -->
+    <section class="controls">
+        <div class="controls-left">
+            <div class="filter-group">
+                <label>Filter:</label>
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="stock">Stocks</button>
+                <button class="filter-btn" data-filter="crypto">Crypto</button>
+                <button class="filter-btn" data-filter="metal">Metals</button>
+                <button class="filter-btn" data-filter="savings">Savings</button>
+            </div>
+            <input type="text" id="searchInput" placeholder="Search name or symbol..." class="search-input">
+        </div>
+        <button id="addAssetBtn" class="btn btn-primary">+ Add Asset</button>
+    </section>
+
+    <!-- Holdings Table -->
+    <section class="holdings-section">
+        <div class="table-wrapper">
+            <table id="holdingsTable" class="holdings-table">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Type</th>
+                        <th>Symbol</th>
+                        <th>Live Price</th>
+                        <th colspan="2">Dean</th>
+                        <th colspan="2">Sam</th>
+                        <th>Combined Value</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr class="sub-header">
+                        <th colspan="4"></th>
+                        <th>Qty</th>
+                        <th>Value</th>
+                        <th>Qty</th>
+                        <th>Value</th>
+                        <th colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody id="holdingsTableBody">
+                    <tr>
+                        <td colspan="10" class="empty-state">No assets added yet. Click "Add Asset" to get started.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Add/Edit Modal -->
+    <div id="assetModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Asset</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="assetForm">
+                <input type="hidden" id="assetId">
+                
+                <div class="form-group">
+                    <label for="assetType">Type *</label>
+                    <select id="assetType" required>
+                        <option value="stock">Stock</option>
+                        <option value="crypto">Crypto</option>
+                        <option value="metal">Metal</option>
+                        <option value="savings">Savings</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="assetName">Name *</label>
+                    <input type="text" id="assetName" required placeholder="e.g., Apple, Bitcoin">
+                </div>
+
+                <div class="form-group">
+                    <label for="assetSymbol">Symbol *</label>
+                    <input type="text" id="assetSymbol" required placeholder="e.g., AAPL, BINANCE:BTCUSDT, gold, USD">
+                    <small class="help-text">Stock ticker (AAPL), crypto (BINANCE:BTCUSDT), metal (gold), or currency (USD)</small>
+                </div>
+
+                <div class="form-group" id="unitGroup" style="display: none;">
+                    <label for="assetUnit">Unit</label>
+                    <input type="text" id="assetUnit" placeholder="oz" value="oz">
+                </div>
+
+                <div class="form-section">
+                    <h3>Dean's Holdings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="p1Qty">Quantity</label>
+                            <input type="number" id="p1Qty" step="any" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Sam's Holdings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="p2Qty">Quantity</label>
+                            <input type="number" id="p2Qty" step="any" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Load config and app -->
+    <script src="config.example.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

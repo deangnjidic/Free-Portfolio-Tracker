@@ -1,0 +1,12 @@
+# Keep config.js private - contains API keys
+config.js
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
