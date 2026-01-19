@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Charts</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <h1>Portfolio Charts</h1>
+            <div class="header-controls">
+                <button onclick="window.location.href='index.html'" class="btn btn-secondary">← Back to Portfolio</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Charts Grid -->
+    <section class="charts-container">
+        <!-- Asset Allocation Pie Chart -->
+        <div class="chart-card">
+            <h3>Asset Allocation</h3>
+            <canvas id="assetAllocationChart"></canvas>
+        </div>
+
+        <!-- Person Comparison Bar Chart -->
+        <div class="chart-card">
+            <h3>Dean vs Sam by Asset Type</h3>
+            <canvas id="personComparisonChart"></canvas>
+        </div>
+
+        <!-- Total Value by Asset Type -->
+        <div class="chart-card">
+            <h3>Portfolio Breakdown</h3>
+            <canvas id="breakdownChart"></canvas>
+        </div>
+
+        <!-- Historical Trend Line Chart -->
+        <div class="chart-card chart-card-wide">
+            <h3>Portfolio Value Over Time</h3>
+            <canvas id="historicalChart"></canvas>
+        </div>
+    </section>
+
+    <script src="config.example.js"></script>
+    <script src="config.js"></script>
+    <script src="charts.js"></script>
+</body>
+</html>

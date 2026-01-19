@@ -11,12 +11,15 @@
         assets: [],
         priceCache: {
             lastUpdated: 0,
-            prices: {}
-        }
+            prices: {},
+            previousPrices: {}
+        },
+        snapshots: []
     };
 
     let currentFilter = 'all';
     let currentSearch = '';
+    let currentSort = { column: null, ascending: true };
 
     // Initialize
     document.addEventListener('DOMContentLoaded', init);
@@ -47,6 +50,8 @@
     function setupEventListeners() {
         // Header buttons
         document.getElementById('refreshBtn').addEventListener('click', refreshPrices);
+        document.getElementById('snapshotBtn').addEventListener('click', saveSnapshot);
+        document.getElementById('clearSnapshotsBtn').addEventListener('click', clearSnapshots);
         document.getElementById('exportBtn').addEventListener('click', exportData);
         document.getElementById('importBtn').addEventListener('click', () => {
             document.getElementById('importFile').click();
@@ -67,6 +72,20 @@
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearch = e.target.value.toLowerCase();
             render();
+        });
+
+        // Table sorting
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                const column = header.dataset.sort;
+                if (currentSort.column === column) {
+                    currentSort.ascending = !currentSort.ascending;
+                } else {
+                    currentSort.column = column;
+                    currentSort.ascending = true;
+                }
+                render();
+            });
         });
 
         // Add asset
@@ -240,6 +259,10 @@
                 console.log(`Processing ${asset.name} (${cacheKey}): price=${price}`);
 
                 if (price !== null && price !== undefined && !isNaN(price)) {
+                    // Store previous price before updating
+                    if (state.priceCache.prices[cacheKey] !== undefined) {
+                        state.priceCache.previousPrices[cacheKey] = state.priceCache.prices[cacheKey];
+                    }
                     state.priceCache.prices[cacheKey] = price;
                     results.updated++;
                     console.log(`✓ Updated ${cacheKey} = ${price}`);
@@ -456,11 +479,36 @@
         }).format(value);
     }
 
+    function getPriceChange(cacheKey, currentPrice) {
+        const previousPrice = state.priceCache.previousPrices[cacheKey];
+        if (!previousPrice || previousPrice === currentPrice) {
+            return { arrow: '', className: '', percent: '' };
+        }
+        
+        const change = currentPrice - previousPrice;
+        const changePercent = ((change / previousPrice) * 100).toFixed(2);
+        
+        if (change > 0) {
+            return { 
+                arrow: '↑', 
+                className: 'price-up', 
+                percent: `+${changePercent}%` 
+            };
+        } else {
+            return { 
+                arrow: '↓', 
+                className: 'price-down', 
+                percent: `${changePercent}%` 
+            };
+        }
+    }
+
     // Render
     function render() {
         renderSummary();
         renderTable();
         renderLastUpdated();
+        renderSnapshots();
     }
 
     function renderSummary() {
@@ -470,11 +518,24 @@
         document.getElementById('personBTotal').textContent = formatCurrency(totals.p2.value);
         document.getElementById('combinedTotal').textContent = formatCurrency(totals.combined.value);
         
-        // Render asset type totals
+        // Render asset type totals with percentages
+        const total = totals.combined.value;
+        
         document.getElementById('stocksTotal').textContent = formatCurrency(totals.byType.stock);
+        document.getElementById('stocksPercent').textContent = total > 0 ? 
+            `${((totals.byType.stock / total) * 100).toFixed(1)}%` : '0%';
+        
         document.getElementById('cryptoTotal').textContent = formatCurrency(totals.byType.crypto);
+        document.getElementById('cryptoPercent').textContent = total > 0 ? 
+            `${((totals.byType.crypto / total) * 100).toFixed(1)}%` : '0%';
+        
         document.getElementById('metalsTotal').textContent = formatCurrency(totals.byType.metal);
+        document.getElementById('metalsPercent').textContent = total > 0 ? 
+            `${((totals.byType.metal / total) * 100).toFixed(1)}%` : '0%';
+        
         document.getElementById('savingsTotal').textContent = formatCurrency(totals.byType.savings);
+        document.getElementById('savingsPercent').textContent = total > 0 ? 
+            `${((totals.byType.savings / total) * 100).toFixed(1)}%` : '0%';
         
         // Render person by asset type breakdowns
         document.getElementById('deanStocks').textContent = formatCurrency(totals.p1ByType.stock);
@@ -506,15 +567,49 @@
             return true;
         });
 
+        // Sort assets
+        if (currentSort.column) {
+            filtered.sort((a, b) => {
+                let aVal, bVal;
+                
+                if (currentSort.column === 'name') {
+                    aVal = a.name.toLowerCase();
+                    bVal = b.name.toLowerCase();
+                } else if (currentSort.column === 'type') {
+                    aVal = a.type;
+                    bVal = b.type;
+                } else if (currentSort.column === 'price') {
+                    const aCacheKey = `${a.type}:${a.symbol}`;
+                    const bCacheKey = `${b.type}:${b.symbol}`;
+                    aVal = state.priceCache.prices[aCacheKey] || 0;
+                    bVal = state.priceCache.prices[bCacheKey] || 0;
+                } else if (currentSort.column === 'combined') {
+                    const aCalc = calculateAssetValues(a);
+                    const bCalc = calculateAssetValues(b);
+                    aVal = aCalc.combined.value;
+                    bVal = bCalc.combined.value;
+                }
+                
+                if (aVal < bVal) return currentSort.ascending ? -1 : 1;
+                if (aVal > bVal) return currentSort.ascending ? 1 : -1;
+                return 0;
+            });
+        }
+
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" class="empty-state">No assets found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No assets found.</td></tr>';
             return;
         }
+
+        // Calculate total for percentages
+        const totals = calculateTotals();
+        const totalValue = totals.combined.value;
 
         tbody.innerHTML = filtered.map(asset => {
             const calc = calculateAssetValues(asset);
             const cacheKey = `${asset.type}:${asset.symbol}`;
             const hasPrice = state.priceCache.prices[cacheKey] !== undefined;
+            const priceChange = hasPrice ? getPriceChange(cacheKey, calc.price) : { arrow: '', className: '', percent: '' };
 
             return `
                 <tr>
@@ -522,13 +617,19 @@
                     <td class="asset-type">${asset.type}</td>
                     <td>${asset.symbol}</td>
                     <td class="price-cell">
-                        ${hasPrice ? formatCurrency(calc.price) : '<span class="price-error">ERR</span>'}
+                        ${hasPrice ? `
+                            <div class="price-wrapper ${priceChange.className}">
+                                <span>${formatCurrency(calc.price)}</span>
+                                ${priceChange.arrow ? `<span class="price-indicator">${priceChange.arrow} ${priceChange.percent}</span>` : ''}
+                            </div>
+                        ` : '<span class="price-error">ERR</span>'}
                     </td>
                     <td>${calc.p1.qty}</td>
                     <td>${formatCurrency(calc.p1.value)}</td>
                     <td>${calc.p2.qty}</td>
                     <td>${formatCurrency(calc.p2.value)}</td>
                     <td>${formatCurrency(calc.combined.value)}</td>
+                    <td class="percent-cell">${totalValue > 0 ? ((calc.combined.value / totalValue) * 100).toFixed(1) : '0'}%</td>
                     <td>
                         <div class="action-btns">
                             <button onclick="window.portfolioApp.editAsset('${asset.id}')">Edit</button>
@@ -550,6 +651,92 @@
             const date = new Date(lastUpdated);
             el.textContent = `Last updated: ${date.toLocaleString()}`;
         }
+    }
+
+    // Historical Snapshots
+    function saveSnapshot() {
+        const totals = calculateTotals();
+        const snapshot = {
+            date: new Date().toISOString(),
+            timestamp: Date.now(),
+            totalValue: totals.combined.value,
+            deanTotal: totals.p1.value,
+            samTotal: totals.p2.value,
+            byType: { ...totals.byType },
+            assetCount: state.assets.length
+        };
+        
+        state.snapshots.push(snapshot);
+        // Keep only last 20 snapshots
+        if (state.snapshots.length > 20) {
+            state.snapshots = state.snapshots.slice(-20);
+        }
+        
+        saveState();
+        renderSnapshots();
+        alert('Snapshot saved!');
+    }
+
+    function clearSnapshots() {
+        if (!confirm('Clear all snapshots?')) return;
+        state.snapshots = [];
+        saveState();
+        renderSnapshots();
+    }
+
+    function deleteSnapshot(timestamp) {
+        state.snapshots = state.snapshots.filter(s => s.timestamp !== timestamp);
+        saveState();
+        renderSnapshots();
+    }
+
+    function renderSnapshots() {
+        const section = document.getElementById('snapshotsSection');
+        const list = document.getElementById('snapshotsList');
+        
+        if (state.snapshots.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+        
+        section.style.display = 'block';
+        
+        // Sort by date descending
+        const sorted = [...state.snapshots].sort((a, b) => b.timestamp - a.timestamp);
+        
+        list.innerHTML = sorted.map(snapshot => {
+            const date = new Date(snapshot.date);
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            
+            return `
+                <div class="snapshot-card">
+                    <div class="snapshot-header">
+                        <span class="snapshot-date">${formattedDate}</span>
+                        <button onclick="window.portfolioApp.deleteSnapshot(${snapshot.timestamp})" class="btn-delete-snapshot">×</button>
+                    </div>
+                    <div class="snapshot-data">
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Total:</span>
+                            <span class="snapshot-value">${formatCurrency(snapshot.totalValue)}</span>
+                        </div>
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Dean:</span>
+                            <span>${formatCurrency(snapshot.deanTotal)}</span>
+                        </div>
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Sam:</span>
+                            <span>${formatCurrency(snapshot.samTotal)}</span>
+                        </div>
+                        <div class="snapshot-breakdown">
+                            <span>Stocks: ${formatCurrency(snapshot.byType.stock)}</span>
+                            <span>Crypto: ${formatCurrency(snapshot.byType.crypto)}</span>
+                            <span>Metals: ${formatCurrency(snapshot.byType.metal)}</span>
+                            <span>Savings: ${formatCurrency(snapshot.byType.savings)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
     // Import/Export
@@ -602,7 +789,8 @@
     // Expose functions for inline event handlers
     window.portfolioApp = {
         editAsset: openEditModal,
-        deleteAsset: deleteAsset
+        deleteAsset: deleteAsset,
+        deleteSnapshot: deleteSnapshot
     };
 
 })();

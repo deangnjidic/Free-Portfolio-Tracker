@@ -146,6 +146,12 @@ body {
     margin-bottom: 0;
 }
 
+.card-percent {
+    font-size: 12px;
+    color: #8b949e;
+    margin-top: 4px;
+}
+
 .summary-split .card-value {
     font-size: 18px;
 }
@@ -267,6 +273,15 @@ body {
     color: #e6edf3;
 }
 
+.holdings-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.holdings-table th.sortable:hover {
+    background: #161b22;
+}
+
 .holdings-table .sub-header th {
     font-weight: 500;
     font-size: 12px;
@@ -299,6 +314,25 @@ body {
 
 .price-cell {
     font-weight: 600;
+}
+
+.price-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.price-indicator {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.price-up {
+    color: #22c55e;
+}
+
+.price-down {
+    color: #ef4444;
 }
 
 .price-error {
@@ -459,6 +493,145 @@ body {
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid #30363d;
+}
+
+/* Historical Snapshots */
+.snapshots-section {
+    background: #161b22;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+    border: 1px solid #30363d;
+}
+
+.snapshots-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.snapshots-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin: 0;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.snapshots-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+}
+
+.snapshot-card {
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.snapshot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #21262d;
+}
+
+.snapshot-date {
+    font-size: 12px;
+    color: #8b949e;
+    font-weight: 500;
+}
+
+.btn-delete-snapshot {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-delete-snapshot:hover {
+    color: #ff6b6b;
+}
+
+.snapshot-data {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.snapshot-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.snapshot-label {
+    color: #8b949e;
+    font-weight: 500;
+}
+
+.snapshot-value {
+    font-weight: 600;
+    color: #e6edf3;
+}
+
+.snapshot-breakdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #21262d;
+    font-size: 11px;
+    color: #8b949e;
+}
+
+/* Charts Page */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 1px solid #30363d;
+}
+
+.chart-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 15px;
+}
+
+.chart-card-wide {
+    grid-column: 1 / -1;
+}
+
+.chart-card canvas {
+    max-height: 300px;
+}
+
+.chart-card-wide canvas {
+    max-height: 400px;
 }
 
 /* Responsive */
