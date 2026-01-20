@@ -13,8 +13,7 @@
             lastUpdated: 0,
             prices: {},
             previousPrices: {}
-        },
-        snapshots: []
+        }
     };
 
     let currentFilter = 'all';
@@ -98,6 +97,31 @@
         document.getElementById('assetForm').addEventListener('submit', handleFormSubmit);
         document.getElementById('assetType').addEventListener('change', handleTypeChange);
 
+        // Symbol autocomplete
+        const symbolInput = document.getElementById('assetSymbol');
+        let autocompleteTimeout;
+        symbolInput.addEventListener('input', (e) => {
+            clearTimeout(autocompleteTimeout);
+            const query = e.target.value.trim();
+            
+            if (query.length < 1) {
+                hideAutocomplete();
+                return;
+            }
+            
+            // Debounce the search
+            autocompleteTimeout = setTimeout(() => {
+                searchSymbols(query);
+            }, 300);
+        });
+
+        // Close autocomplete on outside click
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#assetSymbol') && !e.target.closest('#symbolAutocomplete')) {
+                hideAutocomplete();
+            }
+        });
+
         // Close modal on outside click
         document.getElementById('assetModal').addEventListener('click', (e) => {
             if (e.target.id === 'assetModal') {
@@ -111,6 +135,8 @@
         document.getElementById('modalTitle').textContent = 'Add Asset';
         document.getElementById('assetForm').reset();
         document.getElementById('assetId').value = '';
+        document.getElementById('p1Adjust').style.display = 'none';
+        document.getElementById('p2Adjust').style.display = 'none';
         handleTypeChange();
         document.getElementById('assetModal').classList.add('active');
     }
@@ -132,6 +158,12 @@
         document.getElementById('p2Qty').value = asset.holdings.p2.qty;
         document.getElementById('p1Dividend').value = asset.holdings.p1.dividend || 0;
         document.getElementById('p2Dividend').value = asset.holdings.p2.dividend || 0;
+        
+        // Show adjust controls when editing
+        document.getElementById('p1Adjust').style.display = 'block';
+        document.getElementById('p2Adjust').style.display = 'block';
+        document.getElementById('p1AdjustAmount').value = '';
+        document.getElementById('p2AdjustAmount').value = '';
 
         handleTypeChange();
         document.getElementById('assetModal').classList.add('active');
@@ -139,6 +171,92 @@
 
     function closeModal() {
         document.getElementById('assetModal').classList.remove('active');
+        hideAutocomplete();
+    }
+
+    // Symbol Autocomplete Functions
+    async function searchSymbols(query) {
+        const type = document.getElementById('assetType').value;
+        
+        // Only search for stocks and crypto
+        if (type !== 'stock' && type !== 'crypto') {
+            hideAutocomplete();
+            return;
+        }
+
+        const apiKey = window.APP_CONFIG?.FINNHUB_KEY;
+        if (!apiKey || apiKey === 'PASTE_KEY_HERE') {
+            console.log('Finnhub API key not configured for symbol search');
+            return;
+        }
+
+        try {
+            const url = `https://finnhub.io/api/v1/search?q=${encodeURIComponent(query)}&token=${apiKey}`;
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+                throw new Error(`API error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            displayAutocomplete(data.result || [], query);
+        } catch (error) {
+            console.error('Symbol search error:', error);
+            hideAutocomplete();
+        }
+    }
+
+    function displayAutocomplete(results, query) {
+        const dropdown = document.getElementById('symbolAutocomplete');
+        const type = document.getElementById('assetType').value;
+        
+        if (results.length === 0) {
+            hideAutocomplete();
+            return;
+        }
+
+        // Filter and limit results
+        let filtered = results;
+        if (type === 'stock') {
+            // For stocks, exclude crypto exchanges
+            filtered = results.filter(r => !r.symbol.includes(':'));
+        } else if (type === 'crypto') {
+            // For crypto, only show Binance pairs
+            filtered = results.filter(r => r.symbol.startsWith('BINANCE:'));
+        }
+
+        filtered = filtered.slice(0, 10); // Limit to 10 results
+
+        if (filtered.length === 0) {
+            hideAutocomplete();
+            return;
+        }
+
+        dropdown.innerHTML = filtered.map(result => `
+            <div class="autocomplete-item" data-symbol="${result.symbol}" data-name="${result.description}">
+                <div class="autocomplete-symbol">${result.symbol}</div>
+                <div class="autocomplete-name">${result.description}</div>
+            </div>
+        `).join('');
+
+        // Add click handlers
+        dropdown.querySelectorAll('.autocomplete-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const symbol = item.dataset.symbol;
+                const name = item.dataset.name;
+                document.getElementById('assetSymbol').value = symbol;
+                document.getElementById('assetName').value = name;
+                hideAutocomplete();
+            });
+        });
+
+        dropdown.style.display = 'block';
+    }
+
+    function hideAutocomplete() {
+        const dropdown = document.getElementById('symbolAutocomplete');
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
     }
 
     function handleTypeChange() {
@@ -527,7 +645,6 @@
         renderTable();
         renderLastUpdated();
         renderQuickStats();
-        renderSnapshots();
     }
 
     function renderSummary() {
@@ -641,7 +758,9 @@
                     <td class="asset-type">${asset.type}</td>
                     <td>${asset.symbol}</td>
                     <td class="price-cell">
-                        ${hasPrice ? `
+                        ${asset.type === 'savings' ? `
+                            <span class="price-na">N/A</span>
+                        ` : hasPrice ? `
                             <div class="price-wrapper ${priceChange.className}">
                                 <span>${formatCurrency(calc.price)}</span>
                                 ${priceChange.arrow ? `<span class="price-indicator">${priceChange.arrow} ${priceChange.percent}</span>` : ''}
@@ -734,92 +853,6 @@
         document.getElementById('quickAssetsCount').textContent = state.assets.length;
     }
 
-    // Historical Snapshots
-    function saveSnapshot() {
-        const totals = calculateTotals();
-        const snapshot = {
-            date: new Date().toISOString(),
-            timestamp: Date.now(),
-            totalValue: totals.combined.value,
-            deanTotal: totals.p1.value,
-            samTotal: totals.p2.value,
-            byType: { ...totals.byType },
-            assetCount: state.assets.length
-        };
-        
-        state.snapshots.push(snapshot);
-        // Keep only last 20 snapshots
-        if (state.snapshots.length > 20) {
-            state.snapshots = state.snapshots.slice(-20);
-        }
-        
-        saveState();
-        renderSnapshots();
-        alert('Snapshot saved!');
-    }
-
-    function clearSnapshots() {
-        if (!confirm('Clear all snapshots?')) return;
-        state.snapshots = [];
-        saveState();
-        renderSnapshots();
-    }
-
-    function deleteSnapshot(timestamp) {
-        state.snapshots = state.snapshots.filter(s => s.timestamp !== timestamp);
-        saveState();
-        renderSnapshots();
-    }
-
-    function renderSnapshots() {
-        const section = document.getElementById('snapshotsSection');
-        const list = document.getElementById('snapshotsList');
-        
-        if (state.snapshots.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-        
-        section.style.display = 'block';
-        
-        // Sort by date descending
-        const sorted = [...state.snapshots].sort((a, b) => b.timestamp - a.timestamp);
-        
-        list.innerHTML = sorted.map(snapshot => {
-            const date = new Date(snapshot.date);
-            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-            
-            return `
-                <div class="snapshot-card">
-                    <div class="snapshot-header">
-                        <span class="snapshot-date">${formattedDate}</span>
-                        <button onclick="window.portfolioApp.deleteSnapshot(${snapshot.timestamp})" class="btn-delete-snapshot">×</button>
-                    </div>
-                    <div class="snapshot-data">
-                        <div class="snapshot-item">
-                            <span class="snapshot-label">Total:</span>
-                            <span class="snapshot-value">${formatCurrency(snapshot.totalValue)}</span>
-                        </div>
-                        <div class="snapshot-item">
-                            <span class="snapshot-label">Dean:</span>
-                            <span>${formatCurrency(snapshot.deanTotal)}</span>
-                        </div>
-                        <div class="snapshot-item">
-                            <span class="snapshot-label">Sam:</span>
-                            <span>${formatCurrency(snapshot.samTotal)}</span>
-                        </div>
-                        <div class="snapshot-breakdown">
-                            <span>Stocks: ${formatCurrency(snapshot.byType.stock)}</span>
-                            <span>Crypto: ${formatCurrency(snapshot.byType.crypto)}</span>
-                            <span>Metals: ${formatCurrency(snapshot.byType.metal)}</span>
-                            <span>Savings: ${formatCurrency(snapshot.byType.savings)}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
     // Import/Export
     function exportData() {
         const dataStr = JSON.stringify(state, null, 2);
@@ -867,11 +900,35 @@
         e.target.value = ''; // Reset file input
     }
 
+    // Quantity adjustment helper
+    function adjustQuantity(person, operation) {
+        const qtyInput = document.getElementById(`${person}Qty`);
+        const adjustInput = document.getElementById(`${person}AdjustAmount`);
+        
+        const currentQty = parseFloat(qtyInput.value) || 0;
+        const adjustAmount = parseFloat(adjustInput.value) || 0;
+        
+        if (adjustAmount <= 0) {
+            alert('Please enter a valid amount to add or remove');
+            return;
+        }
+        
+        let newQty;
+        if (operation === 'add') {
+            newQty = currentQty + adjustAmount;
+        } else if (operation === 'remove') {
+            newQty = Math.max(0, currentQty - adjustAmount);
+        }
+        
+        qtyInput.value = newQty;
+        adjustInput.value = ''; // Clear the adjustment input
+    }
+
     // Expose functions for inline event handlers
     window.portfolioApp = {
         editAsset: openEditModal,
         deleteAsset: deleteAsset,
-        deleteSnapshot: deleteSnapshot
+        adjustQuantity: adjustQuantity
     };
 
 })();

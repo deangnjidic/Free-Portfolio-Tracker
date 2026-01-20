@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import M1 Finance CSV Data</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f1419;
+            color: #e6edf3;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: #161b22;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #2ea043;
+        }
+        button.secondary {
+            background: #21262d;
+        }
+        button.secondary:hover {
+            background: #30363d;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            background: #161b22;
+            border: 1px solid #30363d;
+        }
+        .success {
+            color: #3fb950;
+        }
+        .error {
+            color: #f85149;
+        }
+        .info {
+            color: #58a6ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Import M1 Finance CSV Data</h1>
+    <p>Paste your M1 Finance CSV export below (must include Symbol, Name, and Quantity columns):</p>
+    
+    <textarea id="csvInput" placeholder="Symbol,Name,Quantity,Avg. Price,Cost Basis...
+NVDA,NVIDIA,28.54508,22.47,641.33..."></textarea>
+    
+    <div>
+        <label>
+            Person: 
+            <select id="personSelect" style="background: #161b22; color: #e6edf3; border: 1px solid #30363d; padding: 5px 10px; border-radius: 4px;">
+                <option value="p1">Dean (Person 1)</option>
+                <option value="p2">Sam (Person 2)</option>
+            </select>
+        </label>
+    </div>
+    <br>
+    
+    <button onclick="importCSV()">Import Stocks</button>
+    <button class="secondary" onclick="location.href='index.html'">Back to Portfolio</button>
+    
+    <div id="status" class="status" style="display: none;"></div>
+
+    <script>
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            if (lines.length < 2) {
+                throw new Error('CSV must have at least a header row and one data row');
+            }
+
+            // Parse header
+            const headers = lines[0].split(',').map(h => h.trim());
+            const symbolIndex = headers.findIndex(h => h.toLowerCase() === 'symbol');
+            const nameIndex = headers.findIndex(h => h.toLowerCase() === 'name');
+            const quantityIndex = headers.findIndex(h => h.toLowerCase() === 'quantity');
+
+            if (symbolIndex === -1 || nameIndex === -1 || quantityIndex === -1) {
+                throw new Error('CSV must contain Symbol, Name, and Quantity columns');
+            }
+
+            // Parse data rows
+            const stocks = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                
+                if (values.length >= Math.max(symbolIndex, nameIndex, quantityIndex) + 1) {
+                    stocks.push({
+                        symbol: values[symbolIndex],
+                        name: values[nameIndex],
+                        quantity: parseFloat(values[quantityIndex]) || 0
+                    });
+                }
+            }
+
+            return stocks;
+        }
+
+        function importCSV() {
+            const csvInput = document.getElementById('csvInput').value;
+            const personSelect = document.getElementById('personSelect').value;
+            const statusDiv = document.getElementById('status');
+
+            try {
+                // Parse CSV
+                const stocks = parseCSV(csvInput);
+                
+                if (stocks.length === 0) {
+                    throw new Error('No valid stock data found in CSV');
+                }
+
+                // Load current state
+                let state = {
+                    settings: {
+                        baseCurrency: "USD",
+                        people: ['Dean', 'Sam']
+                    },
+                    assets: [],
+                    priceCache: {
+                        lastUpdated: 0,
+                        prices: {},
+                        previousPrices: {}
+                    },
+                    snapshots: []
+                };
+
+                const stored = localStorage.getItem('portfolio_v1');
+                if (stored) {
+                    state = JSON.parse(stored);
+                }
+
+                // Add or update stocks
+                let added = 0;
+                let updated = 0;
+
+                stocks.forEach(stock => {
+                    // Check if asset already exists
+                    const existingIndex = state.assets.findIndex(
+                        a => a.type === 'stock' && a.symbol === stock.symbol
+                    );
+
+                    if (existingIndex !== -1) {
+                        // Update existing asset
+                        state.assets[existingIndex].holdings[personSelect].qty = stock.quantity;
+                        updated++;
+                    } else {
+                        // Add new asset
+                        const asset = {
+                            id: `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                            type: 'stock',
+                            symbol: stock.symbol,
+                            name: stock.name,
+                            holdings: {
+                                p1: { qty: 0, avgCost: 0, dividend: 0 },
+                                p2: { qty: 0, avgCost: 0, dividend: 0 }
+                            }
+                        };
+                        
+                        asset.holdings[personSelect].qty = stock.quantity;
+                        state.assets.push(asset);
+                        added++;
+                    }
+                });
+
+                // Save state
+                localStorage.setItem('portfolio_v1', JSON.stringify(state));
+
+                // Show success message
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `
+                    <div class="success">✓ Import successful!</div>
+                    <div class="info">
+                        • Added: ${added} new stocks<br>
+                        • Updated: ${updated} existing stocks<br>
+                        • Total processed: ${stocks.length} stocks
+                    </div>
+                    <br>
+                    <p>Go back to the <a href="index.html" style="color: #58a6ff;">main portfolio page</a> and refresh prices to see the data.</p>
+                `;
+
+                // Clear input
+                document.getElementById('csvInput').value = '';
+
+            } catch (error) {
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `<div class="error">✗ Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

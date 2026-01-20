@@ -13,10 +13,10 @@
             <h1>Portfolio (Local)</h1>
             <div class="header-controls">
                 <button id="refreshBtn" class="btn btn-primary">Refresh Prices</button>
-                <button id="snapshotBtn" class="btn btn-secondary">Save Snapshot</button>
                 <button onclick="window.location.href='charts.html'" class="btn btn-secondary">📊 Charts</button>
                 <button onclick="window.location.href='compare.html'" class="btn btn-secondary">🔄 Compare</button>
                 <button onclick="window.location.href='news.html'" class="btn btn-secondary">📰 News</button>
+                <button onclick="window.location.href='import-csv.html'" class="btn btn-secondary">📥 Import CSV</button>
                 <button id="exportBtn" class="btn btn-secondary">Export</button>
                 <button id="importBtn" class="btn btn-secondary">Import</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;">
@@ -63,15 +63,6 @@
             <h3>Combined Total</h3>
             <div class="card-value" id="combinedTotal">$0.00</div>
         </div>
-    </section>
-
-    <!-- Historical Snapshots -->
-    <section class="snapshots-section" id="snapshotsSection" style="display: none;">
-        <div class="snapshots-header">
-            <h3>Historical Snapshots</h3>
-            <button id="clearSnapshotsBtn" class="btn btn-small">Clear All</button>
-        </div>
-        <div class="snapshots-list" id="snapshotsList"></div>
     </section>
 
     <!-- Asset Type Summary Cards -->
@@ -233,7 +224,8 @@
 
                 <div class="form-group">
                     <label for="assetSymbol">Symbol *</label>
-                    <input type="text" id="assetSymbol" required placeholder="e.g., AAPL, BINANCE:BTCUSDT, gold, USD">
+                    <input type="text" id="assetSymbol" required placeholder="e.g., AAPL, BINANCE:BTCUSDT, gold, USD" autocomplete="off">
+                    <div id="symbolAutocomplete" class="autocomplete-dropdown"></div>
                     <small class="help-text">Stock ticker (AAPL), crypto (BINANCE:BTCUSDT), metal (gold), or currency (USD)</small>
                 </div>
 
@@ -248,6 +240,11 @@
                         <div class="form-group">
                             <label for="p1Qty">Quantity</label>
                             <input type="number" id="p1Qty" step="any" value="0" min="0">
+                            <div class="qty-adjust" id="p1Adjust" style="display: none;">
+                                <button type="button" class="btn-adjust btn-add" onclick="window.portfolioApp.adjustQuantity('p1', 'add')">+ Add</button>
+                                <input type="number" id="p1AdjustAmount" step="any" placeholder="Amount" style="width: 100px; margin: 5px 0;">
+                                <button type="button" class="btn-adjust btn-remove" onclick="window.portfolioApp.adjustQuantity('p1', 'remove')">− Remove</button>
+                            </div>
                         </div>
                         <div class="form-group" id="p1DividendGroup" style="display: none;">
                             <label for="p1Dividend">Annual Dividend ($)</label>
@@ -262,6 +259,11 @@
                         <div class="form-group">
                             <label for="p2Qty">Quantity</label>
                             <input type="number" id="p2Qty" step="any" value="0" min="0">
+                            <div class="qty-adjust" id="p2Adjust" style="display: none;">
+                                <button type="button" class="btn-adjust btn-add" onclick="window.portfolioApp.adjustQuantity('p2', 'add')">+ Add</button>
+                                <input type="number" id="p2AdjustAmount" step="any" placeholder="Amount" style="width: 100px; margin: 5px 0;">
+                                <button type="button" class="btn-adjust btn-remove" onclick="window.portfolioApp.adjustQuantity('p2', 'remove')">− Remove</button>
+                            </div>
                         </div>
                         <div class="form-group" id="p2DividendGroup" style="display: none;">
                             <label for="p2Dividend">Annual Dividend ($)</label>
