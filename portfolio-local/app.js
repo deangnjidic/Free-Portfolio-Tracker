@@ -710,13 +710,6 @@
             totals.p1.value += calc.p1.value;
             totals.p2.value += calc.p2.value;
             
-            // Add dividends
-            const p1Dividend = asset.holdings?.p1?.dividend || 0;
-            const p2Dividend = asset.holdings?.p2?.dividend || 0;
-            totals.p1.dividend += p1Dividend;
-            totals.p2.dividend += p2Dividend;
-            totals.combined.dividend += p1Dividend + p2Dividend;
-            
             // Track by asset type (combined)
             if (totals.byType[asset.type] !== undefined) {
                 totals.byType[asset.type] += calc.combined.value;
@@ -780,11 +773,6 @@
         document.getElementById('personATotal').textContent = formatCurrency(totals.p1.value);
         document.getElementById('personBTotal').textContent = formatCurrency(totals.p2.value);
         document.getElementById('combinedTotal').textContent = formatCurrency(totals.combined.value);
-        
-        // Render dividends
-        document.getElementById('deanDividends').textContent = formatCurrency(totals.p1.dividend);
-        document.getElementById('samDividends').textContent = formatCurrency(totals.p2.dividend);
-        document.getElementById('totalDividends').textContent = formatCurrency(totals.combined.dividend);
         
         // Render asset type totals with percentages
         const total = totals.combined.value;
