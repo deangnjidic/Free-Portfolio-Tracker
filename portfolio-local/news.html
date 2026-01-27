@@ -34,11 +34,5 @@
     <script src="config.example.js"></script>
     <script src="config.js"></script>
     <script src="news.js"></script>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
-        }
-    </script>
 </body>
 </html>
