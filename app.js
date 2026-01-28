@@ -287,6 +287,9 @@
 
         // Add asset
         document.getElementById('addAssetBtn').addEventListener('click', openAddModal);
+        
+        // Delete all assets
+        document.getElementById('deleteAllBtn').addEventListener('click', deleteAllAssets);
 
         // Modal
         document.getElementById('closeModal').addEventListener('click', closeModal);
@@ -577,6 +580,50 @@
 
         saveState();
         render();
+    }
+
+    function deleteAllAssets() {
+        const assetCount = state.assets.length;
+        
+        if (assetCount === 0) {
+            alert('No assets to delete.');
+            return;
+        }
+
+        // Strong warning with multiple confirmations
+        const firstConfirm = confirm(
+            `⚠️ WARNING: You are about to DELETE ALL ${assetCount} ASSETS!\n\n` +
+            `This action cannot be undone and will:\n` +
+            `• Remove all ${assetCount} assets from your portfolio\n` +
+            `• Clear all price data\n` +
+            `• Keep your historical snapshots\n` +
+            `• Keep your settings and API keys\n\n` +
+            `Are you ABSOLUTELY SURE you want to continue?`
+        );
+
+        if (!firstConfirm) return;
+
+        // Second confirmation to prevent accidents
+        const secondConfirm = confirm(
+            `⚠️ FINAL CONFIRMATION\n\n` +
+            `This is your last chance to cancel.\n\n` +
+            `Click OK to DELETE ALL ${assetCount} ASSETS permanently.\n` +
+            `Click Cancel to keep your assets.`
+        );
+
+        if (!secondConfirm) return;
+
+        // Delete all assets
+        state.assets = [];
+        state.priceCache.prices = {};
+        state.priceCache.previousPrices = {};
+        state.priceCache.changePercents = {};
+        state.priceCache.lastUpdated = 0;
+
+        saveState();
+        render();
+
+        alert(`✅ All ${assetCount} assets have been deleted.\n\nYour historical snapshots and settings remain intact.`);
     }
 
     // Price Fetching
