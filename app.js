@@ -6,7 +6,11 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ['Dean', 'Sam']
+            people: ['Dean', 'Sam'],
+            apiKeys: {
+                FINNHUB_KEY: '',
+                METALS_DEV_KEY: ''
+            }
         },
         assets: [],
         priceCache: {
@@ -189,6 +193,21 @@
             state.settings.people = ['Dean', 'Sam'];
             saveState();
         }
+        // Initialize API keys if not present
+        if (!state.settings.apiKeys) {
+            state.settings.apiKeys = {
+                FINNHUB_KEY: window.APP_CONFIG?.FINNHUB_KEY || '',
+                METALS_DEV_KEY: window.APP_CONFIG?.METALS_DEV_KEY || ''
+            };
+            saveState();
+        }
+        // Override APP_CONFIG with stored API keys
+        if (state.settings.apiKeys.FINNHUB_KEY) {
+            window.APP_CONFIG.FINNHUB_KEY = state.settings.apiKeys.FINNHUB_KEY;
+        }
+        if (state.settings.apiKeys.METALS_DEV_KEY) {
+            window.APP_CONFIG.METALS_DEV_KEY = state.settings.apiKeys.METALS_DEV_KEY;
+        }
         updateLabels();
     }
 
@@ -356,6 +375,8 @@
     function openSettingsModal() {
         document.getElementById('person1Name').value = state.settings.people[0];
         document.getElementById('person2Name').value = state.settings.people[1];
+        document.getElementById('finnhubKey').value = state.settings.apiKeys?.FINNHUB_KEY || '';
+        document.getElementById('metalsDevKey').value = state.settings.apiKeys?.METALS_DEV_KEY || '';
         document.getElementById('settingsModal').classList.add('active');
     }
 
@@ -368,6 +389,8 @@
         
         const person1 = document.getElementById('person1Name').value.trim();
         const person2 = document.getElementById('person2Name').value.trim();
+        const finnhubKey = document.getElementById('finnhubKey').value.trim();
+        const metalsDevKey = document.getElementById('metalsDevKey').value.trim();
         
         if (!person1 || !person2) {
             alert('Please enter names for both people');
@@ -375,11 +398,24 @@
         }
         
         state.settings.people = [person1, person2];
+        state.settings.apiKeys = {
+            FINNHUB_KEY: finnhubKey,
+            METALS_DEV_KEY: metalsDevKey
+        };
+        
+        // Update APP_CONFIG with new keys
+        if (finnhubKey) {
+            window.APP_CONFIG.FINNHUB_KEY = finnhubKey;
+        }
+        if (metalsDevKey) {
+            window.APP_CONFIG.METALS_DEV_KEY = metalsDevKey;
+        }
+        
         saveState();
         updateLabels();
         closeSettingsModal();
         
-        alert('Settings saved successfully!');
+        alert('Settings saved successfully! API keys are now stored locally.');
     }
 
     // Symbol Autocomplete Functions
@@ -1178,14 +1214,9 @@
 
     // Import/Export
     function exportData() {
-        // Include API keys and snapshots in the export
+        // Export data with API keys from settings
         const exportData = {
-            ...state,
-            apiKeys: {
-                FINNHUB_KEY: window.APP_CONFIG?.FINNHUB_KEY || '',
-                METALS_DEV_KEY: window.APP_CONFIG?.METALS_DEV_KEY || '',
-                COINGECKO_DEMO_KEY: window.APP_CONFIG?.COINGECKO_DEMO_KEY || ''
-            }
+            ...state
         };
         
         const dataStr = JSON.stringify(exportData, null, 2);
@@ -1224,17 +1255,36 @@
                     imported.snapshots = [];
                 }
 
-                // Restore API keys to config.js if present
+                // Handle API keys - migrate to settings.apiKeys structure
                 if (imported.apiKeys) {
-                    if (window.APP_CONFIG) {
-                        window.APP_CONFIG.FINNHUB_KEY = imported.apiKeys.FINNHUB_KEY || window.APP_CONFIG.FINNHUB_KEY;
-                        window.APP_CONFIG.METALS_DEV_KEY = imported.apiKeys.METALS_DEV_KEY || window.APP_CONFIG.METALS_DEV_KEY;
-                        window.APP_CONFIG.COINGECKO_DEMO_KEY = imported.apiKeys.COINGECKO_DEMO_KEY || window.APP_CONFIG.COINGECKO_DEMO_KEY;
+                    // If old format (apiKeys at root), move to settings
+                    if (!imported.settings.apiKeys) {
+                        imported.settings.apiKeys = {
+                            FINNHUB_KEY: imported.apiKeys.FINNHUB_KEY || '',
+                            METALS_DEV_KEY: imported.apiKeys.METALS_DEV_KEY || ''
+                        };
                     }
-                    delete imported.apiKeys; // Don't save API keys to state
+                    delete imported.apiKeys;
+                }
+                
+                // Ensure settings.apiKeys exists
+                if (!imported.settings.apiKeys) {
+                    imported.settings.apiKeys = {
+                        FINNHUB_KEY: '',
+                        METALS_DEV_KEY: ''
+                    };
                 }
 
                 state = imported;
+                
+                // Update APP_CONFIG with imported keys
+                if (state.settings.apiKeys.FINNHUB_KEY) {
+                    window.APP_CONFIG.FINNHUB_KEY = state.settings.apiKeys.FINNHUB_KEY;
+                }
+                if (state.settings.apiKeys.METALS_DEV_KEY) {
+                    window.APP_CONFIG.METALS_DEV_KEY = state.settings.apiKeys.METALS_DEV_KEY;
+                }
+                
                 saveState();
                 render();
                 alert('Portfolio imported successfully!');

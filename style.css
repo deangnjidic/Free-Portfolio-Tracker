@@ -526,7 +526,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 24px 28px;
     border-bottom: 1px solid #30363d;
 }
 
@@ -542,6 +542,8 @@ body {
     cursor: pointer;
     color: #8b949e;
     line-height: 1;
+    padding: 0;
+    margin: -4px;
 }
 
 .close-btn:hover {
@@ -549,37 +551,64 @@ body {
 }
 
 /* Form */
-#assetForm {
-    padding: 20px;
+#assetForm,
+#settingsForm {
+    padding: 28px;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     position: relative;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 500;
     font-size: 14px;
+    color: #e6edf3;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border: 1px solid #30363d;
     border-radius: 6px;
     font-size: 14px;
     background: #0d1117;
     color: #e6edf3;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
     border-color: #238636;
+    background: #010409;
+}
+
+.form-group input::placeholder {
+    color: #6e7681;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+    color: #8b949e;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.form-group small a {
+    color: #58a6ff;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.form-group small a:hover {
+    color: #79c0ff;
+    text-decoration: underline;
 }
 
 .help-text {
@@ -662,8 +691,8 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 20px;
-    padding-top: 20px;
+    margin-top: 24px;
+    padding-top: 24px;
     border-top: 1px solid #30363d;
 }
 

@@ -276,6 +276,24 @@
                     <label for="person2Name">Person 2 Name:</label>
                     <input type="text" id="person2Name" required maxlength="50">
                 </div>
+                
+                <hr style="margin: 20px 0; border: 1px solid var(--border-color);">
+                
+                <div class="form-group">
+                    <label for="finnhubKey">Finnhub API Key:</label>
+                    <input type="text" id="finnhubKey" placeholder="Enter your Finnhub API key" maxlength="100">
+                    <small style="display: block; margin-top: 5px; color: var(--text-secondary);">
+                        Get a free key at <a href="https://finnhub.io/" target="_blank" style="color: var(--accent-color);">finnhub.io</a>
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="metalsDevKey">Metals.dev API Key:</label>
+                    <input type="text" id="metalsDevKey" placeholder="Enter your Metals.dev API key" maxlength="100">
+                    <small style="display: block; margin-top: 5px; color: var(--text-secondary);">
+                        Get a free key at <a href="https://metals.dev/" target="_blank" style="color: var(--accent-color);">metals.dev</a>
+                    </small>
+                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" id="cancelSettingsBtn">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Settings</button>
