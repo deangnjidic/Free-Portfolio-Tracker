@@ -5,7 +5,7 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ["Dean", "Sam"]
+            people: ["John", "Maria"]
         },
         assets: [],
         priceCache: {
@@ -91,8 +91,8 @@
             crypto: '#f59e0b',
             metal: '#8b5cf6',
             savings: '#10b981',
-            dean: '#ef4444',
-            sam: '#06b6d4'
+            john: '#ef4444',
+            maria: '#06b6d4'
         };
 
         // 1. Asset Allocation Pie Chart
@@ -148,27 +148,27 @@
                 labels: ['Stocks', 'Crypto', 'Metals', 'Savings'],
                 datasets: [
                     {
-                        label: 'Dean',
+                        label: 'John',
                         data: [
                             totals.p1ByType.stock,
                             totals.p1ByType.crypto,
                             totals.p1ByType.metal,
                             totals.p1ByType.savings
                         ],
-                        backgroundColor: colors.dean,
-                        borderColor: colors.dean,
+                        backgroundColor: colors.john,
+                        borderColor: colors.john,
                         borderWidth: 1
                     },
                     {
-                        label: 'Sam',
+                        label: 'Maria',
                         data: [
                             totals.p2ByType.stock,
                             totals.p2ByType.crypto,
                             totals.p2ByType.metal,
                             totals.p2ByType.savings
                         ],
-                        backgroundColor: colors.sam,
-                        borderColor: colors.sam,
+                        backgroundColor: colors.maria,
+                        borderColor: colors.maria,
                         borderWidth: 1
                     }
                 ]

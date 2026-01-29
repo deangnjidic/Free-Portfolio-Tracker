@@ -6,7 +6,7 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ['Dean', 'Sam'],
+            people: ['John', 'Maria'],
             apiKeys: {
                 FINNHUB_KEY: '',
                 METALS_DEV_KEY: ''
