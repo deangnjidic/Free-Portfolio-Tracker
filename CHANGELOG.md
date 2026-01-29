@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.15.0] - 2026-01-29
+
+### Added
+- Cookie consent system to all pages (charts, news, history, compare, import-csv) for complete analytics coverage
+- Cookie consent CSS to all HTML pages
+
+### Fixed
+- Google Analytics tracking now works on all pages (was missing from 5 pages)
+- DataLayer initialization moved before GTM loads to prevent race conditions
+- Global gtag function now properly accessible across all scripts
+- Added proper cookie flags for cross-site tracking (SameSite=None;Secure)
+
+### Changed
+- Buy Me a Coffee button replaced with Ko-fi button and branding
+- Ko-fi link updated to https://ko-fi.com/dekara
+- Ko-fi button now uses brand color (#FF5E5B) instead of yellow
+- Updated all support links across index.html, README.md, and terms.html
+
+---
+
 ## [1.14.0] - 2026-01-29
 
 ### Added

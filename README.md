@@ -264,7 +264,7 @@ If this project helped you, consider:
 - ⭐ **Starring** the repository
 - 🐛 **Reporting bugs** or suggesting features via [GitHub Issues](https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues)
 - 🤝 **Contributing** code or documentation (see [CONTRIBUTING.md](CONTRIBUTING.md))
-- ☕ **[Buying me a coffee](https://buymeacoffee.com/deangnj)** (optional, never required!)
+- ☕ **[Supporting on Ko-fi](https://ko-fi.com/dekara)** (optional, never required!)
 
 ---
 

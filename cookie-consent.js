@@ -20,6 +20,12 @@
 
     // Load Google Analytics
     function loadGoogleAnalytics() {
+        // Initialize dataLayer first
+        window.dataLayer = window.dataLayer || [];
+        
+        // Define gtag function globally
+        window.gtag = function(){dataLayer.push(arguments);}
+        
         // Google Tag Manager
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -34,10 +40,11 @@
         document.head.appendChild(gaScript);
 
         gaScript.onload = function() {
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-X00WL6B8W3', { 'anonymize_ip': true });
+            window.gtag('js', new Date());
+            window.gtag('config', 'G-X00WL6B8W3', { 
+                'anonymize_ip': true,
+                'cookie_flags': 'SameSite=None;Secure'
+            });
         };
 
         // GTM noscript fallback
