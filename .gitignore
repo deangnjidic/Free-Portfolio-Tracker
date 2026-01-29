@@ -1,5 +1,9 @@
-# Keep config.js private - contains API keys
+# Keep config.js private - contains API keys (Finnhub, Metals.dev)
 config.js
+
+# Minified files (generate during deployment)
+*.min.css
+*.min.js
 
 # macOS
 .DS_Store

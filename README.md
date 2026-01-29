@@ -232,9 +232,29 @@ A: Currently limited to 2 people. Feel free to fork and modify for your needs!
 
 ---
 
+## � Documentation
+
+- **[User Guide](guide.html)** - How to use all features
+- **[Privacy Policy](privacy.html)** - Privacy and analytics disclosure
+- **[Contributing Guidelines](CONTRIBUTING.md)** - How to contribute to this project
+- **[Changelog](CHANGELOG.md)** - Version history and changes
+- **[Analytics Setup](ANALYTICS-SETUP.md)** - Configure Google Analytics (for developers)
+- **[Minification Guide](MINIFY-INSTRUCTIONS.md)** - Production optimization
+- **[Secrets Guide](SECRETS-GUIDE.md)** - What to hide vs. what's public
+
+---
+
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **CC BY-NC-SA 4.0 License** (Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International).
+
+**What this means:**
+- ✅ Free to use, modify, and share
+- ✅ Must give attribution
+- ❌ **Cannot be used commercially or resold**
+- ✅ Derivative works must use the same license
+
+See the [LICENSE](LICENSE) file for full details.
 
 ---
 
@@ -242,8 +262,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If this project helped you, consider:
 - ⭐ **Starring** the repository
-- 🐛 **Reporting bugs** or suggesting features
-- 🤝 **Contributing** code or documentation
+- 🐛 **Reporting bugs** or suggesting features via [GitHub Issues](https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues)
+- 🤝 **Contributing** code or documentation (see [CONTRIBUTING.md](CONTRIBUTING.md))
 - ☕ **[Buying me a coffee](https://buymeacoffee.com/deangnj)** (optional, never required!)
 
 ---
@@ -417,10 +437,28 @@ All data is stored in localStorage under the key `portfolio_v1`:
 
 Works in any modern browser with localStorage and Fetch API support (Chrome, Firefox, Safari, Edge).
 
-## Privacy
+## Privacy & Analytics
 
-All data stays on your device. No data is sent anywhere except API calls to fetch prices:
+**Portfolio Data:** All your portfolio data stays 100% on your device. No data is sent anywhere except API calls to fetch prices:
 - Finnhub API (stocks & crypto prices)
-- metals.dev API (precious metals prices)
+- Metals.dev API (precious metals prices)
 
-No tracking, no analytics, no cloud storage.
+**Website Analytics:** We use Google Analytics and Google Tag Manager to understand website usage patterns (page views, navigation). This helps improve the user experience. Your portfolio holdings, values, and financial data are NEVER sent to analytics.
+
+See our [Privacy Policy](privacy.html) for complete details.
+
+## Production Deployment
+
+Before deploying to production:
+
+1. **Replace Analytics IDs** - See [ANALYTICS-SETUP.md](ANALYTICS-SETUP.md)
+   - Update `GTM-XXXXXXX` with your Google Tag Manager ID
+   - Update `G-XXXXXXXXXX` with your Google Analytics 4 ID
+
+2. **Minify Files** - See [MINIFY-INSTRUCTIONS.md](MINIFY-INSTRUCTIONS.md)
+   - Minify CSS and JavaScript for better performance
+   - Reduces file sizes by 30-50%
+
+3. **Test Everything**
+   - Verify analytics tracking works
+   - Test all features in production environment

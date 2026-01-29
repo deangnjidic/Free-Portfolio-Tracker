@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-X00WL6B8W3', { 'anonymize_ip': true });
+    </script>
+    <!-- End Google Analytics -->
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Free Portfolio Tracker</title>
@@ -190,21 +208,49 @@
             </div>
         </section>
 
-        <!-- No Tracking -->
+        <!-- Analytics and Tracking -->
+        <section class="privacy-section">
+            <h2>📊 Website Analytics</h2>
+            
+            <p>To improve the user experience and understand how our website is used, we use the following analytics services:</p>
+            
+            <h3>Google Analytics</h3>
+            <ul>
+                <li><strong>Purpose:</strong> Track website usage, page views, and user behavior patterns</li>
+                <li><strong>Data Collected:</strong> Anonymous usage data, page views, session duration, browser type, device information</li>
+                <li><strong>IP Anonymization:</strong> Enabled - your IP address is anonymized before storage</li>
+                <li><strong>Cookies:</strong> Uses cookies to track sessions and user interactions</li>
+                <li><strong>Privacy Policy:</strong> <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a></li>
+                <li><strong>Opt-Out:</strong> <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">Google Analytics Opt-out Browser Add-on</a></li>
+            </ul>
+
+            <h3>Google Tag Manager</h3>
+            <ul>
+                <li><strong>Purpose:</strong> Manage analytics tags and tracking codes efficiently</li>
+                <li><strong>Data Collected:</strong> No data collected directly; manages other tracking tools</li>
+                <li><strong>Privacy Policy:</strong> <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a></li>
+            </ul>
+
+            <div class="highlight-box">
+                <strong>Important Note:</strong> Analytics only track website usage and navigation patterns. <strong>Your portfolio data, holdings, and financial information are never sent to Google or any analytics service.</strong> All portfolio data remains stored locally in your browser only.
+            </div>
+        </section>
+
+        <!-- No Portfolio Data Tracking -->
         <section class="privacy-section">
             <h2>🚫 What We DON'T Collect</h2>
             
             <p>Free Portfolio Tracker does not collect, transmit, or store:</p>
             <ul>
                 <li>❌ Personal identification information (name, email, phone, address)</li>
-                <li>❌ Portfolio holdings or asset values</li>
-                <li>❌ Financial transaction data</li>
-                <li>❌ Cookies or tracking pixels</li>
-                <li>❌ Analytics or usage statistics</li>
-                <li>❌ IP addresses or device information</li>
-                <li>❌ Location data</li>
-                <li>❌ Any data transmitted to our servers (we don't have servers!)</li>
+                <li>❌ <strong>Portfolio holdings or asset values</strong></li>
+                <li>❌ <strong>Financial transaction data</strong></li>
+                <li>❌ <strong>Your API keys or account credentials</strong></li>
+                <li>❌ Location data (beyond general country-level from analytics)</li>
+                <li>❌ Any portfolio data transmitted to our servers (we don't have servers!)</li>
             </ul>
+            
+            <p style="margin-top: 20px;"><strong>Clear Separation:</strong> Website analytics (Google Analytics) track page visits and navigation. Your portfolio data stays 100% local in your browser's localStorage and is never sent anywhere.</p>
         </section>
 
         <!-- Data Security -->
