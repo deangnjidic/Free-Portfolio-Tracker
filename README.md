@@ -51,7 +51,6 @@ Track your entire investment portfolio in one place:
 - **CSV Import** - Bulk import from M1 Finance or custom CSV
 - **Search & Filter** - Find assets instantly
 - **Sorting** - Sort by any column
-- **Market News** - View news for your holdings
 - **Customizable** - Change currency, person names, and more
 
 ---
@@ -244,7 +243,7 @@ If this project helped you, consider:
 - ⭐ **Starring** the repository
 - 🐛 **Reporting bugs** or suggesting features
 - 🤝 **Contributing** code or documentation
-- ☕ **[Buying me a coffee](https://ko-fi.com/dekara)** on Ko-fi (optional, never required!)
+- ☕ **[Buying me a coffee](https://buymeacoffee.com/deangnj)** (optional, never required!)
 
 ---
 
@@ -320,20 +319,6 @@ Visit the **Charts** page to see:
 - **Top 10 Performers**: Best performing assets by % change (24h)
 - **Bottom 10 Performers**: Worst performing assets by % change (24h)
 
-### Compare Assets
-
-Use the **Compare** page to:
-- Select 2-3 assets to compare side-by-side
-- View price, holdings, and performance metrics
-- Useful for comparing similar assets or making decisions
-
-### Market News
-
-The **News** page shows:
-- General market news
-- News specific to your portfolio holdings
-- Powered by Finnhub API
-
 ## Data Structure
 
 All data is stored in localStorage under the key `portfolio_v1`:
@@ -395,17 +380,11 @@ All data is stored in localStorage under the key `portfolio_v1`:
 - `index.html` - Landing page
 - `app.html` - Main portfolio dashboard
 - `history.html` - Portfolio history tracker
-- `charts.html` - Charts and visualizations
-- `compare.html` - Asset comparison tool
-- `news.html` - Market news feed
 - `import-csv.html` - CSV import utility
 
 **Scripts:**
 - `app.js` - Core application logic
 - `history.js` - History page functionality
-- `charts.js` - Chart rendering
-- `compare.js` - Comparison functionality
-- `news.js` - News feed logic
 
 **Styling:**
 - `style.css` - All styles (dark theme)
