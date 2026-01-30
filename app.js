@@ -58,7 +58,8 @@
             previousPrices: {},
             changePercents: {} // Store 24h percentage changes from API
         },
-        snapshots: [] // Historical portfolio snapshots
+        snapshots: [], // Historical portfolio snapshots
+        transactions: [] // Track quantity changes (adds/removes)
     };
 
     let currentFilter = 'all';
@@ -85,6 +86,10 @@
                 // Ensure snapshots array exists
                 if (!state.snapshots) {
                     state.snapshots = [];
+                }
+                // Ensure transactions array exists
+                if (!state.transactions) {
+                    state.transactions = [];
                 }
             } catch (e) {
                 console.error('Failed to parse stored data:', e);
@@ -254,6 +259,38 @@
 
     function saveState() {
         localStorage.setItem('portfolio_v1', JSON.stringify(state));
+    }
+
+    // Record transaction (quantity change)
+    function recordTransaction(action, assetData, oldQuantities = null) {
+        const transaction = {
+            timestamp: Date.now(),
+            date: new Date().toISOString(),
+            action: action, // 'add', 'increase', 'decrease', 'remove'
+            asset: {
+                type: assetData.type,
+                symbol: assetData.symbol,
+                name: assetData.name
+            },
+            quantities: {
+                p1: assetData.holdings.p1.qty,
+                p2: assetData.holdings.p2.qty
+            }
+        };
+
+        // Add old quantities for increase/decrease actions
+        if (oldQuantities) {
+            transaction.oldQuantities = oldQuantities;
+            transaction.changes = {
+                p1: assetData.holdings.p1.qty - oldQuantities.p1,
+                p2: assetData.holdings.p2.qty - oldQuantities.p2
+            };
+        }
+
+        if (!state.transactions) {
+            state.transactions = [];
+        }
+        state.transactions.push(transaction);
     }
 
     // Initialize settings with defaults if not present
@@ -721,11 +758,30 @@
             // Edit existing
             const index = state.assets.findIndex(a => a.id === assetId);
             if (index !== -1) {
+                const oldAsset = state.assets[index];
+                const oldQty = {
+                    p1: oldAsset.holdings.p1.qty,
+                    p2: oldAsset.holdings.p2.qty
+                };
+                const newQty = {
+                    p1: asset.holdings.p1.qty,
+                    p2: asset.holdings.p2.qty
+                };
+                
+                // Record transaction if quantities changed
+                if (oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2) {
+                    const totalOld = oldQty.p1 + oldQty.p2;
+                    const totalNew = newQty.p1 + newQty.p2;
+                    const action = totalNew > totalOld ? 'increase' : 'decrease';
+                    recordTransaction(action, asset, oldQty);
+                }
+                
                 state.assets[index] = asset;
             }
         } else {
             // Add new
             state.assets.push(asset);
+            recordTransaction('add', asset);
         }
 
         saveState();
@@ -736,15 +792,17 @@
     function deleteAsset(assetId) {
         if (!confirm('Are you sure you want to delete this asset?')) return;
 
-        state.assets = state.assets.filter(a => a.id !== assetId);
-        
-        // Clean up price cache
         const asset = state.assets.find(a => a.id === assetId);
         if (asset) {
+            // Record removal transaction
+            recordTransaction('remove', asset);
+            
+            // Clean up price cache
             const cacheKey = `${asset.type}:${asset.symbol}`;
             delete state.priceCache.prices[cacheKey];
         }
 
+        state.assets = state.assets.filter(a => a.id !== assetId);
         saveState();
         render();
     }

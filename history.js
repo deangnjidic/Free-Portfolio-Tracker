@@ -21,12 +21,46 @@
                 if (!state.snapshots) {
                     state.snapshots = [];
                 }
+                if (!state.transactions) {
+                    state.transactions = [];
+                }
+                if (!state.priceCache) {
+                    state.priceCache = {
+                        lastUpdated: 0,
+                        prices: {},
+                        previousPrices: {},
+                        changePercents: {}
+                    };
+                }
+                if (!state.assets) {
+                    state.assets = [];
+                }
             } catch (e) {
                 console.error('Failed to parse stored data:', e);
-                state = { snapshots: [] };
+                state = { 
+                    snapshots: [], 
+                    transactions: [],
+                    assets: [],
+                    priceCache: {
+                        lastUpdated: 0,
+                        prices: {},
+                        previousPrices: {},
+                        changePercents: {}
+                    }
+                };
             }
         } else {
-            state = { snapshots: [] };
+            state = { 
+                snapshots: [], 
+                transactions: [],
+                assets: [],
+                priceCache: {
+                    lastUpdated: 0,
+                    prices: {},
+                    previousPrices: {},
+                    changePercents: {}
+                }
+            };
         }
     }
 
@@ -433,12 +467,30 @@
             const changeSign = snapshot.changeFromPrevious >= 0 ? '+' : '';
             const changePercentSign = snapshot.changePercentFromPrevious >= 0 ? '+' : '';
             
-            return `
+            // Get transactions for this day
+            const snapshotDate = new Date(snapshot.timestamp);
+            const dayStart = new Date(snapshotDate.getFullYear(), snapshotDate.getMonth(), snapshotDate.getDate()).getTime();
+            const dayEnd = dayStart + 24 * 60 * 60 * 1000;
+            
+            const dayTransactions = (state.transactions || []).filter(t => {
+                return t.timestamp >= dayStart && t.timestamp < dayEnd;
+            });
+            
+            const transactionCount = dayTransactions.length;
+            const hasTransactions = transactionCount > 0;
+            
+            const mainRow = `
                 <tr>
                     <td>
-                        <div style="display: flex; flex-direction: column;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
                             <span style="font-weight: 500;">${dateStr}</span>
                             <span style="font-size: 12px; color: #8b949e;">${timeStr}</span>
+                            ${hasTransactions ? `
+                                <span class="transaction-toggle" onclick="historyApp.toggleTransactions(${originalIndex})" data-index="${originalIndex}">
+                                    <span class="transaction-toggle-icon">▶</span>
+                                    <span>${transactionCount} change${transactionCount !== 1 ? 's' : ''}</span>
+                                </span>
+                            ` : ''}
                         </div>
                     </td>
                     <td style="font-weight: 600;">${formatCurrency(snapshot.totalValue)}</td>
@@ -454,7 +506,153 @@
                     </td>
                 </tr>
             `;
+            
+            const transactionRow = hasTransactions ? `
+                <tr class="transaction-row" data-index="${originalIndex}">
+                    <td colspan="8">
+                        <div class="transaction-content">
+                            <div class="transaction-list">
+                                ${dayTransactions.map(t => renderTransaction(t)).join('')}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            ` : '';
+            
+            return mainRow + transactionRow;
         }).join('');
+    }
+
+    function renderTransaction(transaction) {
+        const time = new Date(transaction.timestamp).toLocaleTimeString();
+        const personLabels = state.settings?.people || ['Person 1', 'Person 2'];
+        
+        // Get current price for value calculation
+        const cacheKey = `${transaction.asset.type}:${transaction.asset.symbol}`;
+        const currentPrice = state.priceCache?.prices?.[cacheKey] || 0;
+        
+        let icon = '📝';
+        let actionText = '';
+        let changeDetails = '';
+        
+        switch(transaction.action) {
+            case 'add':
+                icon = '📈';
+                actionText = 'Bought';
+                const totalQty = transaction.quantities.p1 + transaction.quantities.p2;
+                const addValue = totalQty * currentPrice;
+                
+                changeDetails = `Quantity: <span class="transaction-qty positive">${totalQty}</span>`;
+                
+                if (currentPrice > 0) {
+                    changeDetails += ` • Value: <span class="transaction-qty positive">+${formatCurrency(addValue)}</span>`;
+                } else {
+                    changeDetails += ` • Value: <span style="color: #8b949e;">Price N/A</span>`;
+                }
+                
+                if (transaction.quantities.p1 > 0 && transaction.quantities.p2 > 0) {
+                    changeDetails += `<br><span style="font-size: 12px;">${personLabels[0]}: ${transaction.quantities.p1}, ${personLabels[1]}: ${transaction.quantities.p2}</span>`;
+                } else if (transaction.quantities.p1 > 0) {
+                    changeDetails += `<br><span style="font-size: 12px;">${personLabels[0]}: ${transaction.quantities.p1}</span>`;
+                } else {
+                    changeDetails += `<br><span style="font-size: 12px;">${personLabels[1]}: ${transaction.quantities.p2}</span>`;
+                }
+                break;
+                
+            case 'increase':
+                icon = '📈';
+                actionText = 'Increased';
+                const totalIncrease = transaction.changes.p1 + transaction.changes.p2;
+                const newQtyIncrease = transaction.quantities.p1 + transaction.quantities.p2;
+                const increaseValue = Math.abs(totalIncrease) * currentPrice;
+                
+                changeDetails = `Quantity: <span class="transaction-qty positive">${newQtyIncrease}</span>`;
+                
+                if (currentPrice > 0) {
+                    changeDetails += ` • Value: <span class="transaction-qty positive">+${formatCurrency(increaseValue)}</span>`;
+                } else {
+                    changeDetails += ` • Value: <span style="color: #8b949e;">Price N/A</span>`;
+                }
+                
+                const increaseDetails = [];
+                if (transaction.changes.p1 !== 0) increaseDetails.push(`${personLabels[0]}: ${transaction.changes.p1 > 0 ? '+' : ''}${transaction.changes.p1}`);
+                if (transaction.changes.p2 !== 0) increaseDetails.push(`${personLabels[1]}: ${transaction.changes.p2 > 0 ? '+' : ''}${transaction.changes.p2}`);
+                if (increaseDetails.length > 0) {
+                    changeDetails += `<br><span style="font-size: 12px;">${increaseDetails.join(', ')}</span>`;
+                }
+                break;
+                
+            case 'decrease':
+                icon = '📉';
+                actionText = 'Sold';
+                const totalDecrease = transaction.changes.p1 + transaction.changes.p2;
+                const newQtyDecrease = transaction.quantities.p1 + transaction.quantities.p2;
+                const decreaseValue = Math.abs(totalDecrease) * currentPrice;
+                
+                changeDetails = `Quantity: <span class="transaction-qty negative">${newQtyDecrease}</span>`;
+                
+                if (currentPrice > 0) {
+                    changeDetails += ` • Value: <span class="transaction-qty negative">-${formatCurrency(decreaseValue)}</span>`;
+                } else {
+                    changeDetails += ` • Value: <span style="color: #8b949e;">Price N/A</span>`;
+                }
+                
+                const decreaseDetails = [];
+                if (transaction.changes.p1 !== 0) decreaseDetails.push(`${personLabels[0]}: ${transaction.changes.p1 > 0 ? '+' : ''}${transaction.changes.p1}`);
+                if (transaction.changes.p2 !== 0) decreaseDetails.push(`${personLabels[1]}: ${transaction.changes.p2 > 0 ? '+' : ''}${transaction.changes.p2}`);
+                if (decreaseDetails.length > 0) {
+                    changeDetails += `<br><span style="font-size: 12px;">${decreaseDetails.join(', ')}</span>`;
+                }
+                break;
+                
+            case 'remove':
+                icon = '🗑️';
+                actionText = 'Removed All';
+                const removedQty = transaction.quantities.p1 + transaction.quantities.p2;
+                const removeValue = removedQty * currentPrice;
+                
+                changeDetails = `Quantity: <span class="transaction-qty negative">0</span>`;
+                
+                if (currentPrice > 0) {
+                    changeDetails += ` • Value: <span class="transaction-qty negative">-${formatCurrency(removeValue)}</span>`;
+                } else {
+                    changeDetails += ` • Value: <span style="color: #8b949e;">Price N/A</span>`;
+                }
+                break;
+        }
+                
+        
+        return `
+            <div class="transaction-item">
+                <div class="transaction-icon">${icon}</div>
+                <div class="transaction-details">
+                    <div class="transaction-asset">
+                        <span class="transaction-badge ${transaction.action}">${actionText}</span>
+                        ${transaction.asset.name}
+                        <span class="transaction-symbol">${transaction.asset.symbol}</span>
+                    </div>
+                    <div class="transaction-change">${changeDetails}</div>
+                </div>
+                <div class="transaction-time">${time}</div>
+            </div>
+        `;
+    }
+
+    function toggleTransactions(index) {
+        const transactionRow = document.querySelector(`.transaction-row[data-index="${index}"]`);
+        const toggle = document.querySelector(`.transaction-toggle[data-index="${index}"]`);
+        
+        if (transactionRow && toggle) {
+            const isVisible = transactionRow.classList.contains('visible');
+            
+            if (isVisible) {
+                transactionRow.classList.remove('visible');
+                toggle.classList.remove('active');
+            } else {
+                transactionRow.classList.add('visible');
+                toggle.classList.add('active');
+            }
+        }
     }
 
     function formatCurrency(value) {
@@ -468,7 +666,8 @@
 
     // Expose functions
     window.historyApp = {
-        deleteSnapshot: deleteSnapshot
+        deleteSnapshot: deleteSnapshot,
+        toggleTransactions: toggleTransactions
     };
 
 })();

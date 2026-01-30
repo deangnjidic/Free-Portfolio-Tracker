@@ -11,6 +11,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.16.0] - 2026-01-30
+
+### Added
+- Transaction tracking system that automatically records all portfolio quantity changes
+- Expandable transaction history display in History page (toggle to show/hide transactions per day)
+- Live transaction value calculations (quantity × current stock price)
+- Color-coded transaction badges (green for bought/increased, red for sold/decreased)
+- Transaction actions: Bought, Sold, Increased, Decreased, Removed All
+- Persistent sticky navigation bar across Portfolio and History pages
+- Centered navigation layout for improved visual hierarchy
+- Full-width navigation bar with proper spacing
+
+### Fixed
+- Fixed sticky navigation positioning to stay at top when scrolling
+- Resolved overflow-x issues that prevented sticky behavior from working
+- Improved horizontal scroll containment in asset tables
+- Fixed transaction display rendering in History page
+- Fixed priceCache loading to enable transaction value calculations
+
+### Changed
+- Improved transaction terminology: "Bought" instead of "Added", "Sold" instead of "Decreased"
+- Replaced transaction icons (📈 for bought transactions)
+- Simplified transaction display by removing verbose calculation breakdowns
+- Changed overflow-x from hidden to clip for better sticky positioning support
+- Updated body padding structure to accommodate sticky navigation
+- Navigation bar now uses negative margins to extend full width
+
+---
+
 ## [1.15.1] - 2026-01-30
 
 ### Fixed

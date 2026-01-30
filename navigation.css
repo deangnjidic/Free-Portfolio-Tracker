@@ -1,0 +1,126 @@
+/* Navigation Bar Styles */
+.nav-bar {
+    background: #0d1117;
+    border-bottom: 1px solid #30363d;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: 20px;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    text-decoration: none;
+    color: #e6edf3;
+    font-weight: 600;
+    font-size: 16px;
+    margin-right: 30px;
+    transition: opacity 0.2s;
+}
+
+.nav-logo:hover {
+    opacity: 0.8;
+}
+
+.nav-logo img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s;
+}
+
+.nav-logo:hover img {
+    transform: rotate(5deg) scale(1.05);
+}
+
+.nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 20px;
+    color: #8b949e;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #e6edf3;
+    background: rgba(88, 166, 255, 0.05);
+    border-bottom-color: #58a6ff;
+}
+
+.nav-link.active {
+    color: #58a6ff;
+    border-bottom-color: #58a6ff;
+    background: rgba(88, 166, 255, 0.08);
+}
+
+.nav-link .nav-icon {
+    font-size: 16px;
+    transition: transform 0.2s;
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.15);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 0 10px;
+    }
+    
+    .nav-logo {
+        margin-right: 10px;
+    }
+    
+    .nav-logo-text {
+        display: none;
+    }
+    
+    .nav-links {
+        gap: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .nav-link {
+        padding: 14px 12px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+}

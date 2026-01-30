@@ -6,14 +6,199 @@
     <title>Portfolio History</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cookie-consent.css">
+    <link rel="stylesheet" href="navigation.css">
+    <style>
+        /* Transaction Log Styles */
+        .transaction-toggle {
+            cursor: pointer;
+            padding: 8px 12px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #58a6ff;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .transaction-toggle:hover {
+            background: #161b22;
+            border-color: #58a6ff;
+        }
+
+        .transaction-toggle-icon {
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .transaction-toggle.active .transaction-toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .transaction-row {
+            display: none;
+        }
+
+        .transaction-row.visible {
+            display: table-row;
+        }
+
+        .transaction-row td {
+            padding: 0 !important;
+            border-top: none !important;
+        }
+
+        .transaction-content {
+            background: #0d1117;
+            padding: 16px 20px;
+            border-left: 3px solid #58a6ff;
+            margin: 0 10px 10px 10px;
+            border-radius: 6px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .transaction-item:hover {
+            border-color: #58a6ff;
+            transform: translateX(3px);
+        }
+
+        .transaction-icon {
+            font-size: 20px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .transaction-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .transaction-asset {
+            font-weight: 600;
+            color: #e6edf3;
+            font-size: 14px;
+        }
+
+        .transaction-symbol {
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+            margin-left: 6px;
+        }
+
+        .transaction-change {
+            font-size: 13px;
+            color: #8b949e;
+        }
+
+        .transaction-qty {
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .transaction-qty.positive {
+            color: #3fb950;
+            background: rgba(63, 185, 80, 0.1);
+        }
+
+        .transaction-qty.negative {
+            color: #f85149;
+            background: rgba(248, 81, 73, 0.1);
+        }
+
+        .transaction-time {
+            font-size: 12px;
+            color: #8b949e;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: 20px;
+            color: #8b949e;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .transaction-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .transaction-badge.add {
+            background: rgba(63, 185, 80, 0.15);
+            color: #3fb950;
+        }
+
+        .transaction-badge.increase {
+            background: rgba(88, 166, 255, 0.15);
+            color: #58a6ff;
+        }
+
+        .transaction-badge.decrease {
+            background: rgba(210, 153, 34, 0.15);
+            color: #d29922;
+        }
+
+        .transaction-badge.remove {
+            background: rgba(248, 81, 73, 0.15);
+            color: #f85149;
+        }
+    </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="favicon.svg" alt="Logo">
+                <span class="nav-logo-text">Free Portfolio Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="app.html" class="nav-link"><span class="nav-icon">💼</span> Portfolio</a></li>
+                <li><a href="history.html" class="nav-link active"><span class="nav-icon">📈</span> History</a></li>
+                <li><a href="charts.html" class="nav-link"><span class="nav-icon">📊</span> Charts</a></li>
+                <li><a href="compare.html" class="nav-link"><span class="nav-icon">⚖️</span> Compare</a></li>
+                <li><a href="news.html" class="nav-link"><span class="nav-icon">📰</span> News</a></li>
+                <li><a href="import-csv.html" class="nav-link"><span class="nav-icon">📥</span> Import</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <!-- Header Section -->
     <header class="header">
         <div class="header-content">
-            <h1>Portfolio History</h1>
+            <h1>History</h1>
             <div class="header-controls">
-                <button onclick="window.location.href='app.html'" class="btn btn-secondary">← Back to Portfolio</button>
                 <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Prices</button>
                 <button id="saveSnapshotBtn" class="btn btn-success">💾 Save Snapshot</button>
                 <button id="clearHistoryBtn" class="btn btn-danger">🗑️ Clear History</button>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates - Free Portfolio Tracker</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cookie-consent.css">
+    <style>
+        .updates-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .updates-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .updates-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #58a6ff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .updates-header p {
+            font-size: 18px;
+            color: #8b949e;
+        }
+
+        .update-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .update-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .update-version {
+            font-size: 24px;
+            font-weight: bold;
+            color: #58a6ff;
+        }
+
+        .update-date {
+            color: #8b949e;
+            font-size: 14px;
+        }
+
+        .update-section {
+            margin-bottom: 20px;
+        }
+
+        .update-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .update-section h3 {
+            font-size: 16px;
+            color: #58a6ff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .update-section.new h3 {
+            color: #3fb950;
+        }
+
+        .update-section.fixed h3 {
+            color: #f85149;
+        }
+
+        .update-section.changed h3 {
+            color: #d29922;
+        }
+
+        .update-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .update-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        .update-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #79c0ff;
+        }
+
+        .changelog-link {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+        }
+
+        .changelog-link a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .changelog-link a:hover {
+            color: #79c0ff;
+        }
+
+        /* Footer */
+        .footer-updates {
+            text-align: center;
+            margin-top: 80px;
+            padding: 30px 20px;
+            border-top: 1px solid #30363d;
+            color: #8b949e;
+        }
+
+        .footer-updates a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .footer-updates a:hover {
+            color: #79c0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="updates-container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+
+        <div class="updates-header">
+            <h1>📋 What's New</h1>
+            <p>Latest features, improvements, and bug fixes for Free Portfolio Tracker</p>
+        </div>
+
+        <!-- January 2026 Updates -->
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.16.0</span>
+                <span class="update-date">January 30, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ New Features</h3>
+                <ul class="update-list">
+                    <li>Transaction tracking system - automatically records all portfolio changes (bought, sold, increased, decreased)</li>
+                    <li>Expandable transaction history in History page - click to view transactions for each day</li>
+                    <li>Live transaction value calculations showing quantity × current stock price</li>
+                    <li>Color-coded transaction badges (green for bought/increased, red for sold/decreased)</li>
+                    <li>Persistent sticky navigation bar across Portfolio and History pages</li>
+                    <li>Centered navigation layout for better visual balance</li>
+                </ul>
+            </div>
+            <div class="update-section fixed">
+                <h3>🐛 Bug Fixes</h3>
+                <ul class="update-list">
+                    <li>Fixed sticky navigation positioning (now stays at top when scrolling)</li>
+                    <li>Resolved overflow-x issues that prevented sticky behavior</li>
+                    <li>Improved horizontal scroll containment in asset tables</li>
+                </ul>
+            </div>
+            <div class="update-section changed">
+                <h3>🔧 Changes</h3>
+                <ul class="update-list">
+                    <li>Improved transaction terminology: "Bought" instead of "Added", "Sold" instead of "Decreased"</li>
+                    <li>Replaced transaction icons (📈 for bought instead of ➕)</li>
+                    <li>Simplified transaction display by removing verbose calculation breakdowns</li>
+                    <li>Navigation bar now extends full width with proper margins</li>
+                    <li>Changed overflow-x from hidden to clip for better sticky support</li>
+                    <li>Updated body padding to accommodate sticky navigation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.15.1</span>
+                <span class="update-date">January 30, 2026</span>
+            </div>
+            <div class="update-section fixed">
+                <h3>🐛 Bug Fixes</h3>
+                <ul class="update-list">
+                    <li>Fixed cookie consent "Accept" button functionality</li>
+                    <li>Resolved Google Analytics and GTM loading issues</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.15.0</span>
+                <span class="update-date">January 29, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ New Features</h3>
+                <ul class="update-list">
+                    <li>Cookie consent system now available on all pages</li>
+                    <li>Complete analytics coverage across the entire app</li>
+                </ul>
+            </div>
+            <div class="update-section changed">
+                <h3>🔄 Changes</h3>
+                <ul class="update-list">
+                    <li>Switched from Buy Me a Coffee to Ko-fi for donations</li>
+                    <li>Updated support links and branding throughout</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.14.0</span>
+                <span class="update-date">January 29, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ New Features</h3>
+                <ul class="update-list">
+                    <li>Professional favicon and app icons added</li>
+                    <li>Toast notifications and loading overlays for better feedback</li>
+                    <li>Clickable logo in app header linking to landing page</li>
+                    <li>Smooth animations throughout the entire interface</li>
+                    <li>Enhanced hover effects on buttons, tables, and cards</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.13.0</span>
+                <span class="update-date">January 29, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ New Features</h3>
+                <ul class="update-list">
+                    <li>GDPR-compliant cookie consent banner</li>
+                    <li>Terms of Use page with comprehensive usage terms</li>
+                    <li>Custom domain support (freeportfoliotracker.com)</li>
+                    <li>Privacy-first analytics (opt-in only)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.12.0</span>
+                <span class="update-date">January 29, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ New Features</h3>
+                <ul class="update-list">
+                    <li>Google Analytics 4 and Google Tag Manager integration</li>
+                    <li>Smart symbol search with real-time autocomplete</li>
+                    <li>Keyboard navigation for search (arrow keys, Enter, Escape)</li>
+                    <li>Setup banner for missing API keys</li>
+                    <li>Enhanced security with XSS protection</li>
+                </ul>
+            </div>
+            <div class="update-section changed">
+                <h3>🔄 Changes</h3>
+                <ul class="update-list">
+                    <li>License changed from MIT to CC BY-NC-SA 4.0</li>
+                    <li>App renamed to "Free Portfolio Tracker"</li>
+                    <li>Improved demo data with realistic diversified portfolio</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="update-card">
+            <div class="update-header">
+                <span class="update-version">v1.0.0</span>
+                <span class="update-date">January 29, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>🎉 Initial Release</h3>
+                <ul class="update-list">
+                    <li>Multi-asset portfolio tracking (stocks, crypto, metals, savings)</li>
+                    <li>Track holdings for up to 2 people with customizable names</li>
+                    <li>Real-time price updates from trusted APIs</li>
+                    <li>100% privacy-first - all data stays on your device</li>
+                    <li>Import/Export portfolios as JSON or CSV</li>
+                    <li>Historical performance tracking with snapshots</li>
+                    <li>Beautiful dark theme UI with responsive design</li>
+                    <li>Search, filter, and sort your entire portfolio</li>
+                    <li>No installation required - works in any browser</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Link to Full Changelog -->
+        <div class="changelog-link">
+            <p style="margin-bottom: 10px; color: #8b949e;">Want more technical details?</p>
+            <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker/blob/main/CHANGELOG.md" target="_blank">
+                View Full Changelog on GitHub →
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer-updates">
+            <p>Built with ❤️ by <a href="https://github.com/deangnjidic" target="_blank">Dean Gnjidic</a></p>
+            <p style="margin-top: 10px;">
+                <a href="index.html">Home</a> • 
+                <a href="guide.html">Documentation</a> • 
+                <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues" target="_blank">Report Issues</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Cookie Consent System -->
+    <script src="cookie-consent.js"></script>
+</body>
+</html>
