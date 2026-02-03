@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Google Consent Mode v2 implementation for GDPR-compliant analytics
+- consent-init.js script for managing consent state across all pages
+- GTM and GA4 now load immediately in `<head>` with default consent set to "denied"
+
+### Changed
+- Google Tag Manager and Google Analytics 4 now load on initial page load (with consent mode)
+- Analytics respects user consent in real-time without delayed script loading
+- Cookie consent banner now updates consent state using gtag consent API
+- Improved analytics tracking timing and reliability across all pages
+
+### Enhanced
+- Better analytics data collection while maintaining GDPR compliance
+- GTM loads faster and more reliably on all pages
+- Consent state properly synced between localStorage and Google Consent Mode
+- Analytics fires immediately after user accepts cookies (no page reload needed)
+
 ---
 
 ## [1.17.0] - 2026-01-31
