@@ -11,6 +11,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2026-02-18
+
+### Added
+- FAQ page (`faq.html`) — accordion UI with 5 sections: General, Privacy & Data, API Keys, Assets & Tracking, Troubleshooting
+- About page (`about.html`) — project mission, core principles, tech stack, and credits
+- History page line chart showing Combined, Person 1, and Person 2 portfolio values over time
+- 5 new charts on Charts page:
+  - Daily Gain/Loss bar chart (green/red per snapshot)
+  - Savings vs Invested donut chart
+  - Composition Over Time stacked bar (asset type mix across snapshots)
+  - Cumulative Return line chart (% return from first snapshot)
+  - Performance Scatter (daily % change vs value, savings excluded)
+- Snapshots now store `p1Value`, `p2Value`, and `byType` breakdown (`stock`, `crypto`, `metal`, `savings`)
+- FAQ and About links added to all nav bars and site footers
+- FAQ and About pages added to `sitemap.xml`
+- Twitter Card meta tags added to `404.html`
+
+### Changed
+- Removed duplicate Combined Total card from Portfolio page (covered by Total Value)
+- New charts positioned above Top/Bottom performers section on Charts page
+- Top/Bottom performers reduced from 10 to 5
+- User Guide fully rebuilt: nav bar, table of contents, numbered steps, feature grids, callout boxes, site footer
+- Guide crypto symbol format corrected: Finnhub format (`BINANCE:BTCUSDT`), not CoinGecko IDs
+- All `<lastmod>` dates in `sitemap.xml` updated to 2026-02-18
+
+### Fixed
+- Mobile responsiveness overhauled — charts, tables, modals, quick stats, search, and buttons fully responsive
+
+---
+
 ## [1.21.0] - 2026-02-17
 
 ### Changed

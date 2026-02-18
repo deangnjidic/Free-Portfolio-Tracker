@@ -30,494 +30,673 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cookie-consent.css">
-    
-    <!-- Google Consent Mode v2 + GTM (Loads immediately with consent denied by default) -->
+    <link rel="stylesheet" href="navigation.css">
+
     <script src="consent-init.js"></script>
-    
-    <!-- Google Tag Manager -->
     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PWHJ9WLH"></script>
-    
-    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
-    
+
     <style>
         .guide-container {
-            max-width: 900px;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .guide-hero {
+            text-align: center;
+            padding: 36px 20px 28px;
+        }
+
+        .guide-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 10px;
+        }
+
+        .guide-hero p {
+            color: #8b949e;
+            font-size: 15px;
+            max-width: 540px;
             margin: 0 auto;
         }
+
+        .guide-toc {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 22px 26px;
+            margin-bottom: 24px;
+        }
+
+        .guide-toc h2 {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #58a6ff;
+            margin-bottom: 14px;
+        }
+
+        .guide-toc ol {
+            margin: 0;
+            padding-left: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 6px 20px;
+        }
+
+        .guide-toc li { font-size: 14px; }
+
+        .guide-toc a {
+            color: #8b949e;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .guide-toc a:hover { color: #58a6ff; }
 
         .guide-section {
             background: #161b22;
             border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 16px;
+            scroll-margin-top: 80px;
         }
 
-        .guide-section h2 {
-            color: #58a6ff;
-            font-size: 22px;
-            margin-bottom: 16px;
+        .guide-section-title {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .guide-section h3 {
-            color: #e6edf3;
             font-size: 18px;
-            margin-top: 20px;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
             border-bottom: 1px solid #30363d;
         }
 
-        .guide-section h3:first-of-type {
-            margin-top: 0;
+        .guide-subsection { margin-top: 20px; }
+        .guide-subsection:first-child { margin-top: 0; }
+
+        .guide-subsection h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 10px;
         }
 
         .guide-section p {
-            color: #c9d1d9;
-            line-height: 1.6;
-            margin-bottom: 12px;
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.75;
+            margin-bottom: 10px;
         }
 
-        .guide-section ul, .guide-section ol {
-            color: #c9d1d9;
-            line-height: 1.8;
-            margin-left: 20px;
-            margin-bottom: 12px;
+        .guide-section ul,
+        .guide-section ol {
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.75;
+            padding-left: 22px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .guide-section li {
-            margin-bottom: 8px;
-        }
+        .guide-section strong { color: #e6edf3; font-weight: 600; }
 
-        .guide-section strong {
-            color: #e6edf3;
-            font-weight: 600;
-        }
+        .guide-section a { color: #58a6ff; text-decoration: none; }
+        .guide-section a:hover { text-decoration: underline; }
 
         .guide-section code {
             background: #0d1117;
-            padding: 2px 6px;
-            border-radius: 3px;
+            border: 1px solid #30363d;
+            padding: 1px 6px;
+            border-radius: 4px;
             color: #79c0ff;
             font-family: 'Courier New', monospace;
             font-size: 13px;
         }
 
-        .button-demo {
-            background: #21262d;
-            border: 1px solid #30363d;
-            padding: 8px 16px;
-            border-radius: 6px;
-            color: #e6edf3;
+        .callout {
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin: 14px 0;
             font-size: 14px;
-            display: inline-block;
-            margin: 4px;
+            line-height: 1.65;
         }
 
-        .tip-box {
-            background: #1a2332;
-            border-left: 4px solid #58a6ff;
-            padding: 16px;
-            margin: 16px 0;
-            border-radius: 4px;
+        .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+        .callout-tip {
+            background: rgba(88, 166, 255, 0.08);
+            border: 1px solid rgba(88, 166, 255, 0.25);
+            color: #8b949e;
         }
 
-        .tip-box strong {
-            color: #58a6ff;
+        .callout-tip strong { color: #58a6ff; }
+
+        .callout-warning {
+            background: rgba(210, 153, 34, 0.08);
+            border: 1px solid rgba(210, 153, 34, 0.25);
+            color: #8b949e;
         }
 
-        .warning-box {
-            background: #2d1e1e;
-            border-left: 4px solid #f85149;
-            padding: 16px;
-            margin: 16px 0;
-            border-radius: 4px;
-        }
-
-        .warning-box strong {
-            color: #f85149;
-        }
+        .callout-warning strong { color: #d29922; }
 
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 10px;
+            margin: 14px 0;
         }
 
         .feature-card {
             background: #0d1117;
             border: 1px solid #30363d;
-            padding: 16px;
-            border-radius: 6px;
+            border-radius: 8px;
+            padding: 14px 16px;
+            transition: border-color 0.2s;
         }
+
+        .feature-card:hover { border-color: #484f58; }
 
         .feature-card h4 {
-            color: #58a6ff;
-            margin-bottom: 8px;
-            font-size: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 6px;
         }
 
-        .feature-card p {
+        .feature-card p { font-size: 13px; color: #8b949e; margin: 0; line-height: 1.55; }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .steps-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
             font-size: 14px;
-            margin: 0;
+            color: #8b949e;
+            line-height: 1.6;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: rgba(88, 166, 255, 0.15);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            color: #58a6ff;
+        }
+
+        .guide-cta {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .guide-cta p { color: #8b949e; font-size: 14px; margin: 0; }
+
+        .guide-cta-links { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .guide-cta-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .link-primary { background: #238636; color: white; border: 1px solid #238636; }
+        .link-primary:hover { background: #2ea043; }
+        .link-secondary { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+        .link-secondary:hover { background: #30363d; }
+
+        footer.site-footer {
+            background: #0d1117;
+            border-top: 1px solid #21262d;
+            padding: 24px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer.site-footer p { color: #8b949e; font-size: 13px; margin-bottom: 10px; }
+
+        footer.site-footer .footer-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        footer.site-footer .footer-links a {
+            color: #8b949e;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        footer.site-footer .footer-links a:hover { color: #58a6ff; }
+
+        @media (max-width: 768px) {
+            .guide-container { padding: 0 10px 32px; }
+            .guide-hero h1 { font-size: 22px; }
+            .guide-section { padding: 18px; }
+            .guide-toc ol { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: 1fr 1fr; }
+            .guide-cta { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    
-    <!-- Header Section -->
-    <header class="header">
-        <div class="header-content">
-            <h1>📖 User Guide</h1>
-            <div class="header-controls">
-                <button onclick="window.location.href='app.html'" class="btn btn-primary">← Back to Portfolio</button>
-            </div>
+
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="favicon.svg" alt="Logo">
+                <span class="nav-logo-text">Free Portfolio Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="app.html" class="nav-link"><span class="nav-icon">💼</span> Portfolio</a></li>
+                <li><a href="history.html" class="nav-link"><span class="nav-icon">📈</span> History</a></li>
+                <li><a href="charts.html" class="nav-link"><span class="nav-icon">📊</span> Charts</a></li>
+                <li><a href="compare.html" class="nav-link"><span class="nav-icon">⚖️</span> Compare</a></li>
+                <li><a href="news.html" class="nav-link"><span class="nav-icon">📰</span> News</a></li>
+                <li><a href="import-csv.html" class="nav-link"><span class="nav-icon">📥</span> Import</a></li>
+                <li><a href="faq.html" class="nav-link"><span class="nav-icon">❓</span> FAQ</a></li>
+                <li><a href="about.html" class="nav-link"><span class="nav-icon">ℹ️</span> About</a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
     <div class="guide-container">
-        <!-- Getting Started -->
-        <section class="guide-section">
-            <h2>🚀 Getting Started</h2>
-            <p>Welcome to Portfolio Tracker! This is a privacy-first portfolio tracker that works entirely in your browser. All your data is stored locally on your device - nothing is sent to any server.</p>
-            
-            <h3>First-Time Setup</h3>
+
+        <div class="guide-hero">
+            <h1>📖 User Guide</h1>
+            <p>Everything you need to know to get the most out of Free Portfolio Tracker.</p>
+        </div>
+
+        <div class="guide-toc">
+            <h2>Contents</h2>
             <ol>
-                <li><strong>Configure API Keys</strong> (Optional but recommended):
-                    <ul>
-                        <li>Click <span class="button-demo">⚙️ Settings</span></li>
-                        <li>Enter your free API keys:
-                            <ul>
-                                <li><strong>Finnhub</strong> - For stock prices (get free at <a href="https://finnhub.io/" target="_blank" style="color: #58a6ff;">finnhub.io</a>)</li>
-                                <li><strong>Metals.dev</strong> - For precious metal prices (get free at <a href="https://metals.dev/" target="_blank" style="color: #58a6ff;">metals.dev</a>)</li>
-                            </ul>
-                        </li>
-                        <li>Keys are stored locally and never shared</li>
-                    </ul>
-                </li>
-                <li><strong>Customize Person Names</strong>:
-                    <ul>
-                        <li>In Settings, change "John" and "Maria" to your preferred names</li>
-                        <li>Perfect for tracking individual or joint portfolios</li>
-                    </ul>
-                </li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#portfolio-page">Portfolio Page</a></li>
+                <li><a href="#history-page">History &amp; Snapshots</a></li>
+                <li><a href="#charts-page">Charts</a></li>
+                <li><a href="#compare-page">Compare</a></li>
+                <li><a href="#news-page">News</a></li>
+                <li><a href="#import-page">Import CSV</a></li>
+                <li><a href="#backup">Backup &amp; Restore</a></li>
+                <li><a href="#privacy">Privacy &amp; Security</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#tips">Tips &amp; Tricks</a></li>
             </ol>
+        </div>
 
-            <div class="tip-box">
-                <strong>💡 Tip:</strong> The app comes with demo data to help you explore. You can delete demo assets anytime and add your own!
+        <!-- 1. Getting Started -->
+        <section class="guide-section" id="getting-started">
+            <div class="guide-section-title"><span>🚀</span> Getting Started</div>
+
+            <p>Free Portfolio Tracker runs entirely in your browser. Your data is stored locally on your device — nothing is ever sent to any server.</p>
+
+            <div class="guide-subsection">
+                <h3>First-Time Setup</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Open the app and click <strong>⚙️ Settings</strong></span></li>
+                    <li><span class="step-number">2</span><span>Set your preferred names for Person 1 and Person 2 (e.g. your names, or "Me" / "Partner")</span></li>
+                    <li><span class="step-number">3</span><span>Paste your free <strong>Finnhub API key</strong> for live stock &amp; crypto prices — get one at <a href="https://finnhub.io/register" target="_blank" rel="noopener">finnhub.io/register</a></span></li>
+                    <li><span class="step-number">4</span><span>Optionally paste a <strong>Metals.dev API key</strong> if you hold gold, silver, or other precious metals — free at <a href="https://metals.dev/" target="_blank" rel="noopener">metals.dev</a></span></li>
+                    <li><span class="step-number">5</span><span>Click <strong>Save Settings</strong> and start adding assets</span></li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <span class="callout-icon">💡</span>
+                <div>The app ships with demo data so you can explore before entering your own holdings. Delete demo assets whenever you're ready.</div>
             </div>
         </section>
 
-        <!-- Main Portfolio Page -->
-        <section class="guide-section">
-            <h2>🏠 Main Portfolio Page</h2>
-            <p>This is your dashboard showing all your assets, their current values, and portfolio summary.</p>
+        <!-- 2. Portfolio Page -->
+        <section class="guide-section" id="portfolio-page">
+            <div class="guide-section-title"><span>💼</span> Portfolio Page</div>
 
-            <h3>Quick Stats Cards</h3>
-            <p>At the top, you'll see key metrics:</p>
-            <ul>
-                <li><strong>Total Portfolio Value</strong> - Combined value across all assets</li>
-                <li><strong>Person 1 & Person 2 Values</strong> - Individual portfolio values</li>
-                <li><strong>Best Performer</strong> - Asset with highest 24h gain</li>
-                <li><strong>Worst Performer</strong> - Asset with highest 24h loss</li>
-            </ul>
+            <p>Your main dashboard — all assets, live prices, and portfolio summary cards.</p>
 
-            <h3>Main Buttons</h3>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h4>Refresh Prices</h4>
-                    <p>Updates all asset prices from APIs. Caches for 60 seconds to avoid rate limits.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>📈 History</h4>
-                    <p>View portfolio snapshots over time and track growth with charts.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>📊 Charts</h4>
-                    <p>Visual breakdowns: allocation pie charts, comparisons, and top/bottom performers.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>🔄 Compare</h4>
-                    <p>Side-by-side comparison of Person 1 vs Person 2 portfolios.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>📰 News</h4>
-                    <p>Get latest news for your holdings (requires Finnhub API key).</p>
-                </div>
-                <div class="feature-card">
-                    <h4>📥 Import CSV</h4>
-                    <p>Bulk import assets from M1 Finance or custom CSV files.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Export</h4>
-                    <p>Download your entire portfolio as JSON backup (includes API keys).</p>
-                </div>
-                <div class="feature-card">
-                    <h4>Import</h4>
-                    <p>Restore portfolio from a previous JSON backup.</p>
-                </div>
-                <div class="feature-card">
-                    <h4>⚙️ Settings</h4>
-                    <p>Configure person names and API keys.</p>
+            <div class="guide-subsection">
+                <h3>Quick Stats</h3>
+                <ul>
+                    <li><strong>💰 Total Value</strong> — Combined portfolio value across all assets and people</li>
+                    <li><strong>📈 Best Performer</strong> — Asset with the highest 24h price gain</li>
+                    <li><strong>📉 Worst Performer</strong> — Asset with the biggest 24h price loss</li>
+                    <li><strong>📊 Assets</strong> — Total number of assets tracked</li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h3>Adding an Asset</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Click <strong>Add Asset</strong></span></li>
+                    <li><span class="step-number">2</span><span>Choose a type: <code>Stock</code>, <code>Crypto</code>, <code>Metal</code>, or <code>Savings</code></span></li>
+                    <li><span class="step-number">3</span><span>Enter the symbol — autocomplete will query Finnhub to help you find the right one</span></li>
+                    <li><span class="step-number">4</span><span>Enter quantities for Person 1 and/or Person 2</span></li>
+                    <li><span class="step-number">5</span><span>Click <strong>Save</strong></span></li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h3>Managing Assets</h3>
+                <ul>
+                    <li><strong>Edit</strong> — Click the ✏️ icon to change quantities or details</li>
+                    <li><strong>Delete</strong> — Click the 🗑️ icon to remove an asset</li>
+                    <li><strong>Search</strong> — Filter assets by name or symbol using the search box</li>
+                    <li><strong>Filter by type</strong> — Use All / Stocks / Crypto / Metals / Savings tabs</li>
+                    <li><strong>Sort</strong> — Click any column header to sort ascending or descending</li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h3>Main Actions</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>🔄 Refresh Prices</h4>
+                        <p>Fetches live prices from Finnhub and Metals.dev. Spaced to stay within free-tier rate limits.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💾 Save Snapshot</h4>
+                        <p>Records your portfolio's current total value with a timestamp. Powers the History charts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📤 Export</h4>
+                        <p>Downloads your entire portfolio as a JSON backup — assets, snapshots, and settings.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📥 Import</h4>
+                        <p>Restores a portfolio from a previously exported JSON backup file.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>⚙️ Settings</h4>
+                        <p>Configure person names, API keys, and base currency.</p>
+                    </div>
                 </div>
             </div>
 
-            <h3>Adding Assets</h3>
-            <ol>
-                <li>Click <span class="button-demo">Add Asset</span> button</li>
-                <li>Select asset type: <code>Stock</code>, <code>Crypto</code>, <code>Metal</code>, or <code>Savings</code></li>
-                <li>Enter the symbol (e.g., AAPL, BTC, GOLD) - autocomplete will help!</li>
-                <li>Add a friendly name (optional - auto-filled from suggestions)</li>
-                <li>Enter quantities for each person</li>
-                <li>Click <strong>Save</strong></li>
-            </ol>
-
-            <h3>Managing Assets</h3>
-            <ul>
-                <li><strong>Edit</strong> - Click pencil icon to modify quantities or details</li>
-                <li><strong>Delete</strong> - Click trash icon to remove asset</li>
-                <li><strong>Search</strong> - Use search box to filter assets by name or symbol</li>
-                <li><strong>Filter</strong> - Click <code>All</code>, <code>Stocks</code>, <code>Crypto</code>, <code>Metals</code>, or <code>Savings</code> to filter</li>
-                <li><strong>Sort</strong> - Click column headers to sort by name, type, price, or value</li>
-            </ul>
-
-            <div class="tip-box">
-                <strong>💡 Tip:</strong> Prices are cached for 60 seconds. If you don't see updates, wait a minute and click Refresh Prices again.
+            <div class="callout callout-tip">
+                <span class="callout-icon">💡</span>
+                <div>Prices are cached for 60 seconds. If the Refresh button is available again sooner than expected, the cache has expired — it's safe to refresh.</div>
             </div>
         </section>
 
-        <!-- History Page -->
-        <section class="guide-section">
-            <h2>📈 History Page</h2>
-            <p>Track your portfolio's growth over time with snapshots.</p>
+        <!-- 3. History -->
+        <section class="guide-section" id="history-page">
+            <div class="guide-section-title"><span>📈</span> History &amp; Snapshots</div>
 
-            <h3>Taking Snapshots</h3>
-            <ol>
-                <li>Go to main portfolio page</li>
-                <li>Click <span class="button-demo">Save Snapshot</span></li>
-                <li>Your current portfolio value is recorded with timestamp</li>
-            </ol>
+            <p>The History page shows how your portfolio value has changed over time using saved snapshots.</p>
 
-            <h3>Viewing History</h3>
-            <ul>
-                <li><strong>Portfolio Value Chart</strong> - Line graph showing value over time</li>
-                <li><strong>Snapshots Table</strong> - All saved snapshots with date, value, and change</li>
-                <li><strong>Delete Snapshots</strong> - Click trash icon to remove individual snapshots</li>
-            </ul>
+            <div class="guide-subsection">
+                <h3>Saving a Snapshot</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Refresh prices on the Portfolio page first</span></li>
+                    <li><span class="step-number">2</span><span>Click <strong>💾 Save Snapshot</strong></span></li>
+                    <li><span class="step-number">3</span><span>The app records total value, per-person values, and asset type breakdown</span></li>
+                </ul>
+            </div>
 
-            <div class="tip-box">
-                <strong>💡 Tip:</strong> Take regular snapshots (daily, weekly, or monthly) to track your investment performance!
+            <div class="guide-subsection">
+                <h3>What the History page shows</h3>
+                <ul>
+                    <li><strong>Portfolio Value Over Time</strong> — Line chart of Combined, Person 1, and Person 2 values</li>
+                    <li><strong>Summary stats</strong> — Current value, first snapshot, total gain/loss, best &amp; worst day</li>
+                    <li><strong>Snapshot table</strong> — All saved snapshots with date, value, change, and asset counts</li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <span class="callout-icon">💡</span>
+                <div>Save a snapshot weekly or after major portfolio changes to build up meaningful history over time.</div>
             </div>
         </section>
 
-        <!-- Charts Page -->
-        <section class="guide-section">
-            <h2>📊 Charts Page</h2>
-            <p>Visualize your portfolio with interactive charts.</p>
+        <!-- 4. Charts -->
+        <section class="guide-section" id="charts-page">
+            <div class="guide-section-title"><span>📊</span> Charts</div>
 
-            <h3>Available Charts</h3>
-            <ul>
-                <li><strong>Asset Allocation Pie Chart</strong> - See percentage breakdown of your portfolio by asset</li>
-                <li><strong>Person Comparison Bar Chart</strong> - Compare Person 1 vs Person 2 by asset type</li>
-                <li><strong>Portfolio Breakdown</strong> - Total value by asset type</li>
-                <li><strong>Top 10 Performers</strong> - Best performing assets (24h % change)</li>
-                <li><strong>Bottom 10 Performers</strong> - Worst performing assets (24h % change)</li>
-            </ul>
+            <p>The Charts page provides a full visual breakdown of your portfolio using interactive Chart.js graphs.</p>
 
-            <div class="tip-box">
-                <strong>💡 Tip:</strong> Hover over chart elements to see detailed values!
+            <div class="guide-subsection">
+                <h3>Available Charts</h3>
+                <ul>
+                    <li><strong>Asset Allocation Donut</strong> — Percentage breakdown by type (Stocks, Crypto, Metals, Savings)</li>
+                    <li><strong>Person vs Person Bar</strong> — Side-by-side comparison of each person's holdings per asset type</li>
+                    <li><strong>Portfolio Breakdown</strong> — Horizontal bar of total value per asset type</li>
+                    <li><strong>Daily Gain/Loss Bar</strong> — Green/red bars showing daily change from each snapshot</li>
+                    <li><strong>Savings vs Invested Donut</strong> — Split between market-exposed assets and savings</li>
+                    <li><strong>Composition Over Time</strong> — Stacked bar showing how your asset mix shifts across snapshots</li>
+                    <li><strong>Cumulative Return Line</strong> — % return from your first snapshot to today</li>
+                    <li><strong>Performance Scatter</strong> — Each asset plotted by today's % change vs its total value (excludes savings)</li>
+                    <li><strong>Top 5 / Bottom 5 Performers</strong> — Best and worst assets by 24h price change</li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <span class="callout-icon">💡</span>
+                <div>Snapshot-based charts (Daily Gain/Loss, Composition, Cumulative Return) need at least 2 saved snapshots to display data.</div>
             </div>
         </section>
 
-        <!-- Compare Page -->
-        <section class="guide-section">
-            <h2>🔄 Compare Page</h2>
-            <p>Side-by-side comparison of Person 1 and Person 2 portfolios.</p>
+        <!-- 5. Compare -->
+        <section class="guide-section" id="compare-page">
+            <div class="guide-section-title"><span>⚖️</span> Compare</div>
 
-            <h3>What You'll See</h3>
+            <p>Side-by-side comparison of Person 1 and Person 2's holdings.</p>
+
             <ul>
-                <li><strong>Individual Portfolio Values</strong> - Total value for each person</li>
-                <li><strong>Asset-by-Asset Comparison</strong> - How much each person owns of each asset</li>
-                <li><strong>Percentage Ownership</strong> - Who owns more of each asset</li>
-                <li><strong>Value Breakdown</strong> - Dollar value of each person's holdings</li>
+                <li>Total value for each person</li>
+                <li>Asset-by-asset breakdown showing quantity and value held by each person</li>
+                <li>Percentage ownership split per asset</li>
             </ul>
         </section>
 
-        <!-- News Page -->
-        <section class="guide-section">
-            <h2>📰 News Page</h2>
-            <p>Stay updated with the latest news for your holdings.</p>
+        <!-- 6. News -->
+        <section class="guide-section" id="news-page">
+            <div class="guide-section-title"><span>📰</span> News</div>
 
-            <h3>Requirements</h3>
-            <ul>
-                <li>Finnhub API key configured in Settings</li>
-                <li>Stock symbols in your portfolio</li>
-            </ul>
+            <p>Get the latest market news for your stock holdings directly from Finnhub.</p>
 
-            <h3>Features</h3>
-            <ul>
-                <li>Latest news articles for your stock holdings</li>
-                <li>Filter news by specific stock symbol</li>
-                <li>Click headlines to read full articles</li>
-            </ul>
+            <div class="guide-subsection">
+                <h3>Requirements</h3>
+                <ul>
+                    <li>A Finnhub API key configured in Settings</li>
+                    <li>At least one stock asset in your portfolio</li>
+                </ul>
+            </div>
 
-            <div class="warning-box">
-                <strong>⚠️ Note:</strong> News is only available for stocks, not crypto or metals. Free Finnhub tier has limited news requests per day.
+            <div class="guide-subsection">
+                <h3>Features</h3>
+                <ul>
+                    <li>General market news and asset-specific headlines</li>
+                    <li>Filter by a specific stock symbol</li>
+                    <li>Click any headline to read the full article</li>
+                </ul>
+            </div>
+
+            <div class="callout callout-warning">
+                <span class="callout-icon">⚠️</span>
+                <div><strong>Note:</strong> News is only available for stocks — crypto and metals are not supported by Finnhub's news API. The free tier has a limited number of news requests per day.</div>
             </div>
         </section>
 
-        <!-- Import CSV Page -->
-        <section class="guide-section">
-            <h2>📥 Import CSV Page</h2>
-            <p>Bulk import assets from CSV files.</p>
+        <!-- 7. Import CSV -->
+        <section class="guide-section" id="import-page">
+            <div class="guide-section-title"><span>📥</span> Import CSV</div>
 
-            <h3>Supported Formats</h3>
-            <ul>
-                <li><strong>M1 Finance Export</strong> - Direct import from M1 Finance CSV</li>
-                <li><strong>Custom CSV</strong> - Create your own with columns: Symbol, Name, Type, Person1_Qty, Person2_Qty</li>
-            </ul>
+            <p>Bulk-import assets from a CSV file instead of adding them one by one.</p>
 
-            <h3>How to Import</h3>
-            <ol>
-                <li>Select import type: M1 Finance or Custom CSV</li>
-                <li>Click <strong>Choose File</strong> and select your CSV</li>
-                <li>Review the preview</li>
-                <li>Map Person 1 and Person 2 names to CSV columns (for M1 Finance)</li>
-                <li>Click <strong>Import Assets</strong></li>
-            </ol>
+            <div class="guide-subsection">
+                <h3>Supported Formats</h3>
+                <ul>
+                    <li><strong>M1 Finance Export</strong> — Import directly from an M1 Finance CSV export</li>
+                    <li><strong>Custom CSV</strong> — Columns: <code>Symbol</code>, <code>Name</code>, <code>Type</code>, <code>Person1_Qty</code>, <code>Person2_Qty</code></li>
+                </ul>
+            </div>
 
-            <div class="tip-box">
-                <strong>💡 Tip:</strong> Import will not create duplicates. If an asset already exists, it will be skipped.
+            <div class="guide-subsection">
+                <h3>How to Import</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Select import type (M1 Finance or Custom)</span></li>
+                    <li><span class="step-number">2</span><span>Click <strong>Choose File</strong> and select your CSV</span></li>
+                    <li><span class="step-number">3</span><span>Review the preview table</span></li>
+                    <li><span class="step-number">4</span><span>Click <strong>Import Assets</strong></span></li>
+                </ul>
+            </div>
+
+            <div class="callout callout-tip">
+                <span class="callout-icon">💡</span>
+                <div>Import won't create duplicates — assets already in your portfolio are skipped automatically.</div>
             </div>
         </section>
 
-        <!-- Export & Import -->
-        <section class="guide-section">
-            <h2>💾 Backup & Restore</h2>
-            
-            <h3>Exporting Your Portfolio</h3>
-            <ol>
-                <li>Click <span class="button-demo">Export</span> on main page</li>
-                <li>A JSON file will download: <code>portfolio_backup.json</code></li>
-                <li>This includes:
-                    <ul>
-                        <li>All your assets</li>
-                        <li>Historical snapshots</li>
-                        <li>Settings (names, API keys)</li>
-                    </ul>
-                </li>
-            </ol>
+        <!-- 8. Backup -->
+        <section class="guide-section" id="backup">
+            <div class="guide-section-title"><span>💾</span> Backup &amp; Restore</div>
 
-            <h3>Importing a Backup</h3>
-            <ol>
-                <li>Click <span class="button-demo">Import</span> on main page</li>
-                <li>Select your <code>portfolio_backup.json</code> file</li>
-                <li>Your portfolio will be restored completely</li>
-            </ol>
+            <div class="guide-subsection">
+                <h3>Export (Backup)</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Click <strong>Export</strong> on the Portfolio page</span></li>
+                    <li><span class="step-number">2</span><span>A <code>portfolio_backup.json</code> file downloads — includes all assets, snapshots, and settings</span></li>
+                    <li><span class="step-number">3</span><span>Store this file somewhere safe (cloud storage, USB drive)</span></li>
+                </ul>
+            </div>
 
-            <div class="warning-box">
-                <strong>⚠️ Warning:</strong> Importing will replace ALL current data. Export first if you want to keep your current portfolio!
+            <div class="guide-subsection">
+                <h3>Import (Restore)</h3>
+                <ul class="steps-list">
+                    <li><span class="step-number">1</span><span>Click <strong>Import</strong> on the Portfolio page</span></li>
+                    <li><span class="step-number">2</span><span>Select your <code>portfolio_backup.json</code> file</span></li>
+                    <li><span class="step-number">3</span><span>Your portfolio, snapshots, and settings are fully restored</span></li>
+                </ul>
+            </div>
+
+            <div class="callout callout-warning">
+                <span class="callout-icon">⚠️</span>
+                <div><strong>Warning:</strong> Importing replaces all current data. Export a backup first if you want to preserve your existing portfolio.</div>
             </div>
         </section>
 
-        <!-- Privacy & Security -->
-        <section class="guide-section">
-            <h2>🔒 Privacy & Security</h2>
-            
-            <h3>Your Data is Safe</h3>
-            <ul>
-                <li><strong>100% Local</strong> - All data stored in your browser's localStorage</li>
-                <li><strong>No Server</strong> - No backend database, no data collection</li>
-                <li><strong>No Tracking</strong> - Your portfolio never leaves your device</li>
-                <li><strong>API Keys Protected</strong> - Stored locally, never in source code or GitHub</li>
-            </ul>
+        <!-- 9. Privacy -->
+        <section class="guide-section" id="privacy">
+            <div class="guide-section-title"><span>🔒</span> Privacy &amp; Security</div>
 
-            <h3>Data Storage</h3>
             <ul>
-                <li>Data is stored in browser localStorage</li>
-                <li>Clearing browser data will delete your portfolio</li>
-                <li>Regular exports recommended as backups</li>
-                <li>Each browser stores data separately</li>
+                <li><strong>100% local</strong> — All data stored in your browser's <code>localStorage</code>. No backend, no server, no cloud sync.</li>
+                <li><strong>No portfolio analytics</strong> — Google Analytics tracks page views only. Your holdings, symbols, and values are never transmitted.</li>
+                <li><strong>API keys stay local</strong> — Your Finnhub and Metals.dev keys are stored in localStorage only and never committed to any repository.</li>
+                <li><strong>Clearing browser data</strong> — Deleting site data or localStorage will erase your portfolio. Export a backup first.</li>
+                <li><strong>Multiple portfolios</strong> — Use different browser profiles or browsers to maintain completely separate portfolios.</li>
             </ul>
+        </section>
 
-            <div class="tip-box">
-                <strong>💡 Best Practice:</strong> Export your portfolio monthly as a backup. Store the JSON file safely (e.g., cloud storage, USB drive).
+        <!-- 10. Troubleshooting -->
+        <section class="guide-section" id="troubleshooting">
+            <div class="guide-section-title"><span>🛠️</span> Troubleshooting</div>
+
+            <div class="guide-subsection">
+                <h3>Prices not updating</h3>
+                <ul>
+                    <li>Check your API key is saved in Settings</li>
+                    <li>Wait 60 seconds — prices are cached and refreshes are rate-limited</li>
+                    <li>Verify your key is valid at <a href="https://finnhub.io" target="_blank" rel="noopener">finnhub.io</a></li>
+                    <li>Open DevTools (F12 → Console) to see specific error messages</li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h3>Symbol not found</h3>
+                <ul>
+                    <li><strong>Stocks</strong> — Use the exact ticker (e.g. <code>AAPL</code>, not "Apple")</li>
+                    <li><strong>Crypto</strong> — Finnhub requires exchange prefix format, e.g. <code>BINANCE:BTCUSDT</code></li>
+                    <li><strong>Metals</strong> — Use uppercase codes: <code>XAU</code> (gold), <code>XAG</code> (silver), <code>XPT</code> (platinum)</li>
+                    <li>Use the autocomplete search when adding an asset — it queries Finnhub directly</li>
+                </ul>
+            </div>
+
+            <div class="guide-subsection">
+                <h3>Data disappeared</h3>
+                <ul>
+                    <li>Check browser data wasn't cleared — localStorage is wiped when you clear site data</li>
+                    <li>Make sure you're on the same browser and profile you used originally</li>
+                    <li>Restore from your last JSON export backup</li>
+                </ul>
             </div>
         </section>
 
-        <!-- Troubleshooting -->
-        <section class="guide-section">
-            <h2>🛠️ Troubleshooting</h2>
-            
-            <h3>Prices Not Updating?</h3>
-            <ul>
-                <li>Check that API keys are configured in Settings</li>
-                <li>Wait 60 seconds between refresh attempts (cache limitation)</li>
-                <li>Verify API keys are valid and not expired</li>
-                <li>Check browser console for error messages (F12)</li>
-            </ul>
+        <!-- 11. Tips -->
+        <section class="guide-section" id="tips">
+            <div class="guide-section-title"><span>✨</span> Tips &amp; Tricks</div>
 
-            <h3>Asset Not Found?</h3>
             <ul>
-                <li><strong>Stocks</strong> - Use correct ticker symbol (e.g., AAPL not Apple)</li>
-                <li><strong>Crypto</strong> - Use CoinGecko IDs (bitcoin, ethereum, cardano)</li>
-                <li><strong>Metals</strong> - Use uppercase codes (GOLD, SILVER, PLATINUM, PALLADIUM)</li>
-            </ul>
-
-            <h3>Data Lost?</h3>
-            <ul>
-                <li>Check if you cleared browser data/cache</li>
-                <li>Verify you're using the same browser and profile</li>
-                <li>Restore from your last JSON export</li>
-            </ul>
-
-            <h3>Import Failed?</h3>
-            <ul>
-                <li>Ensure JSON file is valid (not corrupted)</li>
-                <li>Check CSV format matches expected columns</li>
-                <li>Try importing a smaller batch of assets</li>
+                <li><strong>Regular snapshots</strong> — Save weekly or after major price moves to build meaningful history</li>
+                <li><strong>Export monthly</strong> — Keep a JSON backup to protect against accidental data loss</li>
+                <li><strong>Use search</strong> — The search box filters assets instantly, useful for large portfolios</li>
+                <li><strong>Multiple browsers</strong> — Run separate portfolios (e.g. personal vs business) using different browsers</li>
+                <li><strong>CSV import</strong> — Faster than manual entry if you have 10+ assets to add at once</li>
+                <li><strong>Bookmark pages</strong> — Save direct links to Charts or History for quick access</li>
+                <li><strong>Scatter chart</strong> — Use it after a market move to spot which of your assets were most impacted</li>
             </ul>
         </section>
 
-        <!-- Tips & Tricks -->
-        <section class="guide-section">
-            <h2>✨ Tips & Tricks</h2>
-            
-            <ul>
-                <li><strong>Regular Snapshots</strong> - Take weekly snapshots to track long-term growth</li>
-                <li><strong>Export Often</strong> - Monthly backups prevent data loss</li>
-                <li><strong>Use Search</strong> - Quickly find assets in large portfolios</li>
-                <li><strong>Multiple Browsers</strong> - Use different browsers for separate portfolios (personal vs business)</li>
-                <li><strong>CSV Import</strong> - Faster than manual entry for 10+ assets</li>
-                <li><strong>Bookmark Pages</strong> - Save direct links to Charts or History pages</li>
-                <li><strong>Check News</strong> - Stay informed about your holdings' market movements</li>
-            </ul>
-        </section>
+        <div class="guide-cta">
+            <p>Still have questions? Check the FAQ or jump straight into the app.</p>
+            <div class="guide-cta-links">
+                <a href="app.html" class="link-primary">💼 Open Portfolio</a>
+                <a href="faq.html" class="link-secondary">❓ FAQ</a>
+                <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker/issues" target="_blank" rel="noopener" class="link-secondary">🐛 Report Issue</a>
+            </div>
+        </div>
 
-        <!-- Support -->
-        <section class="guide-section">
-            <h2>❓ Need Help?</h2>
-            <p>If you need additional assistance:</p>
-            <ul>
-                <li><strong>GitHub Issues</strong> - Report bugs or request features at <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues" target="_blank" style="color: #58a6ff;">GitHub Issues</a></li>
-                <li><strong>README</strong> - Check the <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker" target="_blank" style="color: #58a6ff;">README.md</a> for more details</li>
-                <li><strong>Demo Data</strong> - Explore with pre-loaded demo assets to understand features</li>
-            </ul>
-        </section>
     </div>
 
-    <div style="height: 40px;"></div>
-    
-    <!-- Cookie Consent System -->
+    <footer class="site-footer">
+        <p>Free Portfolio Tracker — open source, privacy-first, forever free.</p>
+        <div class="footer-links">
+            <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker" target="_blank" rel="noopener">GitHub</a>
+            <a href="updates.html">Updates</a>
+            <a href="faq.html">FAQ</a>
+            <a href="about.html">About</a>
+            <a href="terms.html">Terms of Use</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker/issues" target="_blank" rel="noopener">Report Issues</a>
+        </div>
+    </footer>
+
     <script src="cookie-consent.js"></script>
 </body>
 </html>

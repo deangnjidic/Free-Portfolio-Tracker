@@ -6,6 +6,8 @@
 
     document.addEventListener('DOMContentLoaded', init);
 
+    let historyChartInstance = null;
+
     function init() {
         loadState();
         initializeAPIKeys();
@@ -372,11 +374,29 @@
         const changeFromPrevious = totalValue - previousValue;
         const changePercentFromPrevious = previousValue > 0 ? ((changeFromPrevious / previousValue) * 100) : 0;
 
+        // Calculate per-person values
+        let p1Value = 0;
+        let p2Value = 0;
+        const byType = { stock: 0, crypto: 0, metal: 0, savings: 0 };
+        state.assets.forEach((asset) => {
+            const cacheKey = `${asset.type}:${asset.symbol}`;
+            const currentPrice = state.priceCache.prices[cacheKey] || 0;
+            if (currentPrice > 0) {
+                const av = currentPrice * ((asset.holdings?.p1?.qty || 0) + (asset.holdings?.p2?.qty || 0));
+                p1Value += currentPrice * (asset.holdings?.p1?.qty || 0);
+                p2Value += currentPrice * (asset.holdings?.p2?.qty || 0);
+                if (byType[asset.type] !== undefined) byType[asset.type] += av;
+            }
+        });
+
         // Create snapshot
         const snapshot = {
             timestamp: Date.now(),
             date: new Date().toISOString(),
             totalValue: totalValue,
+            p1Value: p1Value,
+            p2Value: p2Value,
+            byType: byType,
             changeFromPrevious: changeFromPrevious,
             changePercentFromPrevious: changePercentFromPrevious,
             assetsUp: assetsUp,
@@ -415,6 +435,124 @@
         render();
     }
 
+    function renderHistoryChart(snapshots) {
+        const canvas = document.getElementById('historyChart');
+        const emptyEl = document.getElementById('historyChartEmpty');
+
+        if (!snapshots || snapshots.length < 2) {
+            canvas.style.display = 'none';
+            emptyEl.style.display = 'flex';
+            emptyEl.textContent = snapshots.length === 1
+                ? 'Save at least 2 snapshots to see the chart.'
+                : 'No snapshots yet — save a snapshot to see your chart.';
+            if (historyChartInstance) {
+                historyChartInstance.destroy();
+                historyChartInstance = null;
+            }
+            return;
+        }
+
+        canvas.style.display = 'block';
+        emptyEl.style.display = 'none';
+
+        const personLabels = state.settings?.people || ['Person 1', 'Person 2'];
+        const labels = snapshots.map(s => {
+            const d = new Date(s.timestamp);
+            return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' });
+        });
+
+        const totalData  = snapshots.map(s => parseFloat(s.totalValue.toFixed(2)));
+        const p1Data     = snapshots.map(s => parseFloat((s.p1Value || 0).toFixed(2)));
+        const p2Data     = snapshots.map(s => parseFloat((s.p2Value || 0).toFixed(2)));
+
+        const datasets = [
+            {
+                label: 'Combined Total',
+                data: totalData,
+                borderColor: '#58a6ff',
+                backgroundColor: 'rgba(88,166,255,0.08)',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                fill: true,
+                tension: 0.3
+            },
+            {
+                label: personLabels[0],
+                data: p1Data,
+                borderColor: '#3fb950',
+                backgroundColor: 'rgba(63,185,80,0.06)',
+                borderWidth: 2,
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                fill: false,
+                tension: 0.3
+            },
+            {
+                label: personLabels[1],
+                data: p2Data,
+                borderColor: '#d29922',
+                backgroundColor: 'rgba(210,153,34,0.06)',
+                borderWidth: 2,
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                fill: false,
+                tension: 0.3
+            }
+        ];
+
+        if (historyChartInstance) {
+            historyChartInstance.data.labels = labels;
+            historyChartInstance.data.datasets[0].data = totalData;
+            historyChartInstance.data.datasets[1].data = p1Data;
+            historyChartInstance.data.datasets[1].label = personLabels[0];
+            historyChartInstance.data.datasets[2].data = p2Data;
+            historyChartInstance.data.datasets[2].label = personLabels[1];
+            historyChartInstance.update();
+            return;
+        }
+
+        historyChartInstance = new Chart(canvas, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        labels: { color: '#8b949e', font: { size: 13 } }
+                    },
+                    tooltip: {
+                        backgroundColor: '#1c2128',
+                        borderColor: '#30363d',
+                        borderWidth: 1,
+                        titleColor: '#e6edf3',
+                        bodyColor: '#8b949e',
+                        callbacks: {
+                            label: function(ctx) {
+                                return ` ${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#8b949e', maxRotation: 45, font: { size: 11 } },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#8b949e',
+                            font: { size: 11 },
+                            callback: (v) => formatCurrency(v)
+                        },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    }
+                }
+            }
+        });
+    }
+
     function render() {
         const snapshots = state.snapshots || [];
         
@@ -431,6 +569,9 @@
             document.getElementById('lastSnapshotInfo').textContent = 
                 `Last snapshot: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
         }
+
+        // Always render the chart (handles empty state internally)
+        renderHistoryChart(snapshots);
 
         if (snapshots.length === 0) {
             // Reset stats

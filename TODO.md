@@ -15,16 +15,7 @@
 - [ ] **Create Contact/Support page** - Centralized support channels (optional)
 
 ## 📊 Production Optimization
-- [ ] **Minify CSS and JS** - Follow MINIFY-INSTRUCTIONS.md before deployment
-
-## 🚀 Deployment Checklist
-- [ ] Run minification (see MINIFY-INSTRUCTIONS.md)
-- [ ] Set up GitHub Actions for automated deployment
-- [ ] Configure custom domain (if applicable)
-- [ ] Test production build
-- [ ] Create release notes
-
----
+- [ ] **Minify CSS and JS** 
 
 ## Notes
 - Keep localStorage as primary storage (no backend required)

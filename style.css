@@ -1220,60 +1220,149 @@ button, a, input, select, textarea {
     body {
         padding: 10px;
     }
-    
+
+    /* Header */
     .header-content {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .header-controls {
         justify-content: center;
+        flex-wrap: wrap;
     }
-    
+
+    .header-controls .btn {
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
+
+    .header-status {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    /* Summary cards: 1 column on small screens */
     .summary {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
-    
+
     .summary-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 6px;
     }
-    
+
+    .summary-grid-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+
     .summary-grid .card {
         padding: 6px 10px;
     }
-    
+
     .summary-grid .card h3 {
         font-size: 9px;
         margin-bottom: 3px;
     }
-    
+
     .summary-grid .card-value {
         font-size: 16px;
     }
-    
-    .card-combined-total {
-        grid-column: 1 / -1;
-        text-align: center;
-    }
-    
+
+    /* Controls bar */
     .controls {
         flex-direction: column;
         align-items: stretch;
+        padding: 12px;
     }
-    
+
     .controls-left {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .filter-group {
         flex-wrap: wrap;
     }
-    
+
+    .search-input {
+        min-width: unset;
+        width: 100%;
+    }
+
+    /* Forms */
     .form-row {
         grid-template-columns: 1fr;
+    }
+
+    /* Charts: single column */
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card-full {
+        grid-column: 1;
+    }
+
+    .chart-card canvas {
+        max-height: 240px;
+    }
+
+    /* Performers: single column, stack content */
+    .performers-section {
+        grid-template-columns: 1fr;
+    }
+
+    .performer-item {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .performer-holdings {
+        display: none;
+    }
+
+    /* History stats */
+    .history-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card .stat-value {
+        font-size: 16px;
+    }
+
+    /* History chart */
+    .history-chart-section {
+        padding: 0 10px;
+    }
+
+    /* Tables: horizontal scroll */
+    .history-table-container,
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Compare page */
+    .compare-selector {
+        padding: 12px;
+    }
+
+    /* Quick stats bar */
+    .quick-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Modal */
+    .modal-content {
+        margin: 10px;
+        max-height: calc(100vh - 20px);
+        width: calc(100vw - 20px);
+        max-width: none;
     }
 }
 

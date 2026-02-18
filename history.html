@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cookie-consent.css">
     <link rel="stylesheet" href="navigation.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
     <!-- Google Consent Mode v2 + GTM (Loads immediately with consent denied by default) -->
     <script src="consent-init.js"></script>
@@ -173,6 +174,37 @@
             font-style: italic;
         }
 
+        /* History Chart */
+        .history-chart-section {
+            max-width: 1200px;
+            margin: 0 auto 32px;
+            padding: 0 20px;
+        }
+
+        .history-chart-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .history-chart-card h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e6edf3;
+            margin: 0 0 20px;
+        }
+
+        .history-chart-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #8b949e;
+            font-size: 14px;
+            font-style: italic;
+        }
+
         .transaction-badge {
             display: inline-flex;
             align-items: center;
@@ -226,6 +258,8 @@
                 <li><a href="compare.html" class="nav-link"><span class="nav-icon">⚖️</span> Compare</a></li>
                 <li><a href="news.html" class="nav-link"><span class="nav-icon">📰</span> News</a></li>
                 <li><a href="import-csv.html" class="nav-link"><span class="nav-icon">📥</span> Import</a></li>
+                <li><a href="faq.html" class="nav-link"><span class="nav-icon">❓</span> FAQ</a></li>
+                <li><a href="about.html" class="nav-link"><span class="nav-icon">ℹ️</span> About</a></li>
             </ul>
         </div>
     </nav>
@@ -247,6 +281,17 @@
             <span id="lastSnapshotInfo" class="snapshot-info">No snapshots saved yet</span>
         </div>
     </header>
+
+    <!-- Portfolio Growth Chart -->
+    <section class="history-chart-section">
+        <div class="history-chart-card">
+            <h2>📈 Portfolio Value Over Time</h2>
+            <div id="historyChartWrapper">
+                <div class="history-chart-empty" id="historyChartEmpty">No snapshots yet — save a snapshot to see your chart.</div>
+                <canvas id="historyChart" style="display:none;"></canvas>
+            </div>
+        </div>
+    </section>
 
     <!-- History Stats -->
     <section class="history-stats">

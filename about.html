@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Free Portfolio Tracker | Open Source Investment Tracker</title>
+
+    <meta name="description" content="Learn about Free Portfolio Tracker — a free, open source, privacy-first portfolio tracker that runs entirely in your browser with no account required.">
+    <meta name="keywords" content="about free portfolio tracker, open source portfolio tracker, investment tracker privacy, browser based portfolio">
+    <meta name="author" content="Free Portfolio Tracker">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freeportfoliotracker.com/about.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://freeportfoliotracker.com/about.html">
+    <meta property="og:title" content="About - Free Portfolio Tracker">
+    <meta property="og:description" content="A free, open source, privacy-first investment portfolio tracker that runs entirely in your browser.">
+    <meta property="og:image" content="https://freeportfoliotracker.com/icon-192.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="About - Free Portfolio Tracker">
+    <meta name="twitter:description" content="A free, open source, privacy-first investment portfolio tracker.">
+    <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cookie-consent.css">
+    <link rel="stylesheet" href="navigation.css">
+
+    <script src="consent-init.js"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PWHJ9WLH"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
+
+    <style>
+        .about-container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .about-hero {
+            text-align: center;
+            padding: 40px 20px 32px;
+        }
+
+        .about-hero-logo {
+            width: 72px;
+            height: 72px;
+            margin-bottom: 16px;
+        }
+
+        .about-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 10px;
+        }
+
+        .about-hero p {
+            color: #8b949e;
+            font-size: 16px;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .about-badges {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .about-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid;
+        }
+
+        .badge-green  { background: rgba(63,185,80,0.1);  border-color: rgba(63,185,80,0.4);  color: #3fb950; }
+        .badge-blue   { background: rgba(88,166,255,0.1); border-color: rgba(88,166,255,0.4); color: #58a6ff; }
+        .badge-purple { background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.4); color: #a78bfa; }
+
+        .about-section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+
+        .about-section h2 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #e6edf3;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .about-section p {
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        .about-section p + p {
+            margin-top: 10px;
+        }
+
+        .about-section a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .about-section a:hover {
+            text-decoration: underline;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .tech-item {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tech-item-name {
+            font-weight: 600;
+            color: #e6edf3;
+            font-size: 14px;
+        }
+
+        .tech-item-desc {
+            font-size: 12px;
+            color: #8b949e;
+        }
+
+        .principles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .principle-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+        }
+
+        .principle-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .principle-body {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .principle-title {
+            font-weight: 600;
+            color: #e6edf3;
+            font-size: 14px;
+        }
+
+        .principle-desc {
+            color: #8b949e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .about-cta {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .about-cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .cta-primary {
+            background: #238636;
+            color: white;
+            border: 1px solid #238636;
+        }
+
+        .cta-primary:hover {
+            background: #2ea043;
+            text-decoration: none !important;
+        }
+
+        .cta-secondary {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+        }
+
+        .cta-secondary:hover {
+            background: #30363d;
+            text-decoration: none !important;
+        }
+
+        .credit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .credit-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #8b949e;
+        }
+
+        .credit-item a {
+            color: #58a6ff;
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 0 10px 32px;
+            }
+
+            .about-hero h1 {
+                font-size: 22px;
+            }
+
+            .about-hero p {
+                font-size: 14px;
+            }
+
+            .about-section {
+                padding: 18px;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="favicon.svg" alt="Logo">
+                <span class="nav-logo-text">Free Portfolio Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="app.html" class="nav-link"><span class="nav-icon">💼</span> Portfolio</a></li>
+                <li><a href="history.html" class="nav-link"><span class="nav-icon">📈</span> History</a></li>
+                <li><a href="charts.html" class="nav-link"><span class="nav-icon">📊</span> Charts</a></li>
+                <li><a href="compare.html" class="nav-link"><span class="nav-icon">⚖️</span> Compare</a></li>
+                <li><a href="news.html" class="nav-link"><span class="nav-icon">📰</span> News</a></li>
+                <li><a href="import-csv.html" class="nav-link"><span class="nav-icon">📥</span> Import</a></li>
+                <li><a href="faq.html" class="nav-link"><span class="nav-icon">❓</span> FAQ</a></li>
+                <li><a href="about.html" class="nav-link active"><span class="nav-icon">ℹ️</span> About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="about-container">
+
+        <!-- Hero -->
+        <div class="about-hero">
+            <img src="favicon.svg" alt="Free Portfolio Tracker Logo" class="about-hero-logo">
+            <h1>Free Portfolio Tracker</h1>
+            <p>A privacy-first, open source investment portfolio tracker that runs entirely in your browser — no account, no backend, no cost.</p>
+            <div class="about-badges">
+                <span class="about-badge badge-green">✅ 100% Free</span>
+                <span class="about-badge badge-blue">🔒 Privacy First</span>
+                <span class="about-badge badge-purple">📂 Open Source</span>
+            </div>
+        </div>
+
+        <!-- Why it exists -->
+        <div class="about-section">
+            <h2>💡 Why this exists</h2>
+            <p>Most portfolio trackers either cost money, require you to hand over your brokerage credentials, or lock your data on their servers. We wanted something different — a tool that's genuinely free, keeps your data on your own device, and doesn't need a login to work.</p>
+            <p>Free Portfolio Tracker was built for people who want a clear picture of their investments across different asset classes — stocks, crypto, metals, and savings — without giving up their privacy or paying a monthly fee.</p>
+        </div>
+
+        <!-- Core principles -->
+        <div class="about-section">
+            <h2>🧭 Core Principles</h2>
+            <div class="principles-list">
+                <div class="principle-item">
+                    <div class="principle-icon">🔒</div>
+                    <div class="principle-body">
+                        <div class="principle-title">Your data stays with you</div>
+                        <div class="principle-desc">All portfolio data is stored in your browser's localStorage. Nothing is sent to any server we run. You are the only one who can see your holdings.</div>
+                    </div>
+                </div>
+                <div class="principle-item">
+                    <div class="principle-icon">🆓</div>
+                    <div class="principle-body">
+                        <div class="principle-title">Free forever</div>
+                        <div class="principle-desc">No premium tiers, no paywalled features, no "free trial." Everything in the app is available to everyone, always.</div>
+                    </div>
+                </div>
+                <div class="principle-item">
+                    <div class="principle-icon">⚡</div>
+                    <div class="principle-body">
+                        <div class="principle-title">No account required</div>
+                        <div class="principle-desc">Open the app and start adding assets immediately. No email, no password, no sign-up flow.</div>
+                    </div>
+                </div>
+                <div class="principle-item">
+                    <div class="principle-icon">📂</div>
+                    <div class="principle-body">
+                        <div class="principle-title">Open source</div>
+                        <div class="principle-desc">The full source code is publicly available on GitHub. You can inspect every line, self-host it, or contribute improvements.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology -->
+        <div class="about-section">
+            <h2>🛠️ Technology Stack</h2>
+            <p>Built with plain, dependency-free web technologies. No frameworks, no build steps, no node_modules — just files you can open in a browser.</p>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-item-name">Vanilla HTML/CSS/JS</div>
+                    <div class="tech-item-desc">Zero frontend frameworks. Fast, lightweight, works everywhere.</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">localStorage</div>
+                    <div class="tech-item-desc">All data persisted locally in the browser. No backend needed.</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Chart.js</div>
+                    <div class="tech-item-desc">Powers the portfolio charts and history visualisations.</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Finnhub API</div>
+                    <div class="tech-item-desc">Real-time stock and crypto price data (free tier).</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Metals.dev API</div>
+                    <div class="tech-item-desc">Precious metal spot prices — gold, silver, platinum (free tier).</div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-item-name">Google Analytics 4</div>
+                    <div class="tech-item-desc">Page-view analytics only. No portfolio data shared. Opt-out available.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Credits -->
+        <div class="about-section">
+            <h2>🙏 Credits &amp; Thanks</h2>
+            <p>Free Portfolio Tracker wouldn't be possible without these services offering generous free tiers.</p>
+            <div class="credit-list">
+                <div class="credit-item">📈 <a href="https://finnhub.io" target="_blank" rel="noopener">Finnhub</a> — Stock, ETF &amp; crypto price data</div>
+                <div class="credit-item">🥇 <a href="https://metals.dev" target="_blank" rel="noopener">Metals.dev</a> — Precious metal spot prices</div>
+                <div class="credit-item">📊 <a href="https://www.chartjs.org" target="_blank" rel="noopener">Chart.js</a> — Open source charting library</div>
+            </div>
+        </div>
+
+        <!-- Get started / GitHub -->
+        <div class="about-section">
+            <h2>🚀 Get Started or Contribute</h2>
+            <p>Start tracking your portfolio now, or check out the source code on GitHub. Contributions, bug reports, and feature suggestions are all welcome.</p>
+            <div class="about-cta">
+                <a href="app.html" class="cta-primary">💼 Open Portfolio</a>
+                <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker" target="_blank" rel="noopener" class="cta-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.07 1.84 2.81 1.31 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    View on GitHub
+                </a>
+                <a href="faq.html" class="cta-secondary">❓ Read the FAQ</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="cookie-consent.js"></script>
+</body>
+</html>

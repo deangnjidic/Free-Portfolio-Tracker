@@ -262,6 +262,295 @@
 
         // 4. Top and Bottom Performers
         displayTopBottomPerformers();
+
+        // New charts (snapshot-based + scatter)
+        createDailyGainLossChart();
+        createSavingsInvestedChart(totals);
+        createCompositionChart();
+        createCumulativeReturnChart();
+        createScatterChart();
+    }
+
+    // ── 5. Daily Gain / Loss Bar Chart ──────────────────────────────────────
+    function createDailyGainLossChart() {
+        const snapshots = state.snapshots || [];
+        const canvas = document.getElementById('dailyGainLossChart');
+        const emptyEl = document.getElementById('dailyGainLossEmpty');
+
+        if (snapshots.length < 2) return;
+
+        // Use snapshots from index 1 onward (each has changeFromPrevious)
+        const sliced = snapshots.slice(1);
+        const labels = sliced.map(s =>
+            new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+        );
+        const values = sliced.map(s => parseFloat((s.changeFromPrevious || 0).toFixed(2)));
+        const bgColors = values.map(v => v >= 0 ? 'rgba(63,185,80,0.75)' : 'rgba(248,81,73,0.75)');
+        const borderColors = values.map(v => v >= 0 ? '#3fb950' : '#f85149');
+
+        emptyEl.style.display = 'none';
+        canvas.style.display = 'block';
+
+        new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Daily Change ($)',
+                    data: values,
+                    backgroundColor: bgColors,
+                    borderColor: borderColors,
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1c2128',
+                        borderColor: '#30363d',
+                        borderWidth: 1,
+                        titleColor: '#e6edf3',
+                        bodyColor: '#8b949e',
+                        callbacks: {
+                            label: ctx => {
+                                const v = ctx.parsed.y;
+                                return ` ${v >= 0 ? '+' : ''}$${v.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
+                    y: {
+                        ticks: {
+                            color: '#8b949e', font: { size: 11 },
+                            callback: v => (v >= 0 ? '+' : '') + '$' + v.toLocaleString()
+                        },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── 6. Savings vs Invested Pie ───────────────────────────────────────────
+    function createSavingsInvestedChart(totals) {
+        const canvas = document.getElementById('savingsInvestedChart');
+        const savings = totals.byType.savings || 0;
+        const invested = (totals.byType.stock || 0) + (totals.byType.crypto || 0) + (totals.byType.metal || 0);
+
+        new Chart(canvas.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Market-Exposed (Stocks + Crypto + Metals)', 'Savings'],
+                datasets: [{
+                    data: [invested, savings],
+                    backgroundColor: ['#3b82f6', '#10b981'],
+                    borderColor: '#161b22',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#8b949e', font: { size: 12 }, padding: 14 } },
+                    tooltip: {
+                        backgroundColor: '#1c2128',
+                        borderColor: '#30363d',
+                        borderWidth: 1,
+                        titleColor: '#e6edf3',
+                        bodyColor: '#8b949e',
+                        callbacks: {
+                            label: ctx => {
+                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                                return ` $${ctx.parsed.toLocaleString('en-US', { minimumFractionDigits: 2 })} (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── 7. Portfolio Composition Stacked Bar ─────────────────────────────────
+    function createCompositionChart() {
+        const snapshots = (state.snapshots || []).filter(s => s.byType);
+        const canvas = document.getElementById('compositionChart');
+        const emptyEl = document.getElementById('compositionEmpty');
+
+        if (snapshots.length < 2) return;
+
+        emptyEl.style.display = 'none';
+        canvas.style.display = 'block';
+
+        const labels = snapshots.map(s =>
+            new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
+        );
+
+        new Chart(canvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'Stocks',  data: snapshots.map(s => s.byType.stock   || 0), backgroundColor: '#3b82f6', borderRadius: 2 },
+                    { label: 'Crypto',  data: snapshots.map(s => s.byType.crypto  || 0), backgroundColor: '#f59e0b', borderRadius: 2 },
+                    { label: 'Metals',  data: snapshots.map(s => s.byType.metal   || 0), backgroundColor: '#8b5cf6', borderRadius: 2 },
+                    { label: 'Savings', data: snapshots.map(s => s.byType.savings || 0), backgroundColor: '#10b981', borderRadius: 2 }
+                ]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index' },
+                plugins: {
+                    legend: { labels: { color: '#8b949e', font: { size: 12 } } },
+                    tooltip: {
+                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
+                        titleColor: '#e6edf3', bodyColor: '#8b949e',
+                        callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('en-US', { minimumFractionDigits: 2 })}` }
+                    }
+                },
+                scales: {
+                    x: { stacked: true, ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
+                    y: { stacked: true, ticks: { color: '#8b949e', font: { size: 11 }, callback: v => '$' + v.toLocaleString() }, grid: { color: 'rgba(48,54,61,0.6)' } }
+                }
+            }
+        });
+    }
+
+    // ── 8. Cumulative Return Line ─────────────────────────────────────────────
+    function createCumulativeReturnChart() {
+        const snapshots = state.snapshots || [];
+        const canvas = document.getElementById('cumulativeReturnChart');
+        const emptyEl = document.getElementById('cumulativeReturnEmpty');
+
+        if (snapshots.length < 2) return;
+
+        emptyEl.style.display = 'none';
+        canvas.style.display = 'block';
+
+        const base = snapshots[0].totalValue;
+        const labels = snapshots.map(s =>
+            new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
+        );
+        const data = snapshots.map(s =>
+            base > 0 ? parseFloat((((s.totalValue - base) / base) * 100).toFixed(2)) : 0
+        );
+        const borderColor = data[data.length - 1] >= 0 ? '#3fb950' : '#f85149';
+        const bgColor = data[data.length - 1] >= 0 ? 'rgba(63,185,80,0.08)' : 'rgba(248,81,73,0.08)';
+
+        new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Cumulative Return',
+                    data,
+                    borderColor,
+                    backgroundColor: bgColor,
+                    borderWidth: 2.5,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
+                        titleColor: '#e6edf3', bodyColor: '#8b949e',
+                        callbacks: { label: ctx => ` ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
+                    y: {
+                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── 9. Asset Performance Scatter ─────────────────────────────────────────
+    function createScatterChart() {
+        const canvas = document.getElementById('scatterChart');
+        const emptyEl = document.getElementById('scatterEmpty');
+
+        const points = [];
+        state.assets.forEach(asset => {
+            if (asset.type === 'savings') return;
+            const cacheKey = `${asset.type}:${asset.symbol}`;
+            const price = state.priceCache.prices?.[cacheKey] || 0;
+            const changePct = state.priceCache.changePercents?.[cacheKey];
+            if (price > 0 && changePct !== undefined && changePct !== null) {
+                const qty = (asset.holdings?.p1?.qty || 0) + (asset.holdings?.p2?.qty || 0);
+                const value = qty * price;
+                if (value > 0) {
+                    points.push({ x: parseFloat(changePct.toFixed(2)), y: parseFloat(value.toFixed(2)), label: asset.symbol });
+                }
+            }
+        });
+
+        if (points.length === 0) return;
+
+        emptyEl.style.display = 'none';
+        canvas.style.display = 'block';
+
+        new Chart(canvas.getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Assets',
+                    data: points,
+                    backgroundColor: points.map(p => p.x >= 0 ? 'rgba(63,185,80,0.75)' : 'rgba(248,81,73,0.75)'),
+                    borderColor: points.map(p => p.x >= 0 ? '#3fb950' : '#f85149'),
+                    borderWidth: 1,
+                    pointRadius: 7,
+                    pointHoverRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
+                        titleColor: '#e6edf3', bodyColor: '#8b949e',
+                        callbacks: {
+                            label: ctx => {
+                                const p = ctx.raw;
+                                return [
+                                    ` ${p.label}`,
+                                    ` Change: ${p.x >= 0 ? '+' : ''}${p.x.toFixed(2)}%`,
+                                    ` Value: $${p.y.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                                ];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: "Today's Change (%)", color: '#8b949e' },
+                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v + '%' },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Total Value ($)', color: '#8b949e' },
+                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => '$' + v.toLocaleString() },
+                        grid: { color: 'rgba(48,54,61,0.6)' }
+                    }
+                }
+            }
+        });
     }
 
     // Display top and bottom performers
@@ -295,8 +584,8 @@
         // Sort by change percentage
         performers.sort((a, b) => b.changePercent - a.changePercent);
 
-        // Top 10
-        const top10 = performers.slice(0, 10);
+        // Top 5
+        const top10 = performers.slice(0, 5);
         const topContainer = document.getElementById('topPerformers');
         topContainer.innerHTML = top10.length > 0 ? top10.map(p => `
             <div class="performer-item">
@@ -316,8 +605,8 @@
             </div>
         `).join('') : '<p class="no-data">No price data available</p>';
 
-        // Bottom 10
-        const bottom10 = performers.slice(-10).reverse();
+        // Bottom 5
+        const bottom10 = performers.slice(-5).reverse();
         const bottomContainer = document.getElementById('bottomPerformers');
         bottomContainer.innerHTML = bottom10.length > 0 ? bottom10.map(p => `
             <div class="performer-item">

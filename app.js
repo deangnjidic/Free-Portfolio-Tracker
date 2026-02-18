@@ -1286,7 +1286,6 @@
 
         document.getElementById('personATotal').textContent = formatCurrency(totals.p1.value);
         document.getElementById('personBTotal').textContent = formatCurrency(totals.p2.value);
-        document.getElementById('combinedTotal').textContent = formatCurrency(totals.combined.value);
         
         // Render asset type totals with percentages
         const total = totals.combined.value;

@@ -76,18 +76,70 @@
         </div>
     </section>
 
+    <!-- New Charts Row 1: Daily Gain/Loss + Savings vs Invested -->
+    <section class="charts-container">
+        <div class="chart-card">
+            <h3>📅 Daily Gain / Loss</h3>
+            <div id="dailyGainLossEmpty" class="chart-empty-state">Save at least 2 snapshots to see daily gain/loss.</div>
+            <canvas id="dailyGainLossChart" style="display:none;"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>🏦 Savings vs Invested</h3>
+            <canvas id="savingsInvestedChart"></canvas>
+        </div>
+    </section>
+
+    <!-- New Charts Row 2: Stacked Composition + Cumulative Return -->
+    <section class="charts-container">
+        <div class="chart-card">
+            <h3>📦 Portfolio Composition Over Time</h3>
+            <div id="compositionEmpty" class="chart-empty-state">Save at least 2 snapshots with type breakdown to see composition over time.</div>
+            <canvas id="compositionChart" style="display:none;"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>📈 Cumulative Return (%)</h3>
+            <div id="cumulativeReturnEmpty" class="chart-empty-state">Save at least 2 snapshots to see cumulative return.</div>
+            <canvas id="cumulativeReturnChart" style="display:none;"></canvas>
+        </div>
+    </section>
+
+    <!-- New Charts Row 3: Asset Scatter (full width) -->
+    <section class="charts-container">
+        <div class="chart-card chart-card-full">
+            <h3>🔵 Asset Performance Scatter (Today's % Change vs Value)</h3>
+            <div id="scatterEmpty" class="chart-empty-state">Refresh prices on the portfolio page to see the scatter chart.</div>
+            <canvas id="scatterChart" style="display:none;"></canvas>
+        </div>
+    </section>
+
     <!-- Top/Bottom Performers Section -->
     <section class="performers-section">
         <div class="performers-card">
-            <h3>📈 Top 10 Performers</h3>
+            <h3>📈 Top 5 Performers</h3>
             <div id="topPerformers" class="performers-list"></div>
         </div>
         <div class="performers-card">
-            <h3>📉 Bottom 10 Performers</h3>
+            <h3>📉 Bottom 5 Performers</h3>
             <div id="bottomPerformers" class="performers-list"></div>
         </div>
     </section>
 
+    <style>
+        .chart-empty-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+            color: #8b949e;
+            font-size: 14px;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+        }
+        .chart-card-full {
+            grid-column: 1 / -1;
+        }
+    </style>
     <script src="config.example.js"></script>
     <script src="config.js"></script>
     <script src="charts.js"></script>
