@@ -436,7 +436,7 @@
         if (typeof gtag === 'function') {
             gtag('event', 'create_snapshot', {
                 total_value: totalValue,
-                asset_count: assetCount,
+                asset_count: state.assets.length,
                 is_first_snapshot: !previousSnapshot
             });
         }
