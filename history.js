@@ -15,6 +15,14 @@
         setupEventListeners();
         render();
         updateLastUpdated();
+        
+        // Track page view
+        if (typeof gtag === 'function') {
+            gtag('event', 'page_view', {
+                page_title: 'History & Snapshots',
+                page_location: window.location.href
+            });
+        }
     }
 
     function loadState() {
@@ -423,6 +431,15 @@
 
         // Save state
         saveState();
+
+        // Track snapshot creation
+        if (typeof gtag === 'function') {
+            gtag('event', 'create_snapshot', {
+                total_value: totalValue,
+                asset_count: assetCount,
+                is_first_snapshot: !previousSnapshot
+            });
+        }
 
         // Show confirmation
         const message = previousSnapshot 

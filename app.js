@@ -10,6 +10,13 @@
         return div.innerHTML;
     }
 
+    // Google Analytics 4 Event Tracking Helper
+    function trackEvent(eventName, eventParams = {}) {
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, eventParams);
+        }
+    }
+
     // Rate limiting for API calls
     const rateLimiter = {
         calls: new Map(), // key: api_name, value: { count, resetTime }
@@ -372,9 +379,20 @@
         });
 
         // Search
+        let searchDebounce;
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearch = e.target.value.toLowerCase();
             render();
+            
+            // Track search usage (debounced to avoid excessive events)
+            clearTimeout(searchDebounce);
+            if (currentSearch.length >= 3) {
+                searchDebounce = setTimeout(() => {
+                    trackEvent('search', {
+                        query_length: currentSearch.length
+                    });
+                }, 1000);
+            }
         });
 
         // Table sorting
@@ -564,6 +582,11 @@
         updateLabels();
         closeSettingsModal();
         checkApiKeySetup(); // Update banner visibility
+        
+        trackEvent('save_settings', {
+            has_finnhub_key: !!finnhubKey,
+            has_metals_key: !!metalsDevKey
+        });
         
         alert('Settings saved successfully! API keys are now stored locally.');
     }
@@ -761,11 +784,20 @@
                 }
                 
                 state.assets[index] = asset;
+                trackEvent('edit_asset', {
+                    asset_type: asset.type,
+                    symbol: asset.symbol,
+                    quantity_changed: oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2
+                });
             }
         } else {
             // Add new
             state.assets.push(asset);
             recordTransaction('add', asset);
+            trackEvent('add_asset', {
+                asset_type: asset.type,
+                symbol: asset.symbol
+            });
         }
 
         saveState();
@@ -784,6 +816,11 @@
             // Clean up price cache
             const cacheKey = `${asset.type}:${asset.symbol}`;
             delete state.priceCache.prices[cacheKey];
+            
+            trackEvent('delete_asset', {
+                asset_type: asset.type,
+                symbol: asset.symbol
+            });
         }
 
         state.assets = state.assets.filter(a => a.id !== assetId);
@@ -943,6 +980,12 @@
 
             statusEl.textContent = `Updated ${results.updated}/${results.total} prices` + 
                 (results.errors > 0 ? `, Errors: ${results.errors}` : '');
+            
+            trackEvent('refresh_prices', {
+                total_assets: results.total,
+                updated: results.updated,
+                errors: results.errors
+            });
 
         } catch (error) {
             console.error('Error refreshing prices:', error);

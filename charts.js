@@ -59,6 +59,14 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
         createCharts();
+        
+        // Track page view
+        if (typeof gtag === 'function') {
+            gtag('event', 'page_view', {
+                page_title: 'Charts',
+                page_location: window.location.href
+            });
+        }
 
         // Filter button listeners
         document.querySelectorAll('.chart-filter-btn[data-chart]').forEach(btn => {
@@ -68,6 +76,15 @@
                 // Update active state for this chart's buttons
                 document.querySelectorAll(`.chart-filter-btn[data-chart="${chart}"]`).forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+                
+                // Track filter usage
+                if (typeof gtag === 'function') {
+                    gtag('event', 'chart_filter', {
+                        chart_name: chart,
+                        filter_value: filter
+                    });
+                }
+                
                 if (chart === 'daily') {
                     activeDailyFilter = filter;
                     createDailyGainLossChart();

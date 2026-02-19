@@ -11,6 +11,14 @@
         loadState();
         renderAssetCheckboxes();
         setupEventListeners();
+        
+        // Track page view
+        if (typeof gtag === 'function') {
+            gtag('event', 'page_view', {
+                page_title: 'Compare Assets',
+                page_location: window.location.href
+            });
+        }
     }
 
     function loadState() {
@@ -88,6 +96,14 @@
         }
 
         renderComparison(assets);
+        
+        // Track comparison
+        if (typeof gtag === 'function') {
+            gtag('event', 'compare_assets', {
+                asset_count: assets.length,
+                asset_types: assets.map(a => a.type).join(',')
+            });
+        }
     }
 
     function renderComparison(assets) {

@@ -1473,6 +1473,16 @@ NVDA,NVIDIA,5,450.75"></textarea>
                 result.style.display = 'block';
                 document.getElementById('confirmImportBtn').disabled = true;
                 
+                // Track successful import
+                if (typeof gtag === 'function') {
+                    gtag('event', 'csv_import', {
+                        provider: detectedProvider,
+                        assets_added: added,
+                        assets_updated: updated,
+                        total_assets: parsedAssets.length
+                    });
+                }
+                
             } catch (err) {
                 const result = document.getElementById('importResult');
                 result.innerHTML = `<div class="alert alert-error"><strong>Error:</strong> ${err.message}</div>`;
