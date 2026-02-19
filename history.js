@@ -7,6 +7,7 @@
     document.addEventListener('DOMContentLoaded', init);
 
     let historyChartInstance = null;
+    let activeChartFilter = 'all';
 
     function init() {
         loadState();
@@ -119,6 +120,15 @@
         document.getElementById('refreshBtn').addEventListener('click', refreshPrices);
         document.getElementById('saveSnapshotBtn').addEventListener('click', saveSnapshot);
         document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+        document.querySelectorAll('.chart-filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.chart-filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                activeChartFilter = this.dataset.filter;
+                renderHistoryChart(state.snapshots || []);
+            });
+        });
     }
 
     // Refresh prices
@@ -435,16 +445,44 @@
         render();
     }
 
+    function filterSnapshotsByRange(snapshots, filter) {
+        if (!snapshots || snapshots.length === 0) return snapshots;
+        const now = Date.now();
+        const day = 24 * 60 * 60 * 1000;
+        switch (filter) {
+            case '1d':
+                return snapshots.filter(s => s.timestamp >= now - day);
+            case '7d':
+                return snapshots.filter(s => s.timestamp >= now - 7 * day);
+            case '30d':
+                return snapshots.filter(s => s.timestamp >= now - 30 * day);
+            case 'ytd': {
+                const startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
+                return snapshots.filter(s => s.timestamp >= startOfYear);
+            }
+            default:
+                return snapshots;
+        }
+    }
+
     function renderHistoryChart(snapshots) {
         const canvas = document.getElementById('historyChart');
         const emptyEl = document.getElementById('historyChartEmpty');
 
+        const snapshots_filtered = filterSnapshotsByRange(snapshots, activeChartFilter);
+        snapshots = snapshots_filtered;
+
         if (!snapshots || snapshots.length < 2) {
             canvas.style.display = 'none';
             emptyEl.style.display = 'flex';
-            emptyEl.textContent = snapshots.length === 1
-                ? 'Save at least 2 snapshots to see the chart.'
-                : 'No snapshots yet — save a snapshot to see your chart.';
+            const filterLabel = { '1d': 'last 24 hours', '7d': 'last 7 days', '30d': 'last 30 days', 'ytd': 'year to date', 'all': '' }[activeChartFilter] || '';
+            if (activeChartFilter !== 'all' && (state.snapshots || []).length >= 2) {
+                emptyEl.textContent = `No snapshots found for the ${filterLabel}.`;
+            } else {
+                emptyEl.textContent = snapshots.length === 1
+                    ? 'Save at least 2 snapshots to see the chart.'
+                    : 'No snapshots yet — save a snapshot to see your chart.';
+            }
             if (historyChartInstance) {
                 historyChartInstance.destroy();
                 historyChartInstance = null;

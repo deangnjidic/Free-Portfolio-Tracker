@@ -40,6 +40,124 @@
     
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
+
+    <style>
+        /* API Key Banner */
+        .api-banner {
+            background: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%);
+            color: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            border: 2px solid #58a6ff;
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+            position: relative;
+        }
+
+        .api-banner-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .api-banner-close:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .api-banner-body {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-right: 36px;
+        }
+
+        .api-banner-icon {
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+
+        .api-banner-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .api-banner-title {
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .api-banner-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .api-banner-desc a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .api-banner-btn {
+            background: white;
+            color: #1f6feb;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .api-banner-btn:hover {
+            background: #f0f6ff;
+        }
+
+        @media (max-width: 640px) {
+            .api-banner {
+                margin: 12px;
+                padding: 16px;
+            }
+
+            .api-banner-body {
+                flex-wrap: wrap;
+                padding-right: 36px;
+            }
+
+            .api-banner-icon {
+                font-size: 28px;
+            }
+
+            .api-banner-title {
+                font-size: 15px;
+            }
+
+            .api-banner-desc {
+                font-size: 13px;
+            }
+
+            .api-banner-btn {
+                width: 100%;
+                text-align: center;
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -90,22 +208,20 @@
     </header>
 
     <!-- API Key Setup Banner (shown when key is missing) -->
-    <div id="apiKeyBanner" style="display: none; background: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%); color: white; padding: 20px; margin: 20px; border-radius: 8px; border: 2px solid #58a6ff; box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3); position: relative;">
-        <button onclick="document.getElementById('apiKeyBanner').style.display='none'" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.2); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'">×</button>
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div style="font-size: 40px;">🔑</div>
-            <div style="flex: 1;">
-                <div style="font-weight: 700; font-size: 18px; margin-bottom: 8px;">Setup Required: Add Your API Keys</div>
-                <div style="font-size: 14px; line-height: 1.6; opacity: 0.95;">
+    <div id="apiKeyBanner" class="api-banner" style="display:none;">
+        <button class="api-banner-close" onclick="document.getElementById('apiKeyBanner').style.display='none'" title="Dismiss">&times;</button>
+        <div class="api-banner-body">
+            <div class="api-banner-icon">🔑</div>
+            <div class="api-banner-text">
+                <div class="api-banner-title">Setup Required: Add Your API Keys</div>
+                <div class="api-banner-desc">
                     To enable full functionality, you need free API keys:<br>
-                    <strong>• Finnhub</strong> (stocks/crypto): <a href="https://finnhub.io/register" target="_blank" style="color: white; text-decoration: underline;">finnhub.io</a><br>
-                    <strong>• Metals.dev</strong> (precious metals - optional): <a href="https://metals.dev/" target="_blank" style="color: white; text-decoration: underline;">metals.dev</a><br>
-                    <strong>Steps:</strong> 1. Sign up (free) → 2. Copy your API keys → 3. Click Settings ⚙️ and paste them
+                    <strong>&bull; Finnhub</strong> (stocks/crypto): <a href="https://finnhub.io/register" target="_blank">finnhub.io</a><br>
+                    <strong>&bull; Metals.dev</strong> (precious metals &mdash; optional): <a href="https://metals.dev/" target="_blank">metals.dev</a><br>
+                    <strong>Steps:</strong> 1. Sign up (free) &rarr; 2. Copy your API keys &rarr; 3. Click Settings ⚙️ and paste them
                 </div>
             </div>
-            <button onclick="document.getElementById('settingsBtn').click()" style="background: white; color: #1f6feb; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; cursor: pointer; white-space: nowrap;">
-                ⚙️ Open Settings
-            </button>
+            <button class="api-banner-btn" onclick="document.getElementById('settingsBtn').click()">⚙️ Open Settings</button>
         </div>
     </div>
 

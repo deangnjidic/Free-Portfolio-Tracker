@@ -214,6 +214,37 @@
             <p>Latest features, improvements, and bug fixes for Free Portfolio Tracker</p>
         </div>
 
+        <!-- v1.31 -->
+        <div class="update-card" style="border-color: #58a6ff;">
+            <div class="update-header">
+                <span class="update-version" style="background: linear-gradient(135deg, #1f6feb, #388bfd); font-size: 16px;">v1.31.0</span>
+                <span class="update-date">February 19, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ Chart Time Range Filters</h3>
+                <ul class="update-list">
+                    <li><strong>Portfolio Value Over Time</strong> (History page) — now has <strong>7D / 30D / YTD / All</strong> filter buttons</li>
+                    <li><strong>Daily Gain / Loss</strong> (Charts page) — now has <strong>7D / 30D / YTD / All</strong> filter buttons</li>
+                    <li><strong>Cumulative Return (%)</strong> (Charts page) — now has <strong>7D / 30D / YTD / All</strong> filter buttons; base value recalculates relative to the start of the selected window</li>
+                    <li><strong>Portfolio Composition Over Time</strong> (Charts page) — now has <strong>7D / 30D / YTD / All</strong> filter buttons</li>
+                    <li>Smart empty states — when a filter is active with no matching snapshots, a specific message is shown (e.g. &ldquo;No snapshots found for the last 7 days&rdquo;)</li>
+                </ul>
+            </div>
+            <div class="update-section fixed">
+                <h3>🐛 Bug Fixes</h3>
+                <ul class="update-list">
+                    <li><strong>Portfolio Composition Over Time</strong> was blank even with multiple snapshots — snapshots saved before the <code>byType</code> field was introduced were being silently excluded; older snapshots now render with zero values per category</li>
+                    <li><strong>Navigation bar</strong> not spanning full viewport width on all screen sizes — fixed using <code>calc(100% + 40px)</code> to correctly break out of <code>body</code> padding on desktop, with a matching mobile override</li>
+                </ul>
+            </div>
+            <div class="update-section changed">
+                <h3>🔄 Changes</h3>
+                <ul class="update-list">
+                    <li><strong>API Key Banner</strong> refactored from inline styles to proper CSS classes with a responsive <code>@media</code> breakpoint — content stacks vertically and the Settings button goes full-width on mobile</li>
+                </ul>
+            </div>
+        </div>
+
         <!-- v1.3 -->
         <div class="update-card" style="border-color: #58a6ff;">
             <div class="update-header">

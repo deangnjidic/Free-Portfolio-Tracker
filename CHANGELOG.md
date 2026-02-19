@@ -11,6 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.31.0] - 2026-02-19
+
+### Added
+- Time range filters (7D, 30D, YTD, All) on **Portfolio Value Over Time** chart — History page
+- Time range filters (7D, 30D, YTD, All) on **Daily Gain / Loss** chart — Charts page
+- Time range filters (7D, 30D, YTD, All) on **Cumulative Return (%)** chart — Charts page
+- Time range filters (7D, 30D, YTD, All) on **Portfolio Composition Over Time** chart — Charts page
+- Cumulative Return now recalculates base value relative to the start of the selected range
+- Smart empty-state messages: when a filter is active but no snapshots fall in range, a specific message is shown instead of the generic prompt
+
+### Fixed
+- Portfolio Composition Over Time chart not rendering when snapshots existed — caused by incorrectly filtering out snapshots that predate the `byType` field; older snapshots now render with zero values per type
+- Navigation bar not spanning full viewport width — replaced negative margin hack with `calc(100% + 40px)` approach that correctly accounts for `body` padding on both desktop (20px) and mobile (10px)
+- API Key Banner converted from inline styles to proper CSS classes with `@media` breakpoint — stacks vertically with full-width button on mobile
+
+---
+
 ## [1.3.0] - 2026-02-18
 
 ### Added

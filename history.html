@@ -174,6 +174,49 @@
             font-style: italic;
         }
 
+        /* Chart Filter Bar */
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h2 {
+            margin: 0 !important;
+        }
+
+        .chart-filter-bar {
+            display: flex;
+            gap: 6px;
+        }
+
+        .chart-filter-btn {
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            background: #0d1117;
+            color: #8b949e;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .chart-filter-btn:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+
+        .chart-filter-btn.active {
+            background: #1f6feb;
+            border-color: #1f6feb;
+            color: #ffffff;
+        }
+
         /* History Chart */
         .history-chart-section {
             max-width: 1200px;
@@ -285,7 +328,15 @@
     <!-- Portfolio Growth Chart -->
     <section class="history-chart-section">
         <div class="history-chart-card">
-            <h2>📈 Portfolio Value Over Time</h2>
+            <div class="chart-header">
+                <h2>📈 Portfolio Value Over Time</h2>
+                <div class="chart-filter-bar">
+                    <button class="chart-filter-btn" data-filter="7d">7D</button>
+                    <button class="chart-filter-btn" data-filter="30d">30D</button>
+                    <button class="chart-filter-btn" data-filter="ytd">YTD</button>
+                    <button class="chart-filter-btn active" data-filter="all">All</button>
+                </div>
+            </div>
             <div id="historyChartWrapper">
                 <div class="history-chart-empty" id="historyChartEmpty">No snapshots yet — save a snapshot to see your chart.</div>
                 <canvas id="historyChart" style="display:none;"></canvas>

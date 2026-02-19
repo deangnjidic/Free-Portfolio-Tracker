@@ -79,7 +79,15 @@
     <!-- New Charts Row 1: Daily Gain/Loss + Savings vs Invested -->
     <section class="charts-container">
         <div class="chart-card">
-            <h3>📅 Daily Gain / Loss</h3>
+            <div class="chart-card-header">
+                <h3>📅 Daily Gain / Loss</h3>
+                <div class="chart-filter-bar">
+                    <button class="chart-filter-btn" data-chart="daily" data-filter="7d">7D</button>
+                    <button class="chart-filter-btn" data-chart="daily" data-filter="30d">30D</button>
+                    <button class="chart-filter-btn" data-chart="daily" data-filter="ytd">YTD</button>
+                    <button class="chart-filter-btn active" data-chart="daily" data-filter="all">All</button>
+                </div>
+            </div>
             <div id="dailyGainLossEmpty" class="chart-empty-state">Save at least 2 snapshots to see daily gain/loss.</div>
             <canvas id="dailyGainLossChart" style="display:none;"></canvas>
         </div>
@@ -92,12 +100,28 @@
     <!-- New Charts Row 2: Stacked Composition + Cumulative Return -->
     <section class="charts-container">
         <div class="chart-card">
-            <h3>📦 Portfolio Composition Over Time</h3>
-            <div id="compositionEmpty" class="chart-empty-state">Save at least 2 snapshots with type breakdown to see composition over time.</div>
+            <div class="chart-card-header">
+                <h3>📦 Portfolio Composition Over Time</h3>
+                <div class="chart-filter-bar">
+                    <button class="chart-filter-btn" data-chart="composition" data-filter="7d">7D</button>
+                    <button class="chart-filter-btn" data-chart="composition" data-filter="30d">30D</button>
+                    <button class="chart-filter-btn" data-chart="composition" data-filter="ytd">YTD</button>
+                    <button class="chart-filter-btn active" data-chart="composition" data-filter="all">All</button>
+                </div>
+            </div>
+            <div id="compositionEmpty" class="chart-empty-state">Save at least 2 snapshots to see composition over time.</div>
             <canvas id="compositionChart" style="display:none;"></canvas>
         </div>
         <div class="chart-card">
-            <h3>📈 Cumulative Return (%)</h3>
+            <div class="chart-card-header">
+                <h3>📈 Cumulative Return (%)</h3>
+                <div class="chart-filter-bar">
+                    <button class="chart-filter-btn" data-chart="cumulative" data-filter="7d">7D</button>
+                    <button class="chart-filter-btn" data-chart="cumulative" data-filter="30d">30D</button>
+                    <button class="chart-filter-btn" data-chart="cumulative" data-filter="ytd">YTD</button>
+                    <button class="chart-filter-btn active" data-chart="cumulative" data-filter="all">All</button>
+                </div>
+            </div>
             <div id="cumulativeReturnEmpty" class="chart-empty-state">Save at least 2 snapshots to see cumulative return.</div>
             <canvas id="cumulativeReturnChart" style="display:none;"></canvas>
         </div>
@@ -125,6 +149,49 @@
     </section>
 
     <style>
+        /* Chart Filter Bar (shared) */
+        .chart-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .chart-card-header h3 {
+            margin: 0 !important;
+        }
+
+        .chart-filter-bar {
+            display: flex;
+            gap: 5px;
+        }
+
+        .chart-filter-btn {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+            background: #0d1117;
+            color: #8b949e;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .chart-filter-btn:hover {
+            border-color: #58a6ff;
+            color: #58a6ff;
+        }
+
+        .chart-filter-btn.active {
+            background: #1f6feb;
+            border-color: #1f6feb;
+            color: #ffffff;
+        }
+
         .chart-empty-state {
             display: flex;
             align-items: center;

@@ -28,10 +28,58 @@
         }
     }
 
+    // Filter state
+    let activeDailyFilter = 'all';
+    let activeCumulativeFilter = 'all';
+    let activeCompositionFilter = 'all';
+
+    // Chart instances for re-renderable charts
+    let dailyChartInstance = null;
+    let cumulativeChartInstance = null;
+    let compositionChartInstance = null;
+
+    // Shared snapshot range filter
+    function filterSnapshotsByRange(snapshots, filter) {
+        if (!snapshots || snapshots.length === 0) return snapshots;
+        const now = Date.now();
+        const day = 24 * 60 * 60 * 1000;
+        switch (filter) {
+            case '1d': return snapshots.filter(s => s.timestamp >= now - day);
+            case '7d': return snapshots.filter(s => s.timestamp >= now - 7 * day);
+            case '30d': return snapshots.filter(s => s.timestamp >= now - 30 * day);
+            case 'ytd': {
+                const startOfYear = new Date(new Date().getFullYear(), 0, 1).getTime();
+                return snapshots.filter(s => s.timestamp >= startOfYear);
+            }
+            default: return snapshots;
+        }
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
         createCharts();
+
+        // Filter button listeners
+        document.querySelectorAll('.chart-filter-btn[data-chart]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const chart = this.dataset.chart;
+                const filter = this.dataset.filter;
+                // Update active state for this chart's buttons
+                document.querySelectorAll(`.chart-filter-btn[data-chart="${chart}"]`).forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                if (chart === 'daily') {
+                    activeDailyFilter = filter;
+                    createDailyGainLossChart();
+                } else if (chart === 'cumulative') {
+                    activeCumulativeFilter = filter;
+                    createCumulativeReturnChart();
+                } else if (chart === 'composition') {
+                    activeCompositionFilter = filter;
+                    createCompositionChart();
+                }
+            });
+        });
     });
 
     // Calculate totals
@@ -273,14 +321,28 @@
 
     // ── 5. Daily Gain / Loss Bar Chart ──────────────────────────────────────
     function createDailyGainLossChart() {
-        const snapshots = state.snapshots || [];
+        const allSnapshots = state.snapshots || [];
         const canvas = document.getElementById('dailyGainLossChart');
         const emptyEl = document.getElementById('dailyGainLossEmpty');
+        const filterLabel = { '1d': 'last 24 hours', '7d': 'last 7 days', '30d': 'last 30 days', 'ytd': 'year to date' }[activeDailyFilter];
 
-        if (snapshots.length < 2) return;
+        if (dailyChartInstance) { dailyChartInstance.destroy(); dailyChartInstance = null; }
+
+        const filtered = filterSnapshotsByRange(allSnapshots, activeDailyFilter);
+        // Need at least 2 snapshots in range to show bar chart
+        if (filtered.length < 2) {
+            canvas.style.display = 'none';
+            emptyEl.style.display = 'flex';
+            if (activeDailyFilter !== 'all' && allSnapshots.length >= 2) {
+                emptyEl.textContent = `No snapshots found for the ${filterLabel}.`;
+            } else {
+                emptyEl.textContent = 'Save at least 2 snapshots to see daily gain/loss.';
+            }
+            return;
+        }
 
         // Use snapshots from index 1 onward (each has changeFromPrevious)
-        const sliced = snapshots.slice(1);
+        const sliced = filtered.slice(1);
         const labels = sliced.map(s =>
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
         );
@@ -291,7 +353,7 @@
         emptyEl.style.display = 'none';
         canvas.style.display = 'block';
 
-        new Chart(canvas.getContext('2d'), {
+        dailyChartInstance = new Chart(canvas.getContext('2d'), {
             type: 'bar',
             data: {
                 labels,
@@ -378,11 +440,25 @@
 
     // ── 7. Portfolio Composition Stacked Bar ─────────────────────────────────
     function createCompositionChart() {
-        const snapshots = (state.snapshots || []).filter(s => s.byType);
+        const allSnapshots = state.snapshots || [];
         const canvas = document.getElementById('compositionChart');
         const emptyEl = document.getElementById('compositionEmpty');
+        const filterLabel = { '7d': 'last 7 days', '30d': 'last 30 days', 'ytd': 'year to date' }[activeCompositionFilter];
 
-        if (snapshots.length < 2) return;
+        if (compositionChartInstance) { compositionChartInstance.destroy(); compositionChartInstance = null; }
+
+        const snapshots = filterSnapshotsByRange(allSnapshots, activeCompositionFilter);
+
+        if (snapshots.length < 2) {
+            canvas.style.display = 'none';
+            emptyEl.style.display = 'flex';
+            if (activeCompositionFilter !== 'all' && allSnapshots.length >= 2) {
+                emptyEl.textContent = `No snapshots found for the ${filterLabel}.`;
+            } else {
+                emptyEl.textContent = 'Save at least 2 snapshots to see composition over time.';
+            }
+            return;
+        }
 
         emptyEl.style.display = 'none';
         canvas.style.display = 'block';
@@ -391,15 +467,15 @@
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
         );
 
-        new Chart(canvas.getContext('2d'), {
+        compositionChartInstance = new Chart(canvas.getContext('2d'), {
             type: 'bar',
             data: {
                 labels,
                 datasets: [
-                    { label: 'Stocks',  data: snapshots.map(s => s.byType.stock   || 0), backgroundColor: '#3b82f6', borderRadius: 2 },
-                    { label: 'Crypto',  data: snapshots.map(s => s.byType.crypto  || 0), backgroundColor: '#f59e0b', borderRadius: 2 },
-                    { label: 'Metals',  data: snapshots.map(s => s.byType.metal   || 0), backgroundColor: '#8b5cf6', borderRadius: 2 },
-                    { label: 'Savings', data: snapshots.map(s => s.byType.savings || 0), backgroundColor: '#10b981', borderRadius: 2 }
+                    { label: 'Stocks',  data: snapshots.map(s => s.byType?.stock   || 0), backgroundColor: '#3b82f6', borderRadius: 2 },
+                    { label: 'Crypto',  data: snapshots.map(s => s.byType?.crypto  || 0), backgroundColor: '#f59e0b', borderRadius: 2 },
+                    { label: 'Metals',  data: snapshots.map(s => s.byType?.metal   || 0), backgroundColor: '#8b5cf6', borderRadius: 2 },
+                    { label: 'Savings', data: snapshots.map(s => s.byType?.savings || 0), backgroundColor: '#10b981', borderRadius: 2 }
                 ]
             },
             options: {
@@ -423,26 +499,40 @@
 
     // ── 8. Cumulative Return Line ─────────────────────────────────────────────
     function createCumulativeReturnChart() {
-        const snapshots = state.snapshots || [];
+        const allSnapshots = state.snapshots || [];
         const canvas = document.getElementById('cumulativeReturnChart');
         const emptyEl = document.getElementById('cumulativeReturnEmpty');
+        const filterLabel = { '1d': 'last 24 hours', '7d': 'last 7 days', '30d': 'last 30 days', 'ytd': 'year to date' }[activeCumulativeFilter];
 
-        if (snapshots.length < 2) return;
+        if (cumulativeChartInstance) { cumulativeChartInstance.destroy(); cumulativeChartInstance = null; }
+
+        const filtered = filterSnapshotsByRange(allSnapshots, activeCumulativeFilter);
+        if (filtered.length < 2) {
+            canvas.style.display = 'none';
+            emptyEl.style.display = 'flex';
+            if (activeCumulativeFilter !== 'all' && allSnapshots.length >= 2) {
+                emptyEl.textContent = `No snapshots found for the ${filterLabel}.`;
+            } else {
+                emptyEl.textContent = 'Save at least 2 snapshots to see cumulative return.';
+            }
+            return;
+        }
 
         emptyEl.style.display = 'none';
         canvas.style.display = 'block';
 
-        const base = snapshots[0].totalValue;
-        const labels = snapshots.map(s =>
+        // Base is always the first snapshot in the filtered window
+        const base = filtered[0].totalValue;
+        const labels = filtered.map(s =>
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
         );
-        const data = snapshots.map(s =>
+        const data = filtered.map(s =>
             base > 0 ? parseFloat((((s.totalValue - base) / base) * 100).toFixed(2)) : 0
         );
         const borderColor = data[data.length - 1] >= 0 ? '#3fb950' : '#f85149';
         const bgColor = data[data.length - 1] >= 0 ? 'rgba(63,185,80,0.08)' : 'rgba(248,81,73,0.08)';
 
-        new Chart(canvas.getContext('2d'), {
+        cumulativeChartInstance = new Chart(canvas.getContext('2d'), {
             type: 'line',
             data: {
                 labels,
