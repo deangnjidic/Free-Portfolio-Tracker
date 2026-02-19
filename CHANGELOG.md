@@ -11,6 +11,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.40.0] - 2026-02-19
+
+### Added
+- **Multi-Provider CSV Import System** — `import-csv.html` completely redesigned with comprehensive broker support:
+  - 9 broker parsers: M1 Finance, Robinhood, Charles Schwab, Fidelity, TD Ameritrade, Trading 212, eToro, Coinbase, Interactive Brokers (IBKR)
+  - Auto-detection engine identifies provider from CSV headers/structure with manual override option
+  - File picker with drag-and-drop support (in addition to paste option)
+  - Preview table with inline editing (symbol, name, quantity, type) before import
+  - Row removal in preview table
+  - Manual column mapper for unsupported CSV formats (generic fallback)
+  - Crypto symbol resolver converts plain symbols (BTC, ETH) to Finnhub format (BINANCE:BTCUSDT)
+  - Person assignment options: Person 1 only, Person 2 only, or Both (50/50 split)
+  - 4-step wizard UI with progress indicators (Load → Review → Assign → Import)
+  - Dynamic person names loaded from localStorage settings
+  - Provider detection badge with manual override dropdown
+  - Comprehensive import summary showing added vs updated assets
+  - Fully responsive mobile design with 2x2 grid layout for steps
+- ROADMAP-IMPORT.md marked as completed
+
+### Changed
+- CSV import expanded from M1 Finance-only (284 lines) to multi-provider system (1494 lines)
+- Import UI redesigned from basic textarea to step-by-step wizard with visual feedback
+- Original import-csv.html preserved as import-csv.html.backup
+
+### Removed
+- Footer attribution line from landing page (index.html) and updates page (updates.html)
+
+---
+
 ## [1.31.0] - 2026-02-19
 
 ### Added

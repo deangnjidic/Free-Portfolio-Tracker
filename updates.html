@@ -128,6 +128,10 @@
             color: #d29922;
         }
 
+        .update-section.removed h3 {
+            color: #8b949e;
+        }
+
         .update-list {
             list-style: none;
             padding: 0;
@@ -212,6 +216,32 @@
         <div class="updates-header">
             <h1>📋 What's New</h1>
             <p>Latest features, improvements, and bug fixes for Free Portfolio Tracker</p>
+        </div>
+
+        <!-- v1.40 -->
+        <div class="update-card" style="border-color: #58a6ff;">
+            <div class="update-header">
+                <span class="update-version" style="background: linear-gradient(135deg, #1f6feb, #388bfd); font-size: 16px;">v1.40.0</span>
+                <span class="update-date">February 19, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ Multi-Provider CSV Import System</h3>
+                <ul class="update-list">
+                    <li><strong>9 broker parsers</strong> — M1 Finance, Robinhood, Charles Schwab, Fidelity, TD Ameritrade, Trading 212, eToro, Coinbase, Interactive Brokers (IBKR)</li>
+                    <li><strong>Auto-detection engine</strong> — automatically identifies your broker from CSV format with manual override option</li>
+                    <li><strong>File picker with drag-and-drop</strong> — upload CSV files directly or paste text</li>
+                    <li><strong>Preview table with inline editing</strong> — review and edit symbol, name, quantity, and type before importing</li>
+                    <li><strong>Row removal</strong> — remove unwanted assets from preview before import</li>
+                    <li><strong>Manual column mapper</strong> — generic fallback for unsupported CSV formats; map your columns to Symbol/Name/Quantity</li>
+                    <li><strong>Crypto symbol resolver</strong> — converts plain crypto symbols (BTC, ETH) to Finnhub format (BINANCE:BTCUSDT)</li>
+                    <li><strong>Person assignment</strong> — assign to Person 1, Person 2, or Both (50/50 split)</li>
+                    <li><strong>4-step wizard UI</strong> — Load → Review & Edit → Assign Person → Import with progress indicators</li>
+                    <li><strong>Provider detection badge</strong> — shows detected broker with override dropdown</li>
+                    <li><strong>Import summary</strong> — displays assets added vs updated after import</li>
+                    <li><strong>Fully responsive mobile design</strong> — 2x2 grid layout for steps, optimized touch targets</li>
+                    <li>Dynamic person names loaded from app settings</li>
+                </ul>
+            </div>
         </div>
 
         <!-- v1.31 -->
@@ -548,8 +578,7 @@
 
         <!-- Footer -->
         <footer class="footer-updates">
-            <p>Built with ❤️ by <a href="https://github.com/deangnjidic" target="_blank">Dean Gnjidic</a></p>
-            <p style="margin-top: 10px;">
+            <p>
                 <a href="index.html">Home</a> • 
                 <a href="guide.html">Documentation</a> • 
                 <a href="faq.html">FAQ</a> • 

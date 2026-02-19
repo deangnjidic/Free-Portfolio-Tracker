@@ -3,64 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import M1 Finance CSV - Free Portfolio Tracker | Import Your Portfolio Data</title>
+    <title>Import Portfolio CSV - Free Portfolio Tracker | Import from Any Broker</title>
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Import your M1 Finance portfolio data with CSV files. Easily transfer your investment holdings from M1 Finance to Free Portfolio Tracker.">
-    <meta name="keywords" content="M1 Finance import, CSV import, portfolio import, data import, M1 Finance transfer, portfolio migration">
+    <meta name="description" content="Import your portfolio from Robinhood, M1 Finance, Schwab, Fidelity, Coinbase and more. Easy CSV import with auto-detection.">
+    <meta name="keywords" content="CSV import, portfolio import, Robinhood import, M1 Finance import, Schwab import">
     <meta name="author" content="Free Portfolio Tracker">
     <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="https://freeportfoliotracker.com/import-csv.html">
     
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freeportfoliotracker.com/import-csv.html">
-    <meta property="og:title" content="Import M1 Finance CSV - Free Portfolio Tracker">
-    <meta property="og:description" content="Import your M1 Finance portfolio data easily with CSV files.">
+    <meta property="og:title" content="Import Portfolio CSV - Free Portfolio Tracker">
+    <meta property="og:description" content="Import your portfolio from any major broker with auto-detection.">
     <meta property="og:image" content="https://freeportfoliotracker.com/icon-192.png">
     
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Import M1 Finance CSV - Free Portfolio Tracker">
-    <meta name="twitter:description" content="Import your M1 Finance portfolio data easily with CSV files.">
+    <meta name="twitter:title" content="Import Portfolio CSV">
+    <meta name="twitter:description" content="Import your portfolio from any major broker.">
     <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
     
     <link rel="stylesheet" href="cookie-consent.css">
     
-    <!-- Google Consent Mode v2 + GTM (Loads immediately with consent denied by default) -->
     <script src="consent-init.js"></script>
-    
-    <!-- Google Tag Manager -->
     <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PWHJ9WLH"></script>
-    
-    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #0f1419;
             color: #e6edf3;
-            padding: 40px;
-            max-width: 900px;
+            padding: 20px;
+            max-width: 1100px;
             margin: 0 auto;
         }
+       
         h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #8b949e;
+            margin-bottom: 30px;
+        }
+        
+        .steps {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .step {
+            background: #161b22;
+            border: 2px solid #30363d;
+            border-radius: 8px;
+            padding: 15px 20px;
+            min-width: 180px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .step.active {
+            border-color: #58a6ff;
+            background: #0d1117;
+        }
+        
+        .step.complete {
+            border-color: #238636;
+        }
+        
+        .step-number {
+            display: block;
+            font-size: 20px;
+            font-weight: 700;
+            color: #58a6ff;
+            margin-bottom: 5px;
+        }
+        
+        .step.complete .step-number {
+            color: #238636;
+        }
+        
+        .step-label {
+            font-size: 13px;
+            color: #8b949e;
+        }
+        
+        .section {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section h2 {
+            font-size: 18px;
+            margin: 0 0 15px 0;
+        }
+        
+        .provider-badge {
+            display: inline-block;
+            background: #238636;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .provider-select {
             margin-bottom: 20px;
         }
+        
+        .file-upload {
+            border: 2px dashed #30363d;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .file-upload:hover {
+            border-color: #58a6ff;
+        }
+        
+        .file-upload.dragover {
+            border-color: #58a6ff;
+            background: #0d1117;
+        }
+        
+        .file-upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
         textarea {
             width: 100%;
-            height: 300px;
-            background: #161b22;
+            max-width: 100%;
+            height: 200px;
+            background: #0d1117;
             color: #e6edf3;
             border: 1px solid #30363d;
             border-radius: 6px;
             padding: 12px;
             font-family: monospace;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 13px;
+            resize: vertical;
         }
-        button {
+        
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 13px;
+        }
+        
+        .preview-table th {
+            background: #0d1117;
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 2px solid #30363d;
+            font-weight: 600;
+        }
+        
+        .preview-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #30363d;
+        }
+        
+        .preview-table tr:hover {
+            background: #0d1117;
+        }
+        
+        .preview-table input {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #e6edf3;
+            padding: 6px 8px;
+            border-radius: 4px;
+            width: 100%;
+            font-size: 13px;
+        }
+        
+        .row-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .row-status.ok {
+            background: #238636;
+        }
+        
+        .row-status.warning {
+            background: #d29922;
+        }
+        
+        .row-status.error {
+            background: #f85149;
+        }
+        
+        .btn {
             background: #238636;
             color: white;
             border: none;
@@ -68,118 +233,1163 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
             margin-right: 10px;
+            transition: background 0.2s;
         }
-        button:hover {
+        
+        .btn:hover {
             background: #2ea043;
         }
-        button.secondary {
+        
+        .btn:disabled {
+            background: #30363d;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
             background: #21262d;
         }
-        button.secondary:hover {
+        
+        .btn-secondary:hover {
             background: #30363d;
         }
-        .status {
-            margin-top: 20px;
+        
+        .btn-danger {
+            background: #da3633;
+        }
+        
+        .btn-danger:hover {
+            background: #f85149;
+        }
+        
+        select {
+            background: #0d1117;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            max-width: 100%;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .mapper {
+            margin: 20px 0;
+        }
+        
+        .mapper-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #0d1117;
+            border-radius: 6px;
+        }
+        
+        .csv-column {
+            font-family: monospace;
+            color: #58a6ff;
+        }
+        
+        .arrow {
+            color: #8b949e;
+            font-size: 20px;
+        }
+        
+        .alert {
             padding: 15px;
             border-radius: 6px;
-            background: #161b22;
-            border: 1px solid #30363d;
+            margin-bottom: 20px;
+            border-left: 4px solid;
         }
-        .success {
+        
+        .alert-success {
+            background: rgba(35, 134, 54, 0.15);
+            border-color: #238636;
             color: #3fb950;
         }
-        .error {
+        
+        .alert-error {
+            background: rgba(248, 81, 73, 0.15);
+            border-color: #f85149;
             color: #f85149;
         }
-        .info {
+        
+        .alert-info {
+            background: rgba(88, 166, 255, 0.15);
+            border-color: #58a6ff;
             color: #58a6ff;
+        }
+        
+        .crypto-resolver {
+            margin: 20px 0;
+        }
+        
+        .crypto-row {
+            display: grid;
+            grid-template-columns: 100px auto 1fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .crypto-symbol {
+            font-family: monospace;
+            font-weight: 600;
+            color: #f59e0b;
+        }
+        
+        .person-options {
+            margin: 20px 0;
+        }
+        
+        .person-option {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .person-option input {
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            
+            .steps {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+            
+            .step {
+                width: 100%;
+                min-width: auto;
+                padding: 10px 12px;
+            }
+            
+            .step-number {
+                font-size: 18px;
+            }
+            
+            .step-label {
+                font-size: 12px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .section h2 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .file-upload {
+                padding: 20px 15px;
+            }
+            
+            .file-upload-icon {
+                font-size: 36px;
+            }
+            
+            textarea {
+                height: 150px;
+                font-size: 12px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .btn:last-child {
+                margin-bottom: 0;
+            }
+            
+            .preview-table {
+                font-size: 12px;
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .preview-table thead {
+                display: none;
+            }
+            
+            .preview-table tbody {
+                display: block;
+            }
+            
+            .preview-table tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #30363d;
+                border-radius: 6px;
+                padding: 10px;
+                background: #0d1117;
+            }
+            
+            .preview-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 0;
+                border-bottom: 1px solid #30363d;
+            }
+            
+            .preview-table td:last-child {
+                border-bottom: none;
+                justify-content: center;
+                padding-top: 12px;
+            }
+            
+            .preview-table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #8b949e;
+                flex: 0 0 80px;
+            }
+            
+            .preview-table td:first-child::before {
+                content: "Status";
+            }
+            
+            .preview-table td:nth-child(2)::before {
+                content: "Symbol";
+            }
+            
+            .preview-table td:nth-child(3)::before {
+                content: "Name";
+            }
+            
+            .preview-table td:nth-child(4)::before {
+                content: "Quantity";
+            }
+            
+            .preview-table td:nth-child(5)::before {
+                content: "Type";
+            }
+            
+            .preview-table td:last-child::before {
+                content: none;
+            }
+            
+            .preview-table input,
+            .preview-table select {
+                flex: 1;
+                margin-left: 10px;
+            }
+            
+            .mapper-row,
+            .crypto-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+            
+            .provider-select label,
+            label {
+                font-size: 13px;
+            }
+            
+            select {
+                width: 100%;
+                font-size: 13px;
+            }
+            
+            .alert {
+                padding: 12px;
+                font-size: 13px;
+            }
+            
+            .person-option {
+                padding: 10px;
+                background: #0d1117;
+                border-radius: 6px;
+                margin-bottom: 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     
-    <h1>Import M1 Finance CSV Data</h1>
-    <p>Paste your M1 Finance CSV export below (must include Symbol, Name, and Quantity columns):</p>
+    <h1>📥 Import Portfolio</h1>
+    <p class="subtitle">Import from Robinhood, M1 Finance, Schwab, Fidelity, Coinbase, and more with auto-detection</p>
     
-    <textarea id="csvInput" placeholder="Symbol,Name,Quantity,Avg. Price,Cost Basis...
-NVDA,NVIDIA,28.54508,22.47,641.33..."></textarea>
-    
-    <div>
-        <label>
-            Person: 
-            <select id="personSelect" style="background: #161b22; color: #e6edf3; border: 1px solid #30363d; padding: 5px 10px; border-radius: 4px;">
-                <option value="p1">Dean (Person 1)</option>
-                <option value="p2">Sam (Person 2)</option>
-            </select>
-        </label>
+    <!-- Progress Steps -->
+    <div class="steps">
+        <div class="step active" data-step="1">
+            <span class="step-number">1</span>
+            <span class="step-label">Load CSV</span>
+        </div>
+        <div class="step" data-step="2">
+            <span class="step-number">2</span>
+            <span class="step-label">Review & Edit</span>
+        </div>
+        <div class="step" data-step="3">
+            <span class="step-number">3</span>
+            <span class="step-label">Assign Person</span>
+        </div>
+        <div class="step" data-step="4">
+            <span class="step-number">4</span>
+            <span class="step-label">Import</span>
+        </div>
     </div>
-    <br>
     
-    <button onclick="importCSV()">Import Stocks</button>
-    <button class="secondary" onclick="location.href='app.html'">Back to Portfolio</button>
+    <!-- Step 1: Load CSV -->
+    <div class="section active" id="step1">
+        <h2>Step 1: Load Your CSV File</h2>
+        
+        <div class="provider-select">
+            <label for="providerOverride">Provider (Auto-detect or choose manually):</label>
+            <select id="providerOverride">
+                <option value="auto">🔍 Auto-Detect</option>
+                <option value="m1">M1 Finance</option>
+                <option value="robinhood">Robinhood</option>
+                <option value="schwab">Charles Schwab</option>
+                <option value="fidelity">Fidelity</option>
+                <option value="tdameritrade">TD Ameritrade</option>
+                <option value="trading212">Trading 212</option>
+                <option value="etoro">eToro</option>
+                <option value="coinbase">Coinbase</option>
+                <option value="ibkr">Interactive Brokers (IBKR)</option>
+                <option value="generic">Generic / Manual Mapper</option>
+            </select>
+        </div>
+        
+        <div class="file-upload" id="fileUpload">
+            <div class="file-upload-icon">📂</div>
+            <div><strong>Click to choose a CSV file</strong> or drag and drop here</div>
+            <div style="color: #8b949e; font-size: 13px; margin-top: 8px;">Supports .csv files</div>
+            <input type="file" id="fileInput" accept=".csv">
+        </div>
+        
+        <div style="text-align: center; margin: 20px 0; color: #8b949e;">— OR —</div>
+        
+        <label for="csvPaste">Paste CSV data directly:</label>
+        <textarea id="csvPaste" placeholder="Symbol,Name,Quantity,Price...
+AAPL,Apple Inc,10.5,182.50
+NVDA,NVIDIA,5,450.75"></textarea>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn" id="parseBtn">Parse CSV →</button>
+            <button class="btn-secondary btn" onclick="location.href='app.html'">Cancel</button>
+        </div>
+        
+        <div id="parseError" style="display: none;"></div>
+    </div>
     
-    <div id="status" class="status" style="display: none;"></div>
-
+    <!-- Step 2: Preview & Edit / Manual Mapper -->
+    <div class="section" id="step2">
+        <div id="detectionBadge"></div>
+        
+        <!-- Manual Column Mapper (shown when provider is 'generic') -->
+        <div id="manualMapper" style="display: none;">
+            <h2>Step 2: Map Your Columns</h2>
+            <p style="color: #8b949e; margin-bottom: 20px;">Match your CSV columns to the required fields:</p>
+            <div id="mapperContainer" class="mapper"></div>
+            <div style="margin-bottom: 20px;">
+                <label>Asset type for all rows:</label>
+                <label class="person-option">
+                    <input type="radio" name="assetType" value="stock" checked> Stock / ETF
+                </label>
+                <label class="person-option">
+                    <input type="radio" name="assetType" value="crypto"> Cryptocurrency
+                </label>
+                <label class="person-option">
+                    <input type="radio" name="assetType" value="metal"> Precious Metal
+                </label>
+            </div>
+            <button class="btn" id="applyMappingBtn">Apply Mapping & Preview →</button>
+        </div>
+        
+        <!-- Crypto Symbol Resolver (shown when crypto assets detected) -->
+        <div id="cryptoResolver" style="display: none;">
+            <h2>Resolve Crypto Symbols</h2>
+            <p style="color: #8b949e; margin-bottom: 15px;">Convert crypto symbols to Finnhub format (BINANCE:XXXUSDT):</p>
+            <div id="cryptoResolverContainer" class="crypto-resolver"></div>
+            <button class="btn" id="applyCryptoBtn">Apply & Continue →</button>
+        </div>
+        
+        <!-- Preview Table -->
+        <div id="previewSection" style="display: none;">
+            <h2>Step 2: Review & Edit</h2>
+            <p style="color: #8b949e; margin-bottom: 15px;">Review the parsed data. You can edit any field before importing:</p>
+            
+            <div style="overflow-x: auto;">
+                <table class="preview-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;"></th>
+                            <th>Symbol</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Type</th>
+                            <th style="width: 80px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewTableBody"></tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button class="btn" id="continueToStep3Btn">Continue to Step 3 →</button>
+                <button class="btn-secondary btn" id="backToStep1Btn">← Back</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Step 3: Assign to Person -->
+    <div class="section" id="step3">
+        <h2>Step 3: Assign to Person</h2>
+        <p style="color: #8b949e; margin-bottom: 20px;">Who should own these assets?</p>
+        
+        <div class="person-options">
+            <label class="person-option">
+                <input type="radio" name="person" value="p1" checked>
+                <span id="person1Label">Person 1</span> only
+            </label>
+            <label class="person-option">
+                <input type="radio" name="person" value="p2">
+                <span id="person2Label">Person 2</span> only
+            </label>
+            <label class="person-option">
+                <input type="radio" name="person" value="both">
+                Both (split 50/50)
+            </label>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn" id="continueToStep4Btn">Continue to Step 4 →</button>
+            <button class="btn-secondary btn" id="backToStep2Btn">← Back</button>
+        </div>
+    </div>
+    
+    <!-- Step 4: Confirm Import -->
+    <div class="section" id="step4">
+        <h2>Step 4: Confirm Import</h2>
+        
+        <div id="importSummary"></div>
+        
+        <div style="margin-top: 20px;">
+            <button class="btn" id="confirmImportBtn">✓ Import Assets</button>
+            <button class="btn-secondary btn" id="backToStep3Btn">← Back</button>
+        </div>
+        
+        <div id="importResult" style="display: none; margin-top: 20px;"></div>
+    </div>
+    
     <script>
-        function parseCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            if (lines.length < 2) {
-                throw new Error('CSV must have at least a header row and one data row');
+    (function() {
+        'use strict';
+        
+        // State
+        let csvData = '';
+        let detectedProvider = 'auto';
+        let parsedAssets = [];
+        let peopleNames = ['Person 1', 'Person 2'];
+        
+        // Load person names from localStorage
+        try {
+            const stored = localStorage.getItem('portfolio_v1');
+            if (stored) {
+                const state = JSON.parse(stored);
+                peopleNames = state.settings?.people || ['Person 1', 'Person 2'];
+                document.getElementById('person1Label').textContent = peopleNames[0];
+                document.getElementById('person2Label').textContent = peopleNames[1];
             }
-
-            // Parse header
-            const headers = lines[0].split(',').map(h => h.trim());
-            const symbolIndex = headers.findIndex(h => h.toLowerCase() === 'symbol');
-            const nameIndex = headers.findIndex(h => h.toLowerCase() === 'name');
-            const quantityIndex = headers.findIndex(h => h.toLowerCase() === 'quantity');
-
-            if (symbolIndex === -1 || nameIndex === -1 || quantityIndex === -1) {
-                throw new Error('CSV must contain Symbol, Name, and Quantity columns');
+        } catch (e) {
+            console.log('Using default person names');
+        }
+        
+        // PROVIDER PARSERS
+        const PARSERS = {
+            m1: parseM1Finance,
+            robinhood: parseRobinhood,
+            schwab: parseSchwab,
+            fidelity: parseFidelity,
+            tdameritrade: parseTDAmeritrade,
+            trading212: parseTrading212,
+            etoro: parseEtoro,
+            coinbase: parseCoinbase,
+            ibkr: parseIBKR,
+            generic: null // manual mapper
+        };
+        
+        // Detect provider from CSV content
+        function detectProvider(lines) {
+            if (lines.length < 1) return 'generic';
+            
+            const header = lines[0].toLowerCase();
+            const firstRow = lines.length > 1 ? lines[1].toLowerCase() : '';
+            
+            // Robinhood
+            if (header.includes('instrument url') || header.includes('instrument-url')) return 'robinhood';
+            
+            // Schwab
+            if (firstRow.includes('positions for account')) return 'schwab';
+            
+            // Fidelity
+            if (header.includes('account number') && header.includes('account name')) return 'fidelity';
+            
+            // Trading 212
+            if (header.includes('ticker') && header.includes('shares') && !header.includes('symbol')) return 'trading212';
+            
+            // eToro
+            if (header.includes('instrument') && header.includes('units') && header.includes('open rate')) return 'etoro';
+            
+            // Coinbase
+            if (header.includes('quantity transacted') || header.includes('transaction type')) return 'coinbase';
+            
+            // IBKR
+            if (firstRow.includes('statement') || header.includes('positions,header')) return 'ibkr';
+            
+            // M1 Finance / TD Ameritrade (both use Symbol, Quantity)
+            if (header.includes('symbol') && header.includes('quantity')) return 'm1';
+            
+            return 'generic';
+        }
+        
+        // M1 Finance / TD Ameritrade Parser
+        function parseM1Finance(lines) {
+            const assets = [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const symbolIdx = headers.indexOf('symbol');
+            const nameIdx = headers.findIndex(h => h === 'name' || h === 'description');
+            const qtyIdx = headers.indexOf('quantity');
+            
+            if (symbolIdx === -1 || qtyIdx === -1) {
+                throw new Error('CSV must contain Symbol and Quantity columns');
             }
-
-            // Parse data rows
-            const stocks = [];
+            
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
-
-                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
                 
-                if (values.length >= Math.max(symbolIndex, nameIndex, quantityIndex) + 1) {
-                    stocks.push({
-                        symbol: values[symbolIndex],
-                        name: values[nameIndex],
-                        quantity: parseFloat(values[quantityIndex]) || 0
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                if (values.length > Math.max(symbolIdx, qtyIdx)) {
+                    const symbol = values[symbolIdx];
+                    const name = nameIdx >= 0 ? values[nameIdx] : symbol;
+                    const qty = parseFloat(values[qtyIdx]) || 0;
+                    
+                    if (symbol && qty > 0) {
+                        assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                    }
+                }
+            }
+            return assets;
+        }
+        
+        // Robinhood Parser
+        function parseRobinhood(lines) {
+            const assets = [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const symbolIdx = headers.indexOf('symbol');
+            const descIdx = headers.indexOf('description');
+            const qtyIdx = headers.indexOf('quantity');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                const symbol = values[symbolIdx];
+                const name = values[descIdx] || symbol;
+                const qty = parseFloat(values[qtyIdx]) || 0;
+                
+                if (symbol && qty > 0) {
+                    assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                }
+            }
+            return assets;
+        }
+        
+        // Charles Schwab Parser (skip first line if it's not a header)
+        function parseSchwab(lines) {
+            let startIdx = 0;
+            
+            // Skip non-header rows (account summary lines)
+            for (let i = 0; i < Math.min(lines.length, 5); i++) {
+                const lower = lines[i].toLowerCase();
+                if (lower.includes('symbol') && lower.includes('quantity')) {
+                    startIdx = i;
+                    break;
+                }
+            }
+            
+            const headers = lines[startIdx].split(',').map(h => h.trim().toLowerCase());
+            const symbolIdx = headers.indexOf('symbol');
+            const descIdx = headers.findIndex(h => h.includes('description') || h.includes('name'));
+            const qtyIdx = headers.indexOf('quantity');
+            
+            const assets = [];
+            for (let i = startIdx + 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, '')); const symbol = values[symbolIdx];
+                const name = descIdx >= 0 ? values[descIdx] : symbol;
+                const qty = parseFloat(values[qtyIdx]) || 0;
+                
+                if (symbol && qty > 0) {
+                    assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                }
+            }
+            return assets;
+        }
+        
+        // Fidelity Parser (strip trailing empty rows)
+        function parseFidelity(lines) {
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const symbolIdx = headers.indexOf('symbol');
+            const descIdx = headers.findIndex(h => h.includes('description') || h.includes('name'));
+            const qtyIdx = headers.indexOf('quantity');
+            
+            const assets = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line || line.split(',').every(v => !v.trim())) continue; // skip blank rows
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                const symbol = values[symbolIdx];
+                const name = descIdx >= 0 ? values[descIdx] : symbol;
+                const qty = parseFloat(values[qtyIdx]) || 0;
+                
+                if (symbol && qty > 0) {
+                    assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                }
+            }
+            return assets;
+        }
+        
+        // TD Ameritrade Parser (same as M1)
+        function parseTDAmeritrade(lines) {
+            return parseM1Finance(lines);
+        }
+        
+        // Trading 212 Parser (uses 'Ticker' and 'Shares')
+        function parseTrading212(lines) {
+            const assets = [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const symbolIdx = headers.findIndex(h => h === 'ticker' || h === 'symbol');
+            const nameIdx = headers.indexOf('name');
+            const qtyIdx = headers.findIndex(h => h === 'shares' || h === 'quantity');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                const symbol = values[symbolIdx];
+                const name = nameIdx >= 0 ? values[nameIdx] : symbol;
+                const qty = parseFloat(values[qtyIdx]) || 0;
+                
+                if (symbol && qty > 0) {
+                    assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                }
+            }
+            return assets;
+        }
+        
+        // eToro Parser (uses 'Instrument' and 'Units')
+        function parseEtoro(lines) {
+            const assets = [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const instrumentIdx = headers.indexOf('instrument');
+            const unitsIdx = headers.indexOf('units');
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                const name = values[instrumentIdx];
+                const qty = parseFloat(values[unitsIdx]) || 0;
+                
+                if (name && qty > 0) {
+                    // eToro uses company names, not ticker symbols
+                    // User will need to manually correct these in the preview table
+                    assets.push({ symbol: name.toUpperCase(), name, quantity: qty, type: 'stock' });
+                }
+            }
+            return assets;
+        }
+        
+        // Coinbase Parser (crypto)
+        function parseCoinbase(lines) {
+            const assets = [];
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const assetIdx = headers.indexOf('asset');
+            const qtyIdx = headers.findIndex(h => h.includes('quantity'));
+            const typeIdx = headers.findIndex(h => h.includes('transaction type'));
+            
+            // Aggregate by asset (sum buys, subtract sells)
+            const totals = {};
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+                const asset = values[assetIdx];
+                const qty = parseFloat(values[qtyIdx]) || 0;
+                const txType = typeIdx >= 0 ? values[typeIdx].toLowerCase() : '';
+                
+                if (asset && qty !== 0) {
+                    if (!totals[asset]) totals[asset] = 0;
+                    
+                    // Add for buys/receives, subtract for sells/sends
+                    if (txType.includes('buy') || txType.includes('receive')) {
+                        totals[asset] += qty;
+                    } else if (txType.includes('sell') || txType.includes('send')) {
+                        totals[asset] -= qty;
+                    } else {
+                        totals[asset] += qty; // default to add
+                    }
+                }
+            }
+            
+            // Convert to assets array (crypto type, needs prefix resolution)
+            for (const [asset, qty] of Object.entries(totals)) {
+                if (qty > 0) {
+                    assets.push({ 
+                        symbol: asset.toUpperCase(),
+                        name: asset,
+                        quantity: qty,
+                        type: 'crypto',
+                        needsResolution: true // flag for crypto symbol resolver
                     });
                 }
             }
-
-            return stocks;
+            
+            return assets;
         }
-
-        function importCSV() {
-            const csvInput = document.getElementById('csvInput').value;
-            const personSelect = document.getElementById('personSelect').value;
-            const statusDiv = document.getElementById('status');
-
-            try {
-                // Parse CSV
-                const stocks = parseCSV(csvInput);
+        
+        // IBKR Parser (multi-section, find Positions rows)
+        function parseIBKR(lines) {
+            const assets = [];
+            let inPositionsSection = false;
+            let headers = [];
+            let symbolIdx = -1, descIdx = -1, qtyIdx = -1;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
                 
-                if (stocks.length === 0) {
-                    throw new Error('No valid stock data found in CSV');
+                const parts = line.split(',').map(p => p.trim().replace(/"/g, ''));
+                
+                // Look for Positions section header
+                if (parts[0] === 'Positions' && parts[1] === 'Header') {
+                    headers = parts.slice(2).map(h => h.toLowerCase());
+                    symbolIdx = headers.indexOf('symbol');
+                    descIdx = headers.findIndex(h => h.includes('description'));
+                    qtyIdx = headers.indexOf('quantity');
+                    inPositionsSection = true;
+                    continue;
                 }
-
+                
+                // Parse position data rows
+                if (inPositionsSection && parts[0] === 'Positions' && parts[1] === 'Data') {
+                    const values = parts.slice(2);
+                    const symbol = values[symbolIdx];
+                    const name = descIdx >= 0 ? values[descIdx] : symbol;
+                    const qty = parseFloat(values[qtyIdx]) || 0;
+                    
+                    if (symbol && qty > 0) {
+                        assets.push({ symbol, name, quantity: qty, type: 'stock' });
+                    }
+                }
+                
+                // End of positions section
+                if (inPositionsSection && parts[0] !== 'Positions') {
+                    break;
+                }
+            }
+            
+            return assets;
+        }
+        
+        // UI Event Handlers
+        document.getElementById('fileUpload').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    csvData = event.target.result;
+                    document.getElementById('csvPaste').value = csvData;
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        // Drag and drop
+        const fileUpload = document.getElementById('fileUpload');
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+        
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+        
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.csv')) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    csvData = event.target.result;
+                    document.getElementById('csvPaste').value = csvData;
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        // Parse CSV button
+        document.getElementById('parseBtn').addEventListener('click', parseCSV);
+        
+        function parseCSV() {
+            const pasteValue = document.getElementById('csvPaste').value.trim();
+            if (pasteValue) csvData = pasteValue;
+            
+            if (!csvData) {
+                showError('step1', 'Please load a CSV file or paste CSV data');
+                return;
+            }
+            
+            try {
+                const lines = csvData.split('\n').map(l => l.trim()).filter(l => l);
+                
+                // Detect or use manual override
+                const override = document.getElementById('providerOverride').value;
+                detectedProvider = override === 'auto' ? detectProvider(lines) : override;
+                
+                // Show detection badge
+                const providerNames = {
+                    m1: 'M1 Finance',
+                    robinhood: 'Robinhood',
+                    schwab: 'Charles Schwab',
+                    fidelity: 'Fidelity',
+                    tdameritrade: 'TD Ameritrade',
+                    trading212: 'Trading 212',
+                    etoro: 'eToro',
+                    coinbase: 'Coinbase',
+                    ibkr: 'Interactive Brokers',
+                    generic: 'Generic (Manual Mapper)'
+                };
+                
+                const badge = document.getElementById('detectionBadge');
+                badge.innerHTML = `<div class="provider-badge">✓ ${override === 'auto' ? 'Detected: ' : 'Using: '}${providerNames[detectedProvider]}</div>`;
+                
+                // If generic, show manual mapper
+                if (detectedProvider === 'generic') {
+                    showManualMapper(lines);
+                    goToStep(2);
+                    return;
+                }
+                
+                // Parse with detected provider
+                const parser = PARSERS[detectedProvider];
+                if (!parser) {
+                    throw new Error('No parser available for ' + detectedProvider);
+                }
+                
+                parsedAssets = parser(lines);
+                
+                if (parsedAssets.length === 0) {
+                    throw new Error('No valid assets found in CSV');
+                }
+                
+                // Check if crypto symbols need resolution
+                const needsCryptoResolution = parsedAssets.some(a => a.needsResolution);
+                
+                if (needsCryptoResolution) {
+                    showCryptoResolver();
+                    goToStep(2);
+                } else {
+                    showPreview();
+                    goToStep(2);
+                }
+                
+            } catch (err) {
+                showError('step1', err.message);
+            }
+        }
+        
+        // Manual Mapper
+        function showManualMapper(lines) {
+            const headers = lines[0].split(',').map(h => h.trim());
+            const container = document.getElementById('mapperContainer');
+            
+            const requiredFields = ['symbol', 'name', 'quantity'];
+            let html = '';
+            
+            requiredFields.forEach(field => {
+                html += `
+                    <div class="mapper-row">
+                        <div>
+                            <label>${field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div>
+                            <select class="mapper-select" data-field="${field}">
+                                <option value="">-- Skip --</option>
+                                ${headers.map((h, idx) => `<option value="${idx}">${h}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            document.getElementById('manualMapper').style.display = 'block';
+            document.getElementById('previewSection').style.display = 'none';
+            document.getElementById('cryptoResolver').style.display = 'none';
+        }
+        
+        document.getElementById('applyMappingBtn')?.addEventListener('click', () => {
+            const lines = csvData.split('\n').map(l => l.trim()).filter(l => l);
+            const selects = document.querySelectorAll('.mapper-select');
+            const mapping = {};
+            
+            selects.forEach(sel => {
+                const field = sel.dataset.field;
+                const idx = parseInt(sel.value);
+                if (!isNaN(idx)) {
+                    mapping[field] = idx;
+                }
+            });
+            
+            if (!mapping.symbol || mapping.quantity === undefined) {
+                alert('Please map at least Symbol and Quantity columns');
+                return;
+            }
+            
+            const assetType = document.querySelector('input[name="assetType"]:checked').value;
+            parsedAssets = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                const symbol = values[mapping.symbol];
+                const name = mapping.name !== undefined ? values[mapping.name] : symbol;
+                const qty = parseFloat(values[mapping.quantity]) || 0;
+                
+                if (symbol && qty > 0) {
+                    parsedAssets.push({ symbol, name, quantity: qty, type: assetType });
+                }
+            }
+            
+            if (parsedAssets.length === 0) {
+                alert('No valid assets found with the current mapping');
+                return;
+            }
+            
+            showPrev();
+        });
+        
+        // Crypto Symbol Resolver
+        function showCryptoResolver() {
+            const cryptoAssets = parsedAssets.filter(a => a.needsResolution);
+            const container = document.getElementById('cryptoResolverContainer');
+            
+            // Common crypto symbol mappings
+            const cryptoMap = {
+                'BTC': 'BINANCE:BTCUSDT',
+                'ETH': 'BINANCE:ETHUSDT',
+                'USDT': 'BINANCE:BTCUSDT', // placeholder
+                'BNB': 'BINANCE:BNBUSDT',
+                'SOL': 'BINANCE:SOLUSDT',
+                'ADA': 'BINANCE:ADAUSDT',
+                'XRP': 'BINANCE:XRPUSDT',
+                'DOGE': 'BINANCE:DOGEUSDT',
+                'DOT': 'BINANCE:DOTUSDT',
+                'MATIC': 'BINANCE:MATICUSDT'
+            };
+            
+            let html = '';
+            cryptoAssets.forEach((asset, idx) => {
+                const suggested = cryptoMap[asset.symbol] || `BINANCE:${asset.symbol}USDT`;
+                html += `
+                    <div class="crypto-row">
+                        <div class="crypto-symbol">${asset.symbol}</div>
+                        <div>→</div>
+                        <div>
+                            <input type="text" 
+                                   class="crypto-input" 
+                                   data-idx="${idx}" 
+                                   value="${suggested}"
+                                   placeholder="BINANCE:XXXUSDT"
+                                   style="width: 100%; padding: 8px; background: #0d1117; border: 1px solid #30363d; color: #e6edf3; border-radius: 4px;">
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('cryptoResolver').style.display = 'block';
+            document.getElementById('manualMapper').style.display = 'none';
+            document.getElementById('previewSection').style.display = 'none';
+        }
+        
+        document.getElementById('applyCryptoBtn')?.addEventListener('click', () => {
+            const inputs = document.querySelectorAll('.crypto-input');
+            inputs.forEach(input => {
+                const idx = parseInt(input.dataset.idx);
+                const resolvedSymbol = input.value.trim();
+                
+                // Find the asset in parsedAssets and update its symbol
+                const cryptoAssets = parsedAssets.filter(a => a.needsResolution);
+                if (cryptoAssets[idx]) {
+                    cryptoAssets[idx].symbol = resolvedSymbol;
+                    delete cryptoAssets[idx].needsResolution;
+                }
+            });
+            
+            showPreview();
+        });
+        
+        // Preview Table
+        function showPreview() {
+            const tbody = document.getElementById('previewTableBody');
+            
+            let html = '';
+            parsedAssets.forEach((asset, idx) => {
+                const statusClass = (asset.symbol && asset.quantity > 0) ? 'ok' : 'warning';
+                html += `
+                    <tr>
+                        <td><span class="row-status ${statusClass}"></span></td>
+                        <td><input type="text" value="${asset.symbol}" data-idx="${idx}" data-field="symbol"></td>
+                        <td><input type="text" value="${asset.name}" data-idx="${idx}" data-field="name"></td>
+                        <td><input type="number" step="any" value="${asset.quantity}" data-idx="${idx}" data-field="quantity"></td>
+                        <td>
+                            <select data-idx="${idx}" data-field="type">
+                                <option value="stock" ${asset.type === 'stock' ? 'selected' : ''}>Stock</option>
+                                <option value="crypto" ${asset.type === 'crypto' ? 'selected' : ''}>Crypto</option>
+                                <option value="metal" ${asset.type === 'metal' ? 'selected' : ''}>Metal</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn-danger btn" style="padding: 6px 10px; font-size: 12px;" data-remove="${idx}">Remove</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+            
+            // Add event listeners for inline editing
+            document.querySelectorAll('#previewTableBody input, #previewTableBody select').forEach(el => {
+                el.addEventListener('change', (e) => {
+                    const idx = parseInt(e.target.dataset.idx);
+                    const field = e.target.dataset.field;
+                    const value = field === 'quantity' ? parseFloat(e.target.value) : e.target.value;
+                    parsedAssets[idx][field] = value;
+                });
+            });
+            
+            // Remove row buttons
+            document.querySelectorAll('[data-remove]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(e.target.dataset.remove);
+                    parsedAssets.splice(idx, 1);
+                    showPreview(); // refresh
+                });
+            });
+            
+            document.getElementById('previewSection').style.display = 'block';
+            document.getElementById('manualMapper').style.display = 'none';
+            document.getElementById('cryptoResolver').style.display = 'none';
+        }
+        
+        // Step Navigation
+        document.getElementById('continueToStep3Btn')?.addEventListener('click', () => goToStep(3));
+        document.getElementById('backToStep1Btn')?.addEventListener('click', () => goToStep(1));
+        document.getElementById('backToStep2Btn')?.addEventListener('click', () => goToStep(2));
+        document.getElementById('continueToStep4Btn')?.addEventListener('click', () => {
+            showImportSummary();
+            goToStep(4);
+        });
+        document.getElementById('backToStep3Btn')?.addEventListener('click', () => goToStep(3));
+        
+        function goToStep(stepNum) {
+            // Update step indicators
+            document.querySelectorAll('.step').forEach(step => {
+                const num = parseInt(step.dataset.step);
+                step.classList.remove('active', 'complete');
+                if (num === stepNum) step.classList.add('active');
+                if (num < stepNum) step.classList.add('complete');
+            });
+            
+            // Show correct section
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(`step${stepNum}`).classList.add('active');
+        }
+        
+        // Import Summary
+        function showImportSummary() {
+            const personSelection = document.querySelector('input[name="person"]:checked').value;
+            const personLabel = personSelection === 'p1' ? peopleNames[0] :
+                               personSelection === 'p2' ? peopleNames[1] :
+                               `Both (${peopleNames[0]} & ${peopleNames[1]})`;
+            
+            const summary = `
+                <div class="alert alert-info">
+                    <strong>Ready to import ${parsedAssets.length} assets</strong><br>
+                    Assign to: <strong>${personLabel}</strong><br>
+                    Provider: <strong>${detectedProvider}</strong>
+                </div>
+                <p style="color: #8b949e;">Click "Import Assets" to add these to your portfolio.</p>
+            `;
+            
+            document.getElementById('importSummary').innerHTML = summary;
+        }
+        
+        // Confirm Import
+        document.getElementById('confirmImportBtn')?.addEventListener('click', () => {
+            const personSelection = document.querySelector('input[name="person"]:checked').value;
+            
+            try {
                 // Load current state
                 let state = {
                     settings: {
                         baseCurrency: "USD",
-                        people: ['John', 'Maria']
+                        people: peopleNames
                     },
                     assets: [],
                     priceCache: {
@@ -188,76 +1398,97 @@ NVDA,NVIDIA,28.54508,22.47,641.33..."></textarea>
                         previousPrices: {}
                     }
                 };
-
+                
                 const stored = localStorage.getItem('portfolio_v1');
                 if (stored) {
                     state = JSON.parse(stored);
-                    // Remove snapshots if present (legacy data)
-                    if (state.snapshots) {
-                        delete state.snapshots;
-                    }
                 }
-
-                // Add or update stocks
+                
                 let added = 0;
                 let updated = 0;
-
-                stocks.forEach(stock => {
+                
+                parsedAssets.forEach(asset => {
                     // Check if asset already exists
                     const existingIndex = state.assets.findIndex(
-                        a => a.type === 'stock' && a.symbol === stock.symbol
+                        a => a.type === asset.type && a.symbol === asset.symbol
                     );
-
+                    
                     if (existingIndex !== -1) {
-                        // Update existing asset
-                        state.assets[existingIndex].holdings[personSelect].qty = stock.quantity;
+                        // Update existing
+                        const existing = state.assets[existingIndex];
+                        
+                        if (personSelection === 'both') {
+                            const half = asset.quantity / 2;
+                            existing.holdings.p1.qty = half;
+                            existing.holdings.p2.qty = half;
+                        } else {
+                            existing.holdings[personSelection].qty = asset.quantity;
+                        }
+                        
                         updated++;
                     } else {
-                        // Add new asset
-                        const asset = {
+                        // Add new
+                        const newAsset = {
                             id: `asset_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                            type: 'stock',
-                            symbol: stock.symbol,
-                            name: stock.name,
+                            type: asset.type,
+                            symbol: asset.symbol,
+                            name: asset.name,
                             holdings: {
                                 p1: { qty: 0, avgCost: 0, dividend: 0 },
                                 p2: { qty: 0, avgCost: 0, dividend: 0 }
                             }
                         };
                         
-                        asset.holdings[personSelect].qty = stock.quantity;
-                        state.assets.push(asset);
+                        if (asset.type === 'metal') {
+                            newAsset.unit = 'oz';
+                        }
+                        
+                        if (personSelection === 'both') {
+                            const half = asset.quantity / 2;
+                            newAsset.holdings.p1.qty = half;
+                            newAsset.holdings.p2.qty = half;
+                        } else {
+                            newAsset.holdings[personSelection].qty = asset.quantity;
+                        }
+                        
+                        state.assets.push(newAsset);
                         added++;
                     }
                 });
-
+                
                 // Save state
                 localStorage.setItem('portfolio_v1', JSON.stringify(state));
-
-                // Show success message
-                statusDiv.style.display = 'block';
-                statusDiv.innerHTML = `
-                    <div class="success">✓ Import successful!</div>
-                    <div class="info">
-                        • Added: ${added} new stocks<br>
-                        • Updated: ${updated} existing stocks<br>
-                        • Total processed: ${stocks.length} stocks
+                
+                // Show success
+                const result = document.getElementById('importResult');
+                result.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>✓ Import Successful!</strong><br><br>
+                        • Added: ${added} new assets<br>
+                        • Updated: ${updated} existing assets<br>
+                        • Total processed: ${parsedAssets.length} assets<br><br>
+                        <a href="app.html" style="color: #3fb950; font-weight: 600;">Go to Portfolio →</a>
                     </div>
-                    <br>
-                    <p>Go back to the <a href="app.html" style="color: #58a6ff;">main portfolio page</a> and refresh prices to see the data.</p>
                 `;
-
-                // Clear input
-                document.getElementById('csvInput').value = '';
-
-            } catch (error) {
-                statusDiv.style.display = 'block';
-                statusDiv.innerHTML = `<div class="error">✗ Error: ${error.message}</div>`;
+                result.style.display = 'block';
+                document.getElementById('confirmImportBtn').disabled = true;
+                
+            } catch (err) {
+                const result = document.getElementById('importResult');
+                result.innerHTML = `<div class="alert alert-error"><strong>Error:</strong> ${err.message}</div>`;
+                result.style.display = 'block';
             }
+        });
+        
+        function showError(step, message) {
+            const errorDiv = document.getElementById('parseError');
+            errorDiv.innerHTML = `<div class="alert alert-error" style="margin-top: 20px;"><strong>Error:</strong> ${message}</div>`;
+            errorDiv.style.display = 'block';
         }
+        
+    })();
     </script>
     
-    <!-- Cookie Consent System -->
     <script src="cookie-consent.js"></script>
 </body>
 </html>

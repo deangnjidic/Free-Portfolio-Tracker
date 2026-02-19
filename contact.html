@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Support - Free Portfolio Tracker</title>
+
+    <meta name="description" content="Get in touch with Free Portfolio Tracker. Report bugs, request features, or ask questions about the app.">
+    <meta name="keywords" content="portfolio tracker contact, support, feedback, bug report, feature request">
+    <meta name="author" content="Free Portfolio Tracker">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freeportfoliotracker.com/contact.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://freeportfoliotracker.com/contact.html">
+    <meta property="og:title" content="Contact & Support - Free Portfolio Tracker">
+    <meta property="og:description" content="Get in touch with Free Portfolio Tracker support.">
+    <meta property="og:image" content="https://freeportfoliotracker.com/icon-192.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Contact & Support - Free Portfolio Tracker">
+    <meta name="twitter:description" content="Get in touch with Free Portfolio Tracker support.">
+    <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cookie-consent.css">
+    <link rel="stylesheet" href="navigation.css">
+
+    <script src="consent-init.js"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-PWHJ9WLH"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
+
+    <style>
+        .contact-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .contact-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 10px;
+        }
+
+        .contact-header p {
+            color: #8b949e;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #0d1117;
+            border: 2px solid #238636;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .success-message h2 {
+            color: #3fb950;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .success-message p {
+            color: #8b949e;
+            margin-bottom: 16px;
+        }
+
+        .success-message a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        .success-message a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #e6edf3;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            color: #e6edf3;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 180px;
+            font-family: inherit;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 6px;
+            color: #8b949e;
+            font-size: 12px;
+        }
+
+        .submit-btn {
+            background: #238636;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #2ea043;
+        }
+
+        .submit-btn:active {
+            background: #1f7f34;
+        }
+
+        .alternative-channels {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .alternative-channels h2 {
+            color: #e6edf3;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .channel-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .channel-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .channel-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .channel-content h3 {
+            color: #e6edf3;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .channel-content p {
+            color: #8b949e;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .channel-content a {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .channel-content a:hover {
+            text-decoration: underline;
+        }
+
+        .response-notice {
+            background: #0d1117;
+            border-left: 3px solid #58a6ff;
+            padding: 16px;
+            margin-top: 24px;
+            border-radius: 4px;
+        }
+
+        .response-notice p {
+            color: #8b949e;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .contact-header h1 {
+                font-size: 24px;
+            }
+
+            .contact-form,
+            .alternative-channels {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="favicon.svg" alt="Logo">
+                <span class="nav-logo-text">Free Portfolio Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="app.html" class="nav-link"><span class="nav-icon">💼</span> Portfolio</a></li>
+                <li><a href="history.html" class="nav-link"><span class="nav-icon">📈</span> History</a></li>
+                <li><a href="charts.html" class="nav-link"><span class="nav-icon">📊</span> Charts</a></li>
+                <li><a href="compare.html" class="nav-link"><span class="nav-icon">⚖️</span> Compare</a></li>
+                <li><a href="news.html" class="nav-link"><span class="nav-icon">📰</span> News</a></li>
+                <li><a href="import-csv.html" class="nav-link"><span class="nav-icon">📥</span> Import</a></li>
+                <li><a href="faq.html" class="nav-link"><span class="nav-icon">❓</span> FAQ</a></li>
+                <li><a href="contact.html" class="nav-link active"><span class="nav-icon">📬</span> Contact</a></li>
+                <li><a href="about.html" class="nav-link"><span class="nav-icon">ℹ️</span> About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="contact-container">
+        <div class="contact-header">
+            <h1>📬 Get in Touch</h1>
+            <p>Found a bug? Have a feature idea? Just want to say hi?<br>I'd love to hear from you!</p>
+        </div>
+
+        <!-- Success Message (shown when ?sent=1 is in URL) -->
+        <div id="successMessage" class="success-message" style="display: none;">
+            <h2>✓ Message Sent!</h2>
+            <p>Thank you for reaching out. I'll get back to you within 1–3 business days.</p>
+            <p><a href="contact.html">Send another message</a> or <a href="app.html">return to your portfolio</a></p>
+        </div>
+
+        <!-- Contact Form -->
+        <div id="contactFormContainer">
+            <form class="contact-form" action="https://formspree.io/f/mykdprak" method="POST">
+                <div class="form-group">
+                    <label for="name">Name (optional)</label>
+                    <input type="text" id="name" name="name" placeholder="Your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    <small>Required so I can reply to you</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Choose a topic...</option>
+                        <option value="Bug Report">🐛 Bug Report</option>
+                        <option value="Feature Request">💡 Feature Request</option>
+                        <option value="Question">❓ Question</option>
+                        <option value="Feedback">💬 General Feedback</option>
+                        <option value="Other">📝 Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required placeholder="Describe your issue, idea, or question..."></textarea>
+                </div>
+
+                <!-- Spam honeypot field (hidden from users) -->
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+                <!-- Formspree redirect after submit -->
+                <input type="hidden" name="_next" value="https://freeportfoliotracker.com/contact.html?sent=1">
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Alternative Contact Channels -->
+        <div class="alternative-channels">
+            <h2>Other Ways to Connect</h2>
+
+            <div class="channel-item">
+                <div class="channel-icon">🐙</div>
+                <div class="channel-content">
+                    <h3>GitHub Issues</h3>
+                    <p>For technical bug reports or feature discussions</p>
+                    <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker/issues" target="_blank" rel="noopener">Open an Issue →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show success message if ?sent=1 is in URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('sent') === '1') {
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('contactFormContainer').style.display = 'none';
+            }
+        });
+    </script>
+
+    <script src="cookie-consent.js"></script>
+</body>
+</html>

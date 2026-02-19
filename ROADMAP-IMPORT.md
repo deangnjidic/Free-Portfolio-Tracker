@@ -1,17 +1,23 @@
 # 📥 Multi-Provider CSV Import — Roadmap
 
-Planning document for expanding `import-csv.html` beyond M1 Finance to support major brokers and a universal fallback mapper.
+✅ **COMPLETED** — February 19, 2026
+
+This roadmap has been fully implemented! `import-csv.html` now supports 9 major brokers with auto-detection, manual column mapping fallback, preview table, crypto symbol resolution, and step-by-step wizard UI.
 
 ---
 
-## Current State
+## ✅ Completed Features
 
-- Supports **M1 Finance only**
-- Detects `Symbol`, `Name`, `Quantity` columns (case-insensitive)
-- Imports as type `stock` only
-- No preview before import
-- Paste-only (no file picker)
-- Page hardcodes person names ("Dean / Sam")
+- ✅ Supports **9 providers**: M1 Finance, Robinhood, Schwab, Fidelity, TD Ameritrade, Trading 212, eToro, Coinbase, Interactive Brokers (IBKR)
+- ✅ Auto-detection engine with manual provider override
+- ✅ File picker with drag-and-drop support (+ paste option)
+- ✅ Preview table with inline editing before import
+- ✅ Manual column mapper for unsupported CSV formats
+- ✅ Crypto symbol resolver (converts BTC → BINANCE:BTCUSDT)
+- ✅ Person assignment: P1 only, P2 only, or Both (50/50 split)
+- ✅ 4-step wizard UI with progress indicators
+- ✅ Row removal in preview
+- ✅ Dynamic person names loaded from localStorage settings
 
 ---
 
