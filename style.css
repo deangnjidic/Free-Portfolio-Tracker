@@ -471,6 +471,13 @@ button, a, input, select, textarea {
     font-weight: 500;
 }
 
+.asset-sub {
+    font-size: 11px;
+    color: #8b949e;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
 .asset-type {
     text-transform: capitalize;
     color: #8b949e;

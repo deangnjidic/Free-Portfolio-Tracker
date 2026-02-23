@@ -1416,7 +1416,7 @@
         }
 
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="11" class="empty-state">No assets found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No assets found.</td></tr>';
             return;
         }
 
@@ -1432,9 +1432,10 @@
 
             return `
                 <tr>
-                    <td class="asset-name">${escapeHtml(asset.name)}</td>
-                    <td class="asset-type">${escapeHtml(asset.type)}</td>
-                    <td>${escapeHtml(asset.symbol)}</td>
+                    <td class="asset-name">
+                        ${escapeHtml(asset.name)}
+                        <div class="asset-sub">${escapeHtml(asset.type.charAt(0).toUpperCase() + asset.type.slice(1))} · ${escapeHtml(asset.symbol)}</div>
+                    </td>
                     <td class="price-cell">
                         ${asset.type === 'savings' ? `
                             <span class="price-na">N/A</span>
