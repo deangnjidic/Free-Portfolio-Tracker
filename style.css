@@ -1723,3 +1723,150 @@ button, a, input, select, textarea {
         max-width: none;
     }
 }
+
+/* =============================================
+   Cookie Consent Banner
+   ============================================= */
+#cookie-consent-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    padding: 16px 20px;
+    z-index: 10001;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+}
+
+#cookie-consent-banner .cookie-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#cookie-consent-banner .cookie-text {
+    flex: 1;
+}
+
+#cookie-consent-banner .cookie-text strong {
+    color: #e6edf3;
+    font-size: 16px;
+}
+
+#cookie-consent-banner .cookie-text p {
+    color: #8b949e;
+    font-size: 14px;
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+#cookie-consent-banner .cookie-text a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+#cookie-consent-banner .cookie-text a:hover {
+    text-decoration: underline;
+}
+
+#cookie-consent-banner .cookie-buttons {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+#cookie-consent-banner .cookie-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#cookie-consent-banner .cookie-accept {
+    background: #238636;
+    color: #ffffff;
+}
+
+#cookie-consent-banner .cookie-accept:hover {
+    background: #2ea043;
+}
+
+#cookie-consent-banner .cookie-reject {
+    background: #21262d;
+    color: #8b949e;
+    border: 1px solid #30363d;
+}
+
+#cookie-consent-banner .cookie-reject:hover {
+    background: #30363d;
+    color: #e6edf3;
+}
+
+@media (max-width: 768px) {
+    #cookie-consent-banner .cookie-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #cookie-consent-banner .cookie-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* =============================================
+   Ad Container Styles
+   Ensures ads don't overlap interactive elements
+   z-index hierarchy:
+     - Loading overlay: 10000
+     - Toast notifications: 9999
+     - Navbar: 9999
+     - Cookie banner: 10001
+     - Modals: 1000
+     - Ad containers: 50
+   ============================================= */
+.ad-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+    position: relative;
+    z-index: 50;
+}
+
+.ad-container-leaderboard {
+    width: 100%;
+    min-height: 90px;
+    margin-bottom: 20px;
+}
+
+.ad-container-sidebar {
+    width: 300px;
+    min-height: 250px;
+}
+
+.ad-container-footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    min-height: 50px;
+    z-index: 100;
+}
+
+@media (max-width: 768px) {
+    .ad-container-sidebar {
+        display: none;
+    }
+
+    .ad-container-leaderboard {
+        min-height: 50px;
+    }
+}
