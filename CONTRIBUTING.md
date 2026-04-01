@@ -20,7 +20,6 @@ This project and everyone participating in it is governed by basic principles of
 
 - **Be respectful** - Treat everyone with respect and consideration
 - **Be collaborative** - Work together and help each other
-- **Be inclusive** - Welcome newcomers and diverse perspectives
 - **Be constructive** - Provide helpful feedback and solutions
 
 ---
