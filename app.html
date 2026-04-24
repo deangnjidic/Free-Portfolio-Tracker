@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,13 +28,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>Portfolio Manager - Free Portfolio Tracker | Track Your Investments</title>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="Manage your investment portfolio with real-time stock, crypto, and metals tracking. Add, edit, and monitor your assets with live price updates and performance metrics.">
     <meta name="keywords" content="portfolio manager, asset tracking, investment management, stock portfolio, crypto portfolio, real-time prices, investment dashboard">
     <meta name="author" content="Free Portfolio Tracker">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://freeportfoliotracker.com/app.html">
     
     <!-- Open Graph / Facebook -->
@@ -38,6 +57,31 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Free Portfolio Tracker - Portfolio Dashboard",
+      "description": "Free, browser-based investment dashboard for two people. Track stocks, crypto, precious metals, and savings together with no account required. All data stays in your browser.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "url": "https://freeportfoliotracker.com/app.html",
+      "author": { "@type": "Organization", "name": "Free Portfolio Tracker", "url": "https://freeportfoliotracker.com/" },
+      "featureList": [
+        "Two-person portfolio view",
+        "Stocks and ETFs via Finnhub",
+        "Cryptocurrency tracking",
+        "Precious metals (gold, silver, platinum, palladium) via Metals.dev",
+        "Cash and savings accounts",
+        "CSV import and JSON export",
+        "Snapshots and history",
+        "100% local storage, no account needed"
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="navigation.css">
     
     <script defer src="https://analytics.deangnjidic.com/script.js" data-website-id="448b463f-383c-4769-a9a2-3bbd6a4abd88"></script>
@@ -484,12 +528,73 @@
         </div>
     </div>
 
+    <!-- ============================================================
+         Long-form educational content (placed below the tool so the
+         interactive UI loads first for returning users, but the page
+         remains substantive for first-time visitors and search engines).
+         ============================================================ -->
+    <section class="content-block" aria-labelledby="about-portfolio-page">
+        <h2 id="about-portfolio-page">About the Portfolio Page</h2>
+        <p class="lead">This is the home dashboard of <strong>Free Portfolio Tracker</strong> — a 100% browser-based investment tracker that lets two people (a couple, business partners, family members, or just two accounts you manage) keep an eye on stocks, crypto, precious metals, and savings side by side, without ever creating an account or sending your numbers to a server.</p>
+
+        <h3>What you can track here</h3>
+        <p>The Portfolio dashboard combines four asset classes in one view, so you finally get a single &quot;net worth across everything&quot; number instead of bouncing between a brokerage app, a crypto exchange, a bullion dealer's spreadsheet, and your bank's website. Specifically, you can add and monitor:</p>
+        <ul>
+            <li><strong>Stocks &amp; ETFs</strong> — any ticker supported by Finnhub (US listings are best, but most major global exchanges resolve too). Live prices update with a single click on <em>Refresh Prices</em>.</li>
+            <li><strong>Cryptocurrencies</strong> — Bitcoin, Ethereum, and the long tail of altcoins. We use the same Finnhub feed so prices stay consistent with stock quotes (no chasing different reference rates between sources).</li>
+            <li><strong>Precious metals</strong> — gold, silver, platinum, and palladium spot prices via the Metals.dev API. Useful if you hold physical bullion or metal-backed savings.</li>
+            <li><strong>Cash &amp; savings</strong> — fixed-value entries for HYSAs, money-market accounts, term deposits, or any cash buffer you want to count toward total net worth. These don't fluctuate but they do appear in your allocation pie.</li>
+        </ul>
+
+        <h3>How the &quot;two people&quot; layout works</h3>
+        <p>Most trackers assume one user, one portfolio. Real life is messier: many households split investments across two names for tax, brokerage, or retirement-account reasons, but they still think of the money as <em>shared</em>. Free Portfolio Tracker handles that natively. Every asset row has two quantity columns — one per person — and the table automatically adds them up to a combined value, then breaks the totals down by person, by asset type, and by person × asset type. That means you can answer questions like:</p>
+        <ul>
+            <li>&quot;What's our combined exposure to crypto right now, and how much of that is mine vs. my partner's?&quot;</li>
+            <li>&quot;Are we overweight in tech stocks across both accounts?&quot;</li>
+            <li>&quot;If we pool our cash and gold, how does that compare to the equity side?&quot;</li>
+        </ul>
+        <p>If you only want to track one person, just leave the second column at zero — the second-person totals collapse and the layout adapts. You can rename both labels (the defaults are friendly placeholders) from the Settings panel.</p>
+
+        <h3>Adding your first asset</h3>
+        <p>Click the green <strong>+ Add Asset</strong> button. Pick a type (stock, crypto, metal, savings), then start typing the name or ticker — the symbol field will suggest matches as you type so you don't have to remember exact codes. Enter the quantities each person owns, an optional cost basis, and save. The asset appears in the table immediately and the live price is fetched on your next refresh.</p>
+        <p>You can edit any row inline, delete individual entries, bulk-delete the whole portfolio (with a confirmation prompt), and filter the view by asset type or by typing into the search box at the top of the table. Sorting works on every numeric column.</p>
+
+        <h3>Privacy: where your data actually lives</h3>
+        <p>This is the part most online trackers won't tell you straight: <strong>your holdings, quantities, cost bases, and even your API keys never leave your browser</strong>. Everything is stored in <code>localStorage</code> on the device you're using right now. There is no backend, no user database, no &quot;sync&quot; service, and nothing for an attacker to breach upstream because there is no upstream. The trade-off is that your data won't automatically appear on a different device — but you can move it whenever you want using the <strong>Export</strong> button (downloads a JSON file) and <strong>Import</strong> on the other device.</p>
+        <div class="callout"><strong>Tip:</strong> Export your portfolio every couple of weeks and stash the JSON file in your password manager or a private cloud folder. It's tiny, human-readable, and means a wiped browser cache can never erase your records.</div>
+
+        <h3>API keys and why we ask for them</h3>
+        <p>To pull live prices we have to call market-data providers, and those providers want to know who's calling. Rather than route your requests through our server (which would mean we'd see them, and which would cost money to run), the app calls the providers <em>directly from your browser</em> using your own free API key. That's why the setup banner asks you to grab a Finnhub key (and optionally a Metals.dev key) — both are free for personal use and take about 30 seconds to register.</p>
+        <p>Your keys are stored locally in the same way your portfolio is, and they're sent only to the provider whose endpoint we're calling. We never see them, log them, or proxy them.</p>
+
+        <h3>What the summary cards mean</h3>
+        <p>Across the top of the page you'll see a stack of summary cards that update in real time as you add or remove assets:</p>
+        <ul>
+            <li><strong>Person 1 / Person 2 totals</strong> — the sum of every holding belonging to that person, valued at the latest refreshed price.</li>
+            <li><strong>Stocks / Crypto / Metals / Savings totals</strong> — combined value across both people, with a percentage showing what share of the overall portfolio that asset class represents.</li>
+            <li><strong>Quick stats</strong> — appears once you have data and shows your best and worst performers since you last refreshed, your total value, and asset count at a glance.</li>
+        </ul>
+
+        <h3>Common workflows</h3>
+        <p>Most users settle into one of three rhythms:</p>
+        <ol>
+            <li><strong>Daily check-ins</strong> — open the page, hit Refresh Prices, glance at the quick stats, close the tab. Takes about 10 seconds.</li>
+            <li><strong>Weekly snapshots</strong> — refresh prices, then jump to the <a href="history.html">History</a> page and click <em>Save Snapshot</em>. Over time this builds the dataset behind the value-over-time chart, the cumulative-return chart, and the daily gain/loss view on the <a href="charts.html">Charts</a> page.</li>
+            <li><strong>Quarterly rebalancing</strong> — use the asset-type breakdown to see if any class has drifted outside your target allocation, then plan top-ups or trims in your real brokerage account accordingly.</li>
+        </ol>
+
+        <h3>What this page is <em>not</em></h3>
+        <p>Free Portfolio Tracker is a personal dashboard, not a trading platform or a financial advisor. We don't execute trades, we don't recommend assets, and the prices you see are reference quotes from third-party APIs that may lag the real market by seconds to minutes. Always confirm critical numbers in your actual brokerage app before making decisions, and treat performance figures as ballpark estimates rather than audited statements. Nothing on this site is financial, tax, or legal advice — it's a tool to help you stay organised. For a deeper walk-through, see the <a href="guide.html">User Guide</a>; for common questions, the <a href="faq.html">FAQ</a>; and for what's changed recently, the <a href="updates.html">Release Notes</a>.</p>
+    </section>
+
     <!-- Load config and app -->
     <script src="config.example.js"></script>
     <script src="config.js"></script>
     <script src="ui-feedback.js"></script>
     <script src="app.js"></script>
     
-    <!-- Cookie Consent System -->
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

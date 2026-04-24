@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,6 +28,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>Contact & Support - Free Portfolio Tracker</title>
 
     <meta name="description" content="Get in touch with Free Portfolio Tracker. Report bugs, request features, or ask questions about the app.">
@@ -356,5 +375,35 @@
         });
     </script>
 
+    <section class="content-block" aria-labelledby="about-contact-page">
+        <h2 id="about-contact-page">Getting help, sharing feedback, or reporting an issue</h2>
+        <p class="lead">Free Portfolio Tracker is a one-developer project, which has two big consequences for how this contact page works: replies come from a real human (sometimes within hours, sometimes within days), and the more context you provide upfront, the faster you'll get a useful answer.</p>
+
+        <h3>Before you write</h3>
+        <p>Most questions are already answered somewhere on the site. Quick triage:</p>
+        <ul>
+            <li><strong>How do I do X?</strong> Try the <a href="guide.html">User Guide</a> first — it walks through every page step by step.</li>
+            <li><strong>Is my data safe?</strong> The <a href="privacy.html">Privacy Policy</a> explains exactly what's stored where and what we (don't) collect.</li>
+            <li><strong>Why does the app behave like this?</strong> Check the <a href="faq.html">FAQ</a> for the most common &quot;wait, what?&quot; moments.</li>
+            <li><strong>What changed recently?</strong> The <a href="updates.html">Release Notes</a> list every version with what was added or fixed.</li>
+        </ul>
+        <p>If none of those answer your question, this form is the right place.</p>
+
+        <h3>What to include in your message</h3>
+        <p>For bug reports: tell me which page you were on, what you clicked, what you expected to happen, and what actually happened. Browser name and version (Chrome 122, Safari 17, etc.) help a lot — some issues only reproduce on specific engines. If a number looks wrong, attach a screenshot or paste the relevant figure so I'm not guessing.</p>
+        <p>For feature requests: explain the problem you're trying to solve, not just the feature you imagine. &quot;I want a button that does X&quot; is fine, but &quot;Right now I can't easily figure out Y, and a button that does X would help because Z&quot; is much more likely to result in a feature that actually fits the app.</p>
+        <p>For data-related questions: please don't paste actual portfolio numbers, account balances, or API keys into the form. The form is delivered via a third-party service (Formsubmit) and is not the place for sensitive financial information.</p>
+
+        <h3>What I respond to fastest</h3>
+        <p>Bugs that break core functionality (the app won't load, prices won't refresh, data is being deleted) jump to the top of the queue. Feature ideas that match the app's two-person, privacy-first focus get a reply but may take longer. Generic &quot;please add support for [exotic asset class]&quot; requests get a polite acknowledgement but rarely get implemented — the project deliberately stays small to remain free and unbloated.</p>
+
+        <h3>What I can't help with</h3>
+        <p>I'm not able to give personalised investment advice, tell you what to buy or sell, recover lost portfolios from devices where local storage was cleared without an export, or troubleshoot issues with third-party API providers (Finnhub, Metals.dev) directly — you'll need to contact them about account or rate-limit issues with their service. For the recovery scenario specifically: get into the habit of clicking <em>Export</em> on the main Portfolio page every couple of weeks; it's the only safety net.</p>
+        <div class="callout"><strong>Privacy reminder:</strong> Your message is delivered via Formsubmit and reaches my inbox. We don't add you to any mailing list, and we don't share your address with anyone. See the <a href="privacy.html">Privacy Policy</a> for the full data-handling details.</div>
+    </section>
+
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

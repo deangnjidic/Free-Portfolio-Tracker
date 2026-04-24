@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,12 +28,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>Import Portfolio CSV - Free Portfolio Tracker | Import from Any Broker</title>
     
     <meta name="description" content="Import your portfolio from Robinhood, M1 Finance, Schwab, Fidelity, Coinbase and more. Easy CSV import with auto-detection.">
     <meta name="keywords" content="CSV import, portfolio import, Robinhood import, M1 Finance import, Schwab import">
     <meta name="author" content="Free Portfolio Tracker">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://freeportfoliotracker.com/import-csv.html">
     
     <meta property="og:type" content="website">
@@ -1508,6 +1527,39 @@ NVDA,NVIDIA,5,450.75"></textarea>
         
     })();
     </script>
-    
+
+    <section class="content-block" aria-labelledby="about-import-page">
+        <h2 id="about-import-page">How CSV import works (and why we built it this way)</h2>
+        <p class="lead">CSV import lets you bring in an existing portfolio from a brokerage export, a spreadsheet, or another tracker without retyping every position. The whole process happens entirely in your browser — your file never leaves the device.</p>
+
+        <h3>What kinds of files this accepts</h3>
+        <p>Any plain CSV (comma-separated values) file works as long as it has at least two columns: a symbol/ticker column and a quantity column. Optional columns we'll auto-detect include cost basis, asset type, asset name, and which person owns the holding. Most brokerage exports work out of the box — we ship column-mapping presets for the major US brokers and you can adjust the mapping by hand if your file uses different headers.</p>
+        <p>Excel files (.xlsx) need to be saved as .csv first. In Excel/Numbers/Google Sheets: <em>File → Save As → CSV</em>.</p>
+
+        <h3>Step-by-step walk-through</h3>
+        <ol>
+            <li><strong>Pick your file.</strong> Click <em>Choose File</em> and select your CSV. The app reads it locally; no upload happens.</li>
+            <li><strong>Confirm the column mapping.</strong> The mapping screen shows your file's columns on the left and the app's expected fields on the right. Adjust any mismatches by clicking the dropdowns. Required: symbol, quantity. Optional but recommended: cost basis, asset type.</li>
+            <li><strong>Review the parsed preview.</strong> A sample of rows is rendered exactly as they will be imported. Check three things: tickers look right, quantities are not orders of magnitude off, and asset types match what you expect.</li>
+            <li><strong>Choose merge mode.</strong> &quot;Add to existing&quot; appends the new rows to your current portfolio (with duplicate-detection on ticker + person). &quot;Replace&quot; clears your portfolio first — use only when you really mean to start fresh.</li>
+            <li><strong>Confirm.</strong> The import runs in milliseconds and you're taken back to the main <a href="app.html">Portfolio</a> page where everything is now in place.</li>
+        </ol>
+
+        <h3>Common issues and how to fix them</h3>
+        <ul>
+            <li><strong>Tickers not recognised.</strong> Some brokerages append exchange suffixes (&quot;.US&quot;, &quot;:NYSE&quot;) that Finnhub doesn't expect. Edit the CSV to use plain tickers (AAPL, MSFT, GOOGL) before importing.</li>
+            <li><strong>Quantities in scientific notation.</strong> Excel sometimes saves very small or very large numbers as <code>1.23E+05</code>. Format the column as plain number before exporting to CSV.</li>
+            <li><strong>European decimal separators.</strong> If your CSV uses commas as decimal separators (e.g. <code>1,234</code> meaning 1.234), the parser will misread them. Convert to dots before importing.</li>
+            <li><strong>Crypto symbols.</strong> Use the exchange's standard symbol (BTC, ETH, SOL) rather than display names (Bitcoin, Ether). The app maps these to live-price feeds automatically.</li>
+        </ul>
+
+        <h3>Why we don't store your CSV</h3>
+        <p>Many tracker apps run CSV imports on their servers, which means your historical positions, cost bases, and account structure get logged in a database somewhere. We do the parsing in the browser using JavaScript so the file is read into memory, processed, and discarded — only the resulting portfolio entries are saved (locally, to your browser). It's a small but meaningful privacy difference, and it's why this page works even with no internet connection.</p>
+        <div class="callout"><strong>Backup tip:</strong> Before doing a large import or a &quot;replace&quot; merge, click <em>Export</em> on the main Portfolio page first. That gives you a JSON snapshot you can restore from if anything goes wrong.</div>
+    </section>
+
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,6 +28,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>Terms of Use - Free Portfolio Tracker | Terms and Conditions</title>
     
     <!-- SEO Meta Tags -->
@@ -398,6 +417,8 @@
         </div>
     </div>
 
-    <!-- Cookie Consent System -->
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

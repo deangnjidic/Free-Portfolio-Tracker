@@ -1,0 +1,11 @@
+# robots.txt for Free Portfolio Tracker
+# https://freeportfoliotracker.com/
+
+User-agent: *
+Allow: /
+
+# Disallow backup / source-control files if any leak
+Disallow: /*.backup$
+Disallow: /config.js$
+
+Sitemap: https://freeportfoliotracker.com/sitemap.xml

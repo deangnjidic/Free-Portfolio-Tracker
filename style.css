@@ -1870,3 +1870,278 @@ button, a, input, select, textarea {
         min-height: 50px;
     }
 }
+
+
+/* =====================================================================
+   AdSense / SEO support styles — content blocks, site footer, cookie banner
+   Added for AdSense approval (April 2026)
+   ===================================================================== */
+
+/* Long-form content block placed below tool UI on each page */
+.content-block {
+    max-width: 880px;
+    margin: 40px auto;
+    padding: 32px 28px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    line-height: 1.7;
+    color: #c9d1d9;
+}
+
+.content-block h2 {
+    font-size: 22px;
+    color: #e6edf3;
+    margin: 0 0 16px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 10px;
+}
+
+.content-block h3 {
+    font-size: 17px;
+    color: #58a6ff;
+    margin: 28px 0 10px;
+}
+
+.content-block p {
+    margin: 0 0 14px;
+    font-size: 15px;
+}
+
+.content-block ul,
+.content-block ol {
+    margin: 0 0 16px 22px;
+    padding: 0;
+}
+
+.content-block li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.content-block strong {
+    color: #e6edf3;
+}
+
+.content-block a {
+    color: #58a6ff;
+    text-decoration: underline;
+}
+
+.content-block .lead {
+    font-size: 16px;
+    color: #e6edf3;
+    margin-bottom: 20px;
+}
+
+.content-block .callout {
+    background: #0d1117;
+    border-left: 4px solid #58a6ff;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 18px 0;
+    font-size: 14px;
+    color: #c9d1d9;
+}
+
+@media (max-width: 640px) {
+    .content-block {
+        margin: 24px 12px;
+        padding: 22px 18px;
+    }
+    .content-block h2 { font-size: 19px; }
+    .content-block h3 { font-size: 16px; }
+}
+
+/* ---------------------------------------------------------------------
+   Site footer (injected by footer.js on every page)
+   --------------------------------------------------------------------- */
+
+.site-footer {
+    background: #0d1117;
+    border-top: 1px solid #30363d;
+    margin-top: 60px;
+    padding: 40px 20px 20px;
+    color: #8b949e;
+    font-size: 14px;
+}
+
+.site-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+}
+
+.site-footer-col h4 {
+    color: #e6edf3;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin: 0 0 12px;
+}
+
+.site-footer-col p {
+    margin: 0;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+.site-footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.site-footer-col li {
+    margin-bottom: 8px;
+}
+
+.site-footer-col a {
+    color: #8b949e;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.15s ease;
+}
+
+.site-footer-col a:hover {
+    color: #58a6ff;
+    text-decoration: underline;
+}
+
+.site-footer-bottom {
+    max-width: 1200px;
+    margin: 28px auto 0;
+    padding-top: 18px;
+    border-top: 1px solid #21262d;
+    text-align: center;
+    font-size: 12px;
+    color: #6e7681;
+}
+
+.site-footer-bottom p { margin: 0; }
+
+@media (max-width: 800px) {
+    .site-footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-footer-inner {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   Cookie consent banner (Consent Mode v2)
+   --------------------------------------------------------------------- */
+
+#cookie-consent-banner {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    z-index: 99999;
+    color: #e6edf3;
+}
+
+#cookie-consent-banner .cc-content {
+    padding: 20px 22px;
+}
+
+#cookie-consent-banner .cc-header strong {
+    font-size: 15px;
+    color: #e6edf3;
+}
+
+#cookie-consent-banner .cc-header p {
+    margin: 8px 0 14px;
+    color: #8b949e;
+    font-size: 13.5px;
+    line-height: 1.55;
+}
+
+#cookie-consent-banner .cc-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+#cookie-consent-banner .cc-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #c9d1d9;
+}
+
+#cookie-consent-banner .cc-option input {
+    margin-top: 3px;
+    accent-color: #58a6ff;
+}
+
+#cookie-consent-banner .cc-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+#cookie-consent-banner .cc-btn {
+    border: 1px solid #30363d;
+    background: #21262d;
+    color: #e6edf3;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#cookie-consent-banner .cc-btn:hover {
+    border-color: #58a6ff;
+}
+
+#cookie-consent-banner .cc-btn-primary {
+    background: #238636;
+    border-color: #238636;
+    color: #fff;
+}
+
+#cookie-consent-banner .cc-btn-primary:hover {
+    background: #2ea043;
+    border-color: #2ea043;
+}
+
+#cookie-consent-banner .cc-fineprint {
+    margin: 0;
+    color: #8b949e;
+    font-size: 11.5px;
+    text-align: center;
+}
+
+#cookie-consent-banner .cc-fineprint a {
+    color: #58a6ff;
+}
+
+@media (max-width: 520px) {
+    #cookie-consent-banner .cc-buttons { justify-content: stretch; }
+    #cookie-consent-banner .cc-btn { flex: 1 1 auto; }
+}

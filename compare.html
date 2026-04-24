@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,13 +28,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>Asset Comparison - Free Portfolio Tracker | Compare Investment Performance</title>
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="Compare multiple assets side-by-side. Analyze performance, costs, returns, and holdings across your stocks, crypto, and precious metals investments.">
     <meta name="keywords" content="asset comparison, investment comparison, compare stocks, compare crypto, portfolio analysis, investment performance comparison">
     <meta name="author" content="Free Portfolio Tracker">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://freeportfoliotracker.com/compare.html">
     
     <!-- Open Graph / Facebook -->
@@ -94,9 +113,56 @@
         </div>
     </div>
 
+    <section class="content-block" aria-labelledby="about-compare-page">
+        <h2 id="about-compare-page">How to compare assets like an analyst</h2>
+        <p class="lead">The Compare tool puts two or three of your holdings side by side so you can decide what to keep, what to add to, and what to trim. Numbers in isolation rarely tell a useful story; numbers <em>next to each other</em> do.</p>
+
+        <h3>Why compare assets at all?</h3>
+        <p>It's tempting to look at each holding on its own and judge it as &quot;up&quot; or &quot;down&quot;, but every investment is really competing with the alternatives you could own instead. A 5% gain looks great until you realise the broader market was up 12%; a 10% loss feels devastating until you see the rest of the sector was down 25%. Side-by-side comparison forces you to ask the harder, better question: &quot;Given my limited capital, is <em>this</em> position still the best use of that money compared to what's next to it?&quot;</p>
+
+        <h3>Picking what to compare</h3>
+        <p>Choose 2 or 3 assets from the checklist above. The most useful comparisons usually fall into one of these patterns:</p>
+        <ul>
+            <li><strong>Same sector, different companies</strong> — e.g. two semiconductor stocks, two cloud providers, two large-cap miners. This isolates company-specific factors from broader market moves.</li>
+            <li><strong>Same asset class, different sub-types</strong> — e.g. Bitcoin vs. Ethereum vs. a stablecoin, or gold vs. silver vs. platinum. Useful for thinking about exposure within a niche.</li>
+            <li><strong>Different asset classes you're considering swapping</strong> — e.g. an S&amp;P 500 ETF vs. a precious-metal holding vs. a high-yield savings line. This makes opportunity cost concrete.</li>
+            <li><strong>One holding vs. its &quot;benchmark&quot;</strong> — compare a single stock against a broad ETF you also own to see if your stock-picking effort actually beat just buying the index.</li>
+        </ul>
+
+        <h3>What the metrics mean</h3>
+        <p>For each selected asset, the comparison table calculates:</p>
+        <ul>
+            <li><strong>Current price</strong> — the latest live quote pulled by the app.</li>
+            <li><strong>Quantity held</strong> — combined across both people.</li>
+            <li><strong>Total value</strong> — quantity × current price. The simplest measure of how big the position is in your portfolio.</li>
+            <li><strong>Cost basis</strong> — what you paid (if you entered it). Without this, return calculations are estimates only.</li>
+            <li><strong>Unrealised gain / loss</strong> — current value minus cost basis, in dollars and as a percentage. This is your paper profit or loss; it becomes real only when you sell.</li>
+            <li><strong>% of portfolio</strong> — how big this asset is relative to your overall holdings. Useful for spotting concentration risk.</li>
+        </ul>
+
+        <h3>Reading the price-history chart</h3>
+        <p>Below the metrics table the app draws a price-history line for each asset on a shared time axis. Note that prices are <em>normalised</em> by default in many comparison views — meaning the chart shows percentage change from the starting point rather than absolute dollar values. That's intentional: comparing a $300 stock to a $0.40 token in raw dollars makes the cheaper one look flat even if it doubled. Percentages put both on a fair footing.</p>
+        <p>When two lines diverge sharply over the same period, ask: &quot;What happened around that date?&quot; Earnings, news, regulatory changes, or sector rotations are the usual suspects. The lines won't tell you the cause, but they'll tell you exactly when to start digging.</p>
+
+        <h3>Common comparison mistakes to avoid</h3>
+        <ol>
+            <li><strong>Comparing too short a window.</strong> A week of price action is mostly noise. For long-term holdings, look at 3-month, 1-year, or longer ranges where the underlying signal can show through.</li>
+            <li><strong>Forgetting cost basis.</strong> Two holdings with the same current value can have wildly different gains depending on what you paid. Always enter cost basis when you add an asset; the comparison gets ten times more useful.</li>
+            <li><strong>Ignoring position size.</strong> A 50% gain on a tiny holding moves your net worth less than a 5% gain on a large one. The percentage-of-portfolio column matters as much as the percentage-return column.</li>
+            <li><strong>Comparing apples to oranges.</strong> A growth stock and a stablecoin will <em>never</em> behave alike, so comparing their volatility is meaningless. Make sure the assets you line up are actually competing for the same role in your strategy.</li>
+            <li><strong>Drawing conclusions from one comparison.</strong> Use compare as one input among many — combine it with the broader allocation view on <a href="charts.html">Charts</a> and your historical performance on <a href="history.html">History</a> before acting.</li>
+        </ol>
+
+        <h3>Turning insight into action</h3>
+        <p>If a comparison shows that one of your three picks has consistently underperformed the others over a long period <em>and</em> the original reason you bought it no longer applies, that's a credible signal to trim or exit. Conversely, if a holding has quietly been the best performer of the bunch and the thesis is still intact, you may want to add to it (or at least stop ignoring it). Either way, write your reasoning down somewhere — a note in your password manager, a Notion page, even a sticky note — so future-you knows what past-you was thinking.</p>
+        <div class="callout"><strong>Important:</strong> Side-by-side comparisons are a thinking tool, not a recommendation engine. The app does not know your tax situation, time horizon, income needs, or risk tolerance. Use these numbers as a starting point for your own research and, for anything material, talk to a qualified financial professional.</div>
+    </section>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
     <script src="compare.js"></script>
     
-    <!-- Cookie Consent System -->
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

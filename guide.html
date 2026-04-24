@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,6 +28,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>User Guide - Free Portfolio Tracker | Learn How to Track Your Investments</title>
     
     <!-- SEO Meta Tags -->
@@ -38,6 +57,30 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Track a Two-Person Investment Portfolio with Free Portfolio Tracker",
+      "description": "Step-by-step guide to setting up Free Portfolio Tracker, adding assets across stocks, crypto, metals, and savings, saving snapshots, and backing up your data.",
+      "totalTime": "PT15M",
+      "supply": [
+        { "@type": "HowToSupply", "name": "A modern web browser" },
+        { "@type": "HowToSupply", "name": "A free Finnhub API key (for live stock and crypto prices)" },
+        { "@type": "HowToSupply", "name": "A free Metals.dev API key (optional, for precious metals)" }
+      ],
+      "step": [
+        { "@type": "HowToStep", "name": "First-Time Setup", "text": "Open the app, paste your Finnhub API key into the setup banner, and optionally add a Metals.dev key. Keys are stored only in your browser.", "url": "https://freeportfoliotracker.com/guide.html#setup" },
+        { "@type": "HowToStep", "name": "Add Your First Asset", "text": "Click + Add Asset, choose the asset type (stock, crypto, metal, savings), type the symbol, enter the quantities for each person and an optional cost basis, and save.", "url": "https://freeportfoliotracker.com/guide.html#adding" },
+        { "@type": "HowToStep", "name": "Refresh Live Prices", "text": "Click Refresh Prices to pull the latest quotes from Finnhub and Metals.dev. Totals and percentages update instantly.", "url": "https://freeportfoliotracker.com/guide.html#actions" },
+        { "@type": "HowToStep", "name": "Save a Snapshot", "text": "Open the History page weekly and click Save Snapshot to record your current portfolio value. Snapshots power the long-term performance charts.", "url": "https://freeportfoliotracker.com/guide.html#snapshots" },
+        { "@type": "HowToStep", "name": "Review Your Charts", "text": "Visit the Charts page to see allocation, person comparison, daily gain/loss, cumulative return, and more.", "url": "https://freeportfoliotracker.com/guide.html#charts" },
+        { "@type": "HowToStep", "name": "Back Up Your Data", "text": "Click Export on the Portfolio page to download a JSON backup of every holding and snapshot. Re-import it on any other device or browser.", "url": "https://freeportfoliotracker.com/guide.html#backup" }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="navigation.css">
 
     <script defer src="https://analytics.deangnjidic.com/script.js" data-website-id="448b463f-383c-4769-a9a2-3bbd6a4abd88"></script>
@@ -706,5 +749,8 @@
         </div>
     </footer>
 
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>

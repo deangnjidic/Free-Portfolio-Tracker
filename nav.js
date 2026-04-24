@@ -11,7 +11,9 @@
         { href: 'compare.html', icon: '⚖️', label: 'Compare' },
         { href: 'news.html', icon: '📰', label: 'News' },
         { href: 'import-csv.html', icon: '📥', label: 'Import' },
+        { href: 'guide.html', icon: '📖', label: 'Guide' },
         { href: 'faq.html', icon: '❓', label: 'FAQ' },
+        { href: 'updates.html', icon: '📝', label: 'Updates' },
         { href: 'contact.html', icon: '📬', label: 'Contact' },
         { href: 'about.html', icon: 'ℹ️', label: 'About' }
     ];

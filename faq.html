@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Consent Mode v2 - default DENIED until user accepts (loaded BEFORE GTM/AdSense) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'functionality_storage': 'granted',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('set', 'url_passthrough', true);
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,6 +28,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
+    <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
+            crossorigin="anonymous"></script>
     <title>FAQ - Portfolio Tracker for Couples | Frequently Asked Questions</title>
 
     <meta name="description" content="Answers to common questions about using Portfolio Tracker for Couples — shared portfolios, individual tracking, privacy, API keys, and more.">
@@ -35,6 +54,56 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Free Portfolio Tracker really free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The app is 100% free with no paid tier, no premium features, and no required account. Optional ads on some pages help cover hosting costs but you can opt out via the cookie consent banner." }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is my portfolio data stored?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Everything you enter is stored in your browser's localStorage on the device you are using. There is no backend database. Use the Export button to back up your data to a JSON file you control." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to create an account?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No account is required. Open the site, paste a free Finnhub API key, and start tracking immediately." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do I need an API key?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Live stock, crypto, and metal prices come from third-party providers (Finnhub and Metals.dev). Calling them directly from your browser using your own free key keeps the app serverless and your data private." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I track more than one person's portfolio?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes - the app is built around a two-person model. Each holding has separate quantity columns for Person 1 and Person 2, and totals are shown per person and combined." }
+        },
+        {
+          "@type": "Question",
+          "name": "What asset types are supported?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Stocks, ETFs, cryptocurrencies, precious metals (gold, silver, platinum, palladium), and cash or savings accounts." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I move my portfolio to a new device?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Click Export on the Portfolio page to download a JSON backup, then open the same site on the new device or browser and use Import to load it." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Free Portfolio Tracker give investment advice?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. It is a personal tracking tool only. Nothing in the app is financial, tax, or legal advice. Always confirm critical numbers in your real brokerage and consult a qualified professional for investment decisions." }
+        }
+      ]
+    }
+    </script>
     <link rel="stylesheet" href="navigation.css">
 
     <script defer src="https://analytics.deangnjidic.com/script.js" data-website-id="448b463f-383c-4769-a9a2-3bbd6a4abd88"></script>
@@ -507,5 +576,8 @@
         }
     </script>
 
+    <!-- Cookie Consent System (Consent Mode v2) -->
+    <script src="cookie-consent.js"></script>
+    <script defer src="footer.js"></script>
 </body>
 </html>
