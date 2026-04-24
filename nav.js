@@ -1,10 +1,10 @@
-(function() {
+(() => {
     // Don't inject if nav already exists on the page
     if (document.querySelector('.nav-bar')) return;
 
-    var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    var links = [
+    const links = [
         { href: 'app.html', icon: '💼', label: 'Portfolio' },
         { href: 'history.html', icon: '📈', label: 'History' },
         { href: 'charts.html', icon: '📊', label: 'Charts' },
@@ -18,23 +18,24 @@
         { href: 'about.html', icon: 'ℹ️', label: 'About' }
     ];
 
-    var navHTML = '<nav class="nav-bar"><div class="nav-container">' +
-        '<a href="index.html" class="nav-logo">' +
-        '<img src="favicon.svg" alt="Logo">' +
-        '<span class="nav-logo-text">Free Portfolio Tracker</span>' +
-        '</a><ul class="nav-links">';
+    const linkItems = links.map(({ href, icon, label }) => {
+        const activeClass = currentPage === href ? ' active' : '';
+        return `<li><a href="${href}" class="nav-link${activeClass}"><span class="nav-icon">${icon}</span> ${label}</a></li>`;
+    }).join('');
 
-    for (var i = 0; i < links.length; i++) {
-        var link = links[i];
-        var isActive = currentPage === link.href ? ' active' : '';
-        navHTML += '<li><a href="' + link.href + '" class="nav-link' + isActive + '">' +
-            '<span class="nav-icon">' + link.icon + '</span> ' + link.label + '</a></li>';
-    }
-
-    navHTML += '</ul></div></nav>';
+    const navHTML = `
+        <nav class="nav-bar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-logo">
+                    <img src="favicon.svg" alt="Logo">
+                    <span class="nav-logo-text">Free Portfolio Tracker</span>
+                </a>
+                <ul class="nav-links">${linkItems}</ul>
+            </div>
+        </nav>`;
 
     // Insert nav as first visible element (after any noscript tags)
-    var noscript = document.querySelector('body > noscript');
+    const noscript = document.querySelector('body > noscript');
     if (noscript) {
         noscript.insertAdjacentHTML('afterend', navHTML);
     } else {
