@@ -59,6 +59,12 @@
             box-sizing: border-box;
         }
 
+        .import-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
         h1 {
             font-size: 24px;
             margin-bottom: 10px;
@@ -562,7 +568,8 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
+    <main class="import-container">
     <h1>📥 Import Portfolio</h1>
     <p class="subtitle">Import from Robinhood, M1 Finance, Schwab, Fidelity, Coinbase, and more with auto-detection</p>
     
@@ -1548,6 +1555,7 @@ NVDA,NVIDIA,5,450.75"></textarea>
         <h3>Why we don't store your CSV</h3>
         <p>Many tracker apps run CSV imports on their servers, which means your historical positions, cost bases, and account structure get logged in a database somewhere. We do the parsing in the browser using JavaScript so the file is read into memory, processed, and discarded — only the resulting portfolio entries are saved (locally, to your browser). It's a small but meaningful privacy difference, and it's why this page works even with no internet connection.</p>
         <div class="callout"><strong>Backup tip:</strong> Before doing a large import or a &quot;replace&quot; merge, click <em>Export</em> on the main Portfolio page first. That gives you a JSON snapshot you can restore from if anything goes wrong.</div>
+    </main>
     </section>
 
     <!-- Cookie Consent System (Consent Mode v2) -->
