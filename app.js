@@ -314,6 +314,8 @@
             };
             saveState();
         }
+        // Ensure APP_CONFIG exists even if config.js failed to load (e.g. 404 on hosted site)
+        window.APP_CONFIG = window.APP_CONFIG || {};
         // Override APP_CONFIG with stored API keys
         if (state.settings.apiKeys.FINNHUB_KEY) {
             window.APP_CONFIG.FINNHUB_KEY = state.settings.apiKeys.FINNHUB_KEY;

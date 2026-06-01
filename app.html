@@ -570,8 +570,10 @@
         <p>Free Portfolio Tracker is a personal dashboard, not a trading platform or a financial advisor. We don't execute trades, we don't recommend assets, and the prices you see are reference quotes from third-party APIs that may lag the real market by seconds to minutes. Always confirm critical numbers in your actual brokerage app before making decisions, and treat performance figures as ballpark estimates rather than audited statements. Nothing on this site is financial, tax, or legal advice — it's a tool to help you stay organised. For a deeper walk-through, see the <a href="guide.html">User Guide</a>; for common questions, the <a href="faq.html">FAQ</a>; and for what's changed recently, the <a href="updates.html">Release Notes</a>.</p>
     </section>
 
-    <!-- Load config and app -->
-    <script src="config.js"></script>
+    <!-- Load app. No config script is shipped publicly — users provide their own
+         API keys via the Settings panel (stored in browser localStorage).
+         To self-host with pre-filled keys, copy config.example.js to config.js
+         and add a <script src="config.js"></script> tag above app.js. -->
     <script src="ui-feedback.js"></script>
     <script src="app.js"></script>
     
