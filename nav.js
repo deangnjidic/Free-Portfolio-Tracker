@@ -9,7 +9,6 @@
         { href: 'history.html', icon: '📈', label: 'History' },
         { href: 'charts.html', icon: '📊', label: 'Charts' },
         { href: 'compare.html', icon: '⚖️', label: 'Compare' },
-        { href: 'news.html', icon: '📰', label: 'News' },
         { href: 'import-csv.html', icon: '📥', label: 'Import' },
         { href: 'guide.html', icon: '📖', label: 'Guide' },
         { href: 'faq.html', icon: '❓', label: 'FAQ' },

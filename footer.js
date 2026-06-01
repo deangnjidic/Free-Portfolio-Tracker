@@ -20,7 +20,6 @@
                 <li><a href="history.html">History</a></li>
                 <li><a href="charts.html">Charts</a></li>
                 <li><a href="compare.html">Compare</a></li>
-                <li><a href="news.html">Market News</a></li>
                 <li><a href="import-csv.html">Import CSV</a></li>
               </ul>
             </div>
