@@ -24,7 +24,14 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PWHJ9WLH');</script>
     <!-- End Google Tag Manager -->
-    
+
+    <!-- Google tag (gtag.js) - GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X00WL6B8W3"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-X00WL6B8W3');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-adsense-account" content="ca-pub-1783396140582876">
@@ -1501,9 +1508,9 @@ NVDA,NVIDIA,5,450.75"></textarea>
                 result.style.display = 'block';
                 document.getElementById('confirmImportBtn').disabled = true;
                 
-                // Track successful import
-                if (typeof umami !== 'undefined') {
-                    umami.track('csv_import', {
+                // Track successful import (Google Analytics 4 via gtag.js)
+                if (typeof gtag === 'function') {
+                    gtag('event', 'csv_import', {
                         provider: detectedProvider,
                         assets_added: added,
                         assets_updated: updated,

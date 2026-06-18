@@ -13,7 +13,7 @@
 //
 // Categories:
 //   - necessary       (always on)
-//   - analytics       (Umami is cookie-free, but we still respect this)
+//   - analytics       (Google Analytics 4 via gtag.js — sets cookies only when granted)
 //   - ads             (Google AdSense personalization + ad storage)
 
 (() => {
@@ -93,7 +93,7 @@
                 </label>
                 <label class="cc-option">
                   <input type="checkbox" id="cc-analytics"${checked.analytics ? ' checked' : ''}>
-                  <span><strong>Analytics</strong> — anonymous, cookie-free Umami stats so we can see which pages help users most.</span>
+                  <span><strong>Analytics</strong> — anonymous Google Analytics 4 stats (gtag.js) so we can see which pages help users most.</span>
                 </label>
                 <label class="cc-option">
                   <input type="checkbox" id="cc-ads"${checked.ads ? ' checked' : ''}>
