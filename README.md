@@ -451,14 +451,3 @@ See our [Privacy Policy](privacy.html) for complete details.
 
 Before deploying to production:
 
-1. **Replace Analytics IDs** - See [ANALYTICS-SETUP.md](ANALYTICS-SETUP.md)
-   - Update `GTM-XXXXXXX` with your Google Tag Manager ID (already set to GTM-PWHJ9WLH)
-   - Update `G-XXXXXXXXXX` with your Google Analytics 4 ID
-
-2. **Minify Files** - See [MINIFY-INSTRUCTIONS.md](MINIFY-INSTRUCTIONS.md)
-   - Minify CSS and JavaScript for better performance
-   - Reduces file sizes by 30-50%
-
-3. **Test Everything**
-   - Verify analytics tracking works
-   - Test all features in production environment
