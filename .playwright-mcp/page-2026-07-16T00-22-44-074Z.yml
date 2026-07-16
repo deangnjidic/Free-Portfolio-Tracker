@@ -1,0 +1,230 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link "Logo Free Portfolio Tracker" [ref=e4] [cursor=pointer]:
+        - /url: index.html
+        - img "Logo" [ref=e5]
+        - generic [ref=e6]: Free Portfolio Tracker
+      - list [ref=e7]:
+        - listitem [ref=e8]:
+          - link "💼 Portfolio" [ref=e9] [cursor=pointer]:
+            - /url: app.html
+            - generic [ref=e10]: 💼
+            - text: Portfolio
+        - listitem [ref=e11]:
+          - link "📈 History" [ref=e12] [cursor=pointer]:
+            - /url: history.html
+            - generic [ref=e13]: 📈
+            - text: History
+        - listitem [ref=e14]:
+          - link "📊 Charts" [ref=e15] [cursor=pointer]:
+            - /url: charts.html
+            - generic [ref=e16]: 📊
+            - text: Charts
+        - listitem [ref=e17]:
+          - link "⚖️ Compare" [ref=e18] [cursor=pointer]:
+            - /url: compare.html
+            - generic [ref=e19]: ⚖️
+            - text: Compare
+        - listitem [ref=e20]:
+          - link "📥 Import" [ref=e21] [cursor=pointer]:
+            - /url: import-csv.html
+            - generic [ref=e22]: 📥
+            - text: Import
+        - listitem [ref=e23]:
+          - link "📖 Guide" [ref=e24] [cursor=pointer]:
+            - /url: guide.html
+            - generic [ref=e25]: 📖
+            - text: Guide
+        - listitem [ref=e26]:
+          - link "❓ FAQ" [ref=e27] [cursor=pointer]:
+            - /url: faq.html
+            - generic [ref=e28]: ❓
+            - text: FAQ
+        - listitem [ref=e29]:
+          - link "📝 Updates" [ref=e30] [cursor=pointer]:
+            - /url: updates.html
+            - generic [ref=e31]: 📝
+            - text: Updates
+        - listitem [ref=e32]:
+          - link "📬 Contact" [ref=e33] [cursor=pointer]:
+            - /url: contact.html
+            - generic [ref=e34]: 📬
+            - text: Contact
+        - listitem [ref=e35]:
+          - link "ℹ️ About" [ref=e36] [cursor=pointer]:
+            - /url: about.html
+            - generic [ref=e37]: ℹ️
+            - text: About
+  - generic [ref=e38]:
+    - generic [ref=e39]:
+      - heading "Portfolio Tracker for Couples" [level=1] [ref=e40]
+      - paragraph [ref=e41]: Track shared and individual investments together. A beautiful, privacy-first portfolio tracker for stocks, crypto, and precious metals.
+      - paragraph [ref=e42]: 🔒 No server, no database, no tracking - your data never leaves your device.
+      - generic [ref=e43]:
+        - link "📖 Read Guide" [ref=e44] [cursor=pointer]:
+          - /url: /guide
+        - link "View on GitHub" [ref=e45] [cursor=pointer]:
+          - /url: https://github.com/deangnjidic/Personal-Portfolio-Tracker
+      - link "🚀 Launch App" [ref=e49] [cursor=pointer]:
+        - /url: /app
+      - link "☕ Support on Ko-fi" [ref=e51] [cursor=pointer]:
+        - /url: https://ko-fi.com/dekara
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e54]: 📊
+        - heading "Multi-Asset Support" [level=3] [ref=e55]
+        - paragraph [ref=e56]: Track stocks, cryptocurrencies, precious metals (gold, silver, platinum), and savings accounts all in one place.
+      - generic [ref=e57]:
+        - generic [ref=e58]: 👥
+        - heading "Multi-Person Tracking" [level=3] [ref=e59]
+        - paragraph [ref=e60]: Perfect for couples or joint investments. Track holdings for two people with individual and combined portfolio views.
+      - generic [ref=e61]:
+        - generic [ref=e62]: 📈
+        - heading "Real-Time Prices" [level=3] [ref=e63]
+        - paragraph [ref=e64]: Live price updates from trusted APIs (Finnhub, CoinGecko, Metals.dev) with 24-hour price change tracking.
+      - generic [ref=e65]:
+        - generic [ref=e66]: 🔒
+        - heading "100% Private" [level=3] [ref=e67]
+        - paragraph [ref=e68]: All data stored locally in your browser. No server, no database, no tracking. Your portfolio data never leaves your device.
+      - generic [ref=e69]:
+        - generic [ref=e70]: 💾
+        - heading "Import & Export" [level=3] [ref=e71]
+        - paragraph [ref=e72]: Backup and restore as JSON. Bulk import from M1 Finance CSV or custom CSV files. Never lose your data.
+      - generic [ref=e73]:
+        - generic [ref=e74]: ⚡
+        - heading "Lightning Fast" [level=3] [ref=e75]
+        - paragraph [ref=e76]: Built with vanilla JavaScript. No frameworks, no dependencies. Works offline after initial load.
+    - generic [ref=e77]:
+      - heading "Why Portfolio Tracker?" [level=2] [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e81]: 100%
+          - generic [ref=e82]: Privacy Protected
+        - generic [ref=e83]:
+          - generic [ref=e84]: "0"
+          - generic [ref=e85]: Data Collection
+        - generic [ref=e86]:
+          - generic [ref=e87]: Free
+          - generic [ref=e88]: Forever & Open Source
+        - generic [ref=e89]:
+          - generic [ref=e90]: ∞
+          - generic [ref=e91]: Assets Supported
+    - generic [ref=e92]:
+      - heading "Start Tracking Together — Free, Forever" [level=2] [ref=e93]
+      - paragraph [ref=e94]: No signup, no installation, no hassle. Perfect for couples investing together.
+      - link "Launch Your Shared Portfolio Tracker →" [ref=e95] [cursor=pointer]:
+        - /url: /app
+    - contentinfo [ref=e96]:
+      - paragraph [ref=e97]:
+        - link "GitHub" [ref=e98] [cursor=pointer]:
+          - /url: https://github.com/deangnjidic/Personal-Portfolio-Tracker
+        - text: •
+        - link "Updates" [ref=e99] [cursor=pointer]:
+          - /url: /updates
+        - text: •
+        - link "Documentation" [ref=e100] [cursor=pointer]:
+          - /url: /guide
+        - text: •
+        - link "FAQ" [ref=e101] [cursor=pointer]:
+          - /url: /faq
+        - text: •
+        - link "About" [ref=e102] [cursor=pointer]:
+          - /url: /about
+        - text: •
+        - link "Terms of Use" [ref=e103] [cursor=pointer]:
+          - /url: /terms
+        - text: •
+        - link "Privacy Policy" [ref=e104] [cursor=pointer]:
+          - /url: /privacy
+        - text: •
+        - link "Report Issues" [ref=e105] [cursor=pointer]:
+          - /url: https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues
+      - paragraph [ref=e106]: Licensed under CC BY-NC-SA 4.0 • 100% Privacy-First • Your data never leaves your device
+  - contentinfo [ref=e107]:
+    - generic [ref=e108]:
+      - generic [ref=e109]:
+        - heading "Free Portfolio Tracker" [level=4] [ref=e110]
+        - paragraph [ref=e111]: A free, privacy-first portfolio tracker for stocks, crypto, precious metals, and savings. Your data stays on your device — we never store, sell, or share your holdings.
+      - generic [ref=e112]:
+        - heading "Product" [level=4] [ref=e113]
+        - list [ref=e114]:
+          - listitem [ref=e115]:
+            - link "Portfolio" [ref=e116] [cursor=pointer]:
+              - /url: app.html
+          - listitem [ref=e117]:
+            - link "History" [ref=e118] [cursor=pointer]:
+              - /url: history.html
+          - listitem [ref=e119]:
+            - link "Charts" [ref=e120] [cursor=pointer]:
+              - /url: charts.html
+          - listitem [ref=e121]:
+            - link "Compare" [ref=e122] [cursor=pointer]:
+              - /url: compare.html
+          - listitem [ref=e123]:
+            - link "Import CSV" [ref=e124] [cursor=pointer]:
+              - /url: import-csv.html
+      - generic [ref=e125]:
+        - heading "Learn" [level=4] [ref=e126]
+        - list [ref=e127]:
+          - listitem [ref=e128]:
+            - link "User Guide" [ref=e129] [cursor=pointer]:
+              - /url: guide.html
+          - listitem [ref=e130]:
+            - link "FAQ" [ref=e131] [cursor=pointer]:
+              - /url: faq.html
+          - listitem [ref=e132]:
+            - link "Release Notes" [ref=e133] [cursor=pointer]:
+              - /url: updates.html
+          - listitem [ref=e134]:
+            - link "About" [ref=e135] [cursor=pointer]:
+              - /url: about.html
+      - generic [ref=e136]:
+        - heading "Legal" [level=4] [ref=e137]
+        - list [ref=e138]:
+          - listitem [ref=e139]:
+            - link "Privacy Policy" [ref=e140] [cursor=pointer]:
+              - /url: privacy.html
+          - listitem [ref=e141]:
+            - link "Terms of Service" [ref=e142] [cursor=pointer]:
+              - /url: terms.html
+          - listitem [ref=e143]:
+            - link "Contact" [ref=e144] [cursor=pointer]:
+              - /url: contact.html
+          - listitem [ref=e145]:
+            - link "Cookie Settings" [ref=e146] [cursor=pointer]:
+              - /url: "#"
+    - paragraph [ref=e148]: © 2026 Free Portfolio Tracker. Educational use only — not financial advice. Always do your own research before investing.
+  - dialog "Cookie consent" [ref=e149]:
+    - generic [ref=e150]:
+      - generic [ref=e151]:
+        - strong [ref=e152]: 🍪 Your privacy matters
+        - paragraph [ref=e153]:
+          - text: We use a few optional services to keep this site free. Your portfolio data always stays on
+          - emphasis [ref=e154]: your
+          - text: "device — we never see, store, or share it. Choose what you allow:"
+      - generic [ref=e155]:
+        - generic [ref=e156] [cursor=pointer]:
+          - checkbox "Strictly necessary — required for the site to work (always on)." [checked] [disabled] [ref=e157]
+          - generic [ref=e158]:
+            - strong [ref=e159]: Strictly necessary
+            - text: — required for the site to work (always on).
+        - generic [ref=e160] [cursor=pointer]:
+          - checkbox "Analytics — anonymous Google Analytics 4 stats (gtag.js) so we can see which pages help users most." [ref=e161]
+          - generic [ref=e162]:
+            - strong [ref=e163]: Analytics
+            - text: — anonymous Google Analytics 4 stats (gtag.js) so we can see which pages help users most.
+        - generic [ref=e164] [cursor=pointer]:
+          - checkbox "Advertising — Google AdSense ads (helps fund the project). Personalised in the EEA only with your consent." [ref=e165]
+          - generic [ref=e166]:
+            - strong [ref=e167]: Advertising
+            - text: — Google AdSense ads (helps fund the project). Personalised in the EEA only with your consent.
+      - generic [ref=e168]:
+        - button "Reject all" [ref=e169] [cursor=pointer]
+        - button "Save choices" [ref=e170] [cursor=pointer]
+        - button "Accept all" [ref=e171] [cursor=pointer]
+      - paragraph [ref=e172]:
+        - text: See our
+        - link "Privacy Policy" [ref=e173] [cursor=pointer]:
+          - /url: privacy.html
+        - text: for details. You can change these choices anytime via the "Cookie Settings" link in the footer.
