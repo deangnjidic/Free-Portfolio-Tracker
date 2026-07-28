@@ -11,7 +11,7 @@
           <div class="site-footer-inner">
             <div class="site-footer-col">
               <h4>Free Portfolio Tracker</h4>
-              <p>A free, privacy-first portfolio tracker for stocks, crypto, precious metals, and savings. Your data stays on your device — we never store, sell, or share your holdings.</p>
+              <p>A free, privacy-first portfolio tracker for stocks, crypto, precious metals, and savings. Your data stays on your device — we never store, sell, or share your holdings. Optional ads may appear on supported pages to help fund the project.</p>
             </div>
             <div class="site-footer-col">
               <h4>Product</h4>

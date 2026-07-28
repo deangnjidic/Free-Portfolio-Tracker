@@ -13,8 +13,9 @@ window.APP_CONFIG = {
   // Cache prices for 60 seconds by default
   PRICE_CACHE_TTL_MS: 60_000,
 
-  // Google AdSense publisher ID
-  // Sign up at: https://adsense.google.com
+  // Optional ad-network configuration
+  // Ezoic example: set EZOIC_SITE_ID to your publisher site ID
   // Ads are loaded only after the user accepts cookies via the consent banner
+  EZOIC_SITE_ID: "",
   ADSENSE_CLIENT: "ca-pub-1783396140582876"
 };

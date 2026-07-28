@@ -1,20 +1,17 @@
-// Cookie Consent Manager — Google Consent Mode v2 implementation
+// Cookie Consent Manager — consent-based analytics and ad loading
 // for Free Portfolio Tracker (https://freeportfoliotracker.com)
 //
 // What this does:
 //  1. Reads the user's saved consent (or shows a banner on first visit).
-//  2. Issues `gtag('consent', 'update', ...)` so Google AdSense, GTM, and
-//     any other Google tag respects the user's choice (Consent Mode v2).
-//  3. The Consent Mode *default* (denied) is set inline in the <head> of
-//     every page BEFORE this file loads, so Google tags are blocked
-//     until/unless the user accepts.
+//  2. Applies consent to Google tags and any ad network that respects the same consent model.
+//  3. Keeps third-party scripts blocked until the user grants consent.
 //  4. Exposes window.CookieConsent.openSettings() so a "Cookie Settings"
 //     link in the footer can re-open the banner anytime.
 //
 // Categories:
 //   - necessary       (always on)
 //   - analytics       (Google Analytics 4 via gtag.js — sets cookies only when granted)
-//   - ads             (Google AdSense personalization + ad storage)
+//   - ads             (advertising partners such as Ezoic or AdSense)
 
 (() => {
     'use strict';
@@ -62,6 +59,7 @@
         });
 
         gtag({ event: choice.ads ? 'cookie_consent_granted' : 'cookie_consent_denied' });
+        document.dispatchEvent(new CustomEvent('cookieConsentUpdated', { detail: choice }));
     };
 
     const removeBanner = () => {
@@ -83,21 +81,21 @@
         banner.innerHTML = `
             <div class="cc-content">
               <div class="cc-header">
-                <strong>🍪 Your privacy matters</strong>
-                <p>We use a few optional services to keep this site free. Your portfolio data always stays on <em>your</em> device — we never see, store, or share it. Choose what you allow:</p>
+                <strong>🍪 Your privacy choices</strong>
+                <p>We use a small number of optional services to keep this site free and sustainable. Your portfolio data stays on your device, and you can choose which services you allow below.</p>
               </div>
               <div class="cc-options">
                 <label class="cc-option">
                   <input type="checkbox" checked disabled>
-                  <span><strong>Strictly necessary</strong> — required for the site to work (always on).</span>
+                  <span><strong>Strictly necessary</strong> — required for the site to work and keep your session secure.</span>
                 </label>
                 <label class="cc-option">
                   <input type="checkbox" id="cc-analytics"${checked.analytics ? ' checked' : ''}>
-                  <span><strong>Analytics</strong> — anonymous Google Analytics 4 stats (gtag.js) so we can see which pages help users most.</span>
+                  <span><strong>Analytics</strong> — optional measurement tools so we can understand which pages are most useful.</span>
                 </label>
                 <label class="cc-option">
                   <input type="checkbox" id="cc-ads"${checked.ads ? ' checked' : ''}>
-                  <span><strong>Advertising</strong> — Google AdSense ads (helps fund the project). Personalised in the EEA only with your consent.</span>
+                  <span><strong>Advertising</strong> — optional ad partners such as Ezoic that help fund the project and support free access.</span>
                 </label>
               </div>
               <div class="cc-buttons">
