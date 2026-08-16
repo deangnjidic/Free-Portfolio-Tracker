@@ -4,11 +4,14 @@
 
     let state = null;
     let selectedAssets = [];
+    let priceHistoryChartInstance = null;
+    const chartTheme = window.PortfolioChartTheme.colors;
 
     document.addEventListener('DOMContentLoaded', init);
 
     function init() {
         loadState();
+        window.PortfolioChartTheme.apply();
         renderAssetCheckboxes();
         setupEventListeners();
         
@@ -257,15 +260,26 @@
     }
 
     function renderPriceHistoryChart(assets) {
-        const ctx = document.getElementById('priceHistoryChart');
+        const canvas = document.getElementById('priceHistoryChart');
+        const chartShell = canvas.parentElement;
         
         // Get snapshots
         const snapshots = state.snapshots || [];
         
         if (snapshots.length < 2) {
-            ctx.parentElement.innerHTML = '<p>Not enough historical data. Save more snapshots to see trends.</p>';
+            if (priceHistoryChartInstance) {
+                priceHistoryChartInstance.destroy();
+                priceHistoryChartInstance = null;
+            }
+            canvas.style.display = 'none';
+            if (!chartShell.querySelector('.compare-chart-empty')) {
+                chartShell.insertAdjacentHTML('beforeend', '<p class="chart-empty-state compare-chart-empty">Save at least two snapshots to compare value trends.</p>');
+            }
             return;
         }
+
+        chartShell.querySelector('.compare-chart-empty')?.remove();
+        canvas.style.display = 'block';
 
         // For simplicity, show total value per snapshot (since we don't store per-asset history)
         const labels = snapshots.map(s => new Date(s.timestamp).toLocaleDateString());
@@ -275,7 +289,7 @@
         // We can only show current distribution
         
         const datasets = assets.map((asset, i) => {
-            const colors = ['#58a6ff', '#22c55e', '#ef4444'];
+            const colors = [chartTheme.stock, chartTheme.savings, chartTheme.personOne];
             const cacheKey = `${asset.type}:${asset.symbol}`;
             const currentPrice = state.priceCache.prices[cacheKey] || 0;
             const p1 = asset.holdings?.p1?.qty || 0;
@@ -289,12 +303,20 @@
                 label: asset.name,
                 data: data,
                 borderColor: colors[i],
-                backgroundColor: colors[i] + '20',
-                tension: 0.1
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHitRadius: 12,
+                tension: 0.35
             };
         });
 
-        new Chart(ctx, {
+        if (priceHistoryChartInstance) {
+            priceHistoryChartInstance.destroy();
+        }
+
+        priceHistoryChartInstance = new Chart(canvas.getContext('2d'), {
             type: 'line',
             data: {
                 labels: labels,
@@ -302,25 +324,40 @@
             },
             options: {
                 responsive: true,
+                interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: {
-                        labels: { color: '#e6edf3' }
+                        labels: { padding: 18 }
                     },
                     title: {
-                        display: true,
-                        text: 'Asset Value Over Time (Current Values)',
-                        color: '#e6edf3'
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const value = new Intl.NumberFormat(undefined, {
+                                    style: 'currency',
+                                    currency: state.settings?.baseCurrency || 'USD',
+                                    maximumFractionDigits: 2
+                                }).format(context.parsed.y);
+                                return ` ${context.dataset.label}: ${value}`;
+                            }
+                        }
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { color: '#8b949e' },
-                        grid: { color: '#30363d' }
+                        ticks: {
+                            callback: (value) => window.PortfolioChartTheme.formatCompactCurrency(
+                                value,
+                                state.settings?.baseCurrency || 'USD'
+                            )
+                        }
                     },
                     x: {
-                        ticks: { color: '#8b949e' },
-                        grid: { color: '#30363d' }
+                        ticks: { maxRotation: 45 },
+                        grid: { display: false }
                     }
                 }
             }

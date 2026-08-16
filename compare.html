@@ -64,7 +64,7 @@
     <link rel="stylesheet" href="navigation.css">
     <script defer src="nav.js"></script>
 </head>
-<body>
+<body class="compare-page chart-surface-page">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -73,7 +73,11 @@
     
     <header class="header">
         <div class="header-content">
-            <h1>📊 Asset Comparison</h1>
+            <div class="charts-page-heading">
+                <span class="charts-eyebrow">Side-by-side analysis</span>
+                <h1>Asset Comparison</h1>
+                <p>Compare position size, return, and value trends.</p>
+            </div>
             <div class="header-controls">
                 <button id="backBtn" class="btn btn-secondary">← Back</button>
                 <button onclick="window.location.href='history.html'" class="btn btn-secondary">📈 History</button>
@@ -111,9 +115,9 @@
                 </table>
             </div>
 
-            <div class="compare-section">
-                <h3>Price History</h3>
-                <canvas id="priceHistoryChart"></canvas>
+            <div class="compare-section compare-chart-section">
+                <div class="chart-card-heading"><div><span class="chart-kicker">Trend</span><h3>Price History</h3></div><p>Selected asset values across saved snapshots</p></div>
+                <div class="compare-chart-shell"><canvas id="priceHistoryChart"></canvas></div>
             </div>
         </div>
     </div>
@@ -164,6 +168,7 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+    <script src="chart-theme.js"></script>
     <script src="compare.js"></script>
     
     <!-- Cookie Consent System (Consent Mode v2) -->

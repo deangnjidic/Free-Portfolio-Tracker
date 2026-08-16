@@ -63,9 +63,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="navigation.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="chart-theme.js"></script>
     <script defer src="nav.js"></script>
 </head>
-<body>
+<body class="charts-page">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -75,7 +76,11 @@
     <!-- Header Section -->
     <header class="header">
         <div class="header-content">
-            <h1>Portfolio Charts</h1>
+            <div class="charts-page-heading">
+                <span class="charts-eyebrow">Portfolio analytics</span>
+                <h1>Portfolio Charts</h1>
+                <p>Allocation, performance, and risk at a glance.</p>
+            </div>
             <div class="header-controls">
                 <button onclick="window.location.href='app.html'" class="btn btn-secondary">← Back to Portfolio</button>
                 <button onclick="window.location.href='history.html'" class="btn btn-secondary">📈 History</button>
@@ -84,8 +89,8 @@
     </header>
 
     <!-- Compliance notice: educational visualisation, not financial advice -->
-    <div role="note" aria-label="Disclaimer" style="margin: 16px 20px 0; padding: 12px 16px; background: #161b22; border: 1px solid #30363d; border-left: 4px solid #d29922; border-radius: 6px; color: #c9d1d9; font-size: 13px; line-height: 1.5;">
-        <strong style="color: #d29922;">⚠️ Educational visualisations — not financial advice.</strong>
+    <div class="charts-disclaimer" role="note" aria-label="Disclaimer">
+        <strong>Educational visualisations — not financial advice.</strong>
         These charts illustrate how your tracked holdings are distributed and how their reported values have moved over time. They are not predictions, recommendations, or performance attestations. Past performance shown here does not guarantee future results. Always verify values in your real brokerage and consult a qualified advisor before making investment decisions.
     </div>
 
@@ -93,19 +98,28 @@
     <section class="charts-container">
         <!-- Asset Allocation Pie Chart -->
         <div class="chart-card">
-            <h3>Asset Allocation</h3>
+            <div class="chart-card-heading">
+                <div><span class="chart-kicker">Allocation</span><h3>Asset Allocation</h3></div>
+                <p>Share of total portfolio value</p>
+            </div>
             <canvas id="assetAllocationChart"></canvas>
         </div>
 
         <!-- Person Comparison Bar Chart -->
         <div class="chart-card">
-            <h3 id="personComparisonTitle">John vs Maria by Asset Type</h3>
+            <div class="chart-card-heading">
+                <div><span class="chart-kicker">Ownership</span><h3 id="personComparisonTitle">John vs Maria by Asset Type</h3></div>
+                <p>Holdings grouped by person</p>
+            </div>
             <canvas id="personComparisonChart"></canvas>
         </div>
 
         <!-- Total Value by Asset Type -->
         <div class="chart-card">
-            <h3>Portfolio Breakdown</h3>
+            <div class="chart-card-heading">
+                <div><span class="chart-kicker">Exposure</span><h3>Portfolio Breakdown</h3></div>
+                <p>Total value by asset class</p>
+            </div>
             <canvas id="breakdownChart"></canvas>
         </div>
     </section>
@@ -114,7 +128,7 @@
     <section class="charts-container">
         <div class="chart-card">
             <div class="chart-card-header">
-                <h3>📅 Daily Gain / Loss</h3>
+                <div class="chart-card-heading"><div><span class="chart-kicker">Performance</span><h3>Daily Gain / Loss</h3></div><p>Change between saved snapshots</p></div>
                 <div class="chart-filter-bar">
                     <button class="chart-filter-btn" data-chart="daily" data-filter="7d">7D</button>
                     <button class="chart-filter-btn" data-chart="daily" data-filter="30d">30D</button>
@@ -126,7 +140,7 @@
             <canvas id="dailyGainLossChart" style="display:none;"></canvas>
         </div>
         <div class="chart-card">
-            <h3>🏦 Savings vs Invested</h3>
+            <div class="chart-card-heading"><div><span class="chart-kicker">Balance</span><h3>Savings vs Invested</h3></div><p>Cash reserves and market exposure</p></div>
             <canvas id="savingsInvestedChart"></canvas>
         </div>
     </section>
@@ -135,7 +149,7 @@
     <section class="charts-container">
         <div class="chart-card">
             <div class="chart-card-header">
-                <h3>📦 Portfolio Composition Over Time</h3>
+                <div class="chart-card-heading"><div><span class="chart-kicker">History</span><h3>Composition Over Time</h3></div><p>How allocation changes with each snapshot</p></div>
                 <div class="chart-filter-bar">
                     <button class="chart-filter-btn" data-chart="composition" data-filter="7d">7D</button>
                     <button class="chart-filter-btn" data-chart="composition" data-filter="30d">30D</button>
@@ -148,7 +162,7 @@
         </div>
         <div class="chart-card">
             <div class="chart-card-header">
-                <h3>📈 Cumulative Return (%)</h3>
+                <div class="chart-card-heading"><div><span class="chart-kicker">Return</span><h3>Cumulative Return</h3></div><p>Change from the selected period's start</p></div>
                 <div class="chart-filter-bar">
                     <button class="chart-filter-btn" data-chart="cumulative" data-filter="7d">7D</button>
                     <button class="chart-filter-btn" data-chart="cumulative" data-filter="30d">30D</button>
@@ -164,7 +178,7 @@
     <!-- New Charts Row 3: Asset Scatter (full width) -->
     <section class="charts-container">
         <div class="chart-card chart-card-full">
-            <h3>🔵 Asset Performance Scatter (Today's % Change vs Value)</h3>
+            <div class="chart-card-heading"><div><span class="chart-kicker">Risk map</span><h3>Asset Performance Scatter</h3></div><p>Today's percentage change compared with position value</p></div>
             <div id="scatterEmpty" class="chart-empty-state">Refresh prices on the portfolio page to see the scatter chart.</div>
             <canvas id="scatterChart" style="display:none;"></canvas>
         </div>
@@ -173,74 +187,15 @@
     <!-- Top/Bottom Performers Section -->
     <section class="performers-section">
         <div class="performers-card">
-            <h3>📈 Top 5 Performers</h3>
+            <div class="chart-card-heading"><div><span class="chart-kicker positive">Leaders</span><h3>Top 5 Performers</h3></div><p>Strongest current price movement</p></div>
             <div id="topPerformers" class="performers-list"></div>
         </div>
         <div class="performers-card">
-            <h3>📉 Bottom 5 Performers</h3>
+            <div class="chart-card-heading"><div><span class="chart-kicker negative">Laggards</span><h3>Bottom 5 Performers</h3></div><p>Weakest current price movement</p></div>
             <div id="bottomPerformers" class="performers-list"></div>
         </div>
     </section>
 
-    <style>
-        /* Chart Filter Bar (shared) */
-        .chart-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .chart-card-header h3 {
-            margin: 0 !important;
-        }
-
-        .chart-filter-bar {
-            display: flex;
-            gap: 5px;
-        }
-
-        .chart-filter-btn {
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid #30363d;
-            background: #0d1117;
-            color: #8b949e;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            letter-spacing: 0.3px;
-        }
-
-        .chart-filter-btn:hover {
-            border-color: #58a6ff;
-            color: #58a6ff;
-        }
-
-        .chart-filter-btn.active {
-            background: #1f6feb;
-            border-color: #1f6feb;
-            color: #ffffff;
-        }
-
-        .chart-empty-state {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 160px;
-            color: #8b949e;
-            font-size: 14px;
-            font-style: italic;
-            text-align: center;
-            padding: 20px;
-        }
-        .chart-card-full {
-            grid-column: 1 / -1;
-        }
-    </style>
     <section class="content-block" aria-labelledby="about-charts-page">
         <h2 id="about-charts-page">How to read these charts</h2>
         <p class="lead">The Charts page turns the rows in your portfolio table into something you can absorb at a glance. Pie slices, bar groups, lines, and scatter points each answer a different question about your investments. Here's what each chart is showing and how to use it to make better decisions about your money.</p>

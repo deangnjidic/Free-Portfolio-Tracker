@@ -38,6 +38,15 @@
     let cumulativeChartInstance = null;
     let compositionChartInstance = null;
 
+    const chartTheme = window.PortfolioChartTheme.colors;
+
+    function formatCompactCurrency(value) {
+        return window.PortfolioChartTheme.formatCompactCurrency(
+            value,
+            state.settings?.baseCurrency || 'USD'
+        );
+    }
+
     // Shared snapshot range filter
     function filterSnapshotsByRange(snapshots, filter) {
         if (!snapshots || snapshots.length === 0) return snapshots;
@@ -58,6 +67,7 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
+        window.PortfolioChartTheme.apply();
         createCharts();
         
         // Track page view
@@ -158,12 +168,12 @@
 
         // Chart colors
         const colors = {
-            stock: '#3b82f6',
-            crypto: '#f59e0b',
-            metal: '#8b5cf6',
-            savings: '#10b981',
-            john: '#ef4444',
-            maria: '#06b6d4'
+            stock: chartTheme.stock,
+            crypto: chartTheme.crypto,
+            metal: chartTheme.metal,
+            savings: chartTheme.savings,
+            john: chartTheme.personOne,
+            maria: chartTheme.personTwo
         };
 
         // 1. Asset Allocation Pie Chart
@@ -185,17 +195,25 @@
                         colors.metal,
                         colors.savings
                     ],
-                    borderColor: '#161b22',
-                    borderWidth: 2
+                    borderColor: chartTheme.surface,
+                    borderWidth: 3,
+                    hoverBorderWidth: 3,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: true,
+                cutout: '72%',
                 plugins: {
+                    doughnutCenter: {
+                        display: true,
+                        text: formatCompactCurrency(totals.combined.value),
+                        subtext: 'TOTAL VALUE'
+                    },
                     legend: {
                         position: 'bottom',
-                        labels: { color: '#e6edf3', padding: 15 }
+                        labels: { padding: 16 }
                     },
                     tooltip: {
                         callbacks: {
@@ -249,20 +267,17 @@
                 maintainAspectRatio: true,
                 scales: {
                     x: { 
-                        ticks: { color: '#e6edf3' },
-                        grid: { color: '#30363d' }
+                        grid: { display: false }
                     },
                     y: { 
                         ticks: { 
-                            color: '#e6edf3',
                             callback: (value) => '$' + value.toLocaleString()
-                        },
-                        grid: { color: '#30363d' }
+                        }
                     }
                 },
                 plugins: {
                     legend: {
-                        labels: { color: '#e6edf3' }
+                        labels: { padding: 16 }
                     },
                     tooltip: {
                         callbacks: {
@@ -293,8 +308,8 @@
                         colors.metal,
                         colors.savings
                     ],
-                    borderColor: '#161b22',
-                    borderWidth: 1
+                    borderColor: chartTheme.surface,
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -304,14 +319,11 @@
                 scales: {
                     x: { 
                         ticks: { 
-                            color: '#e6edf3',
                             callback: (value) => '$' + value.toLocaleString()
-                        },
-                        grid: { color: '#30363d' }
+                        }
                     },
                     y: { 
-                        ticks: { color: '#e6edf3' },
-                        grid: { color: '#30363d' }
+                        grid: { display: false }
                     }
                 },
                 plugins: {
@@ -364,8 +376,8 @@
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
         );
         const values = sliced.map(s => parseFloat((s.changeFromPrevious || 0).toFixed(2)));
-        const bgColors = values.map(v => v >= 0 ? 'rgba(63,185,80,0.75)' : 'rgba(248,81,73,0.75)');
-        const borderColors = values.map(v => v >= 0 ? '#3fb950' : '#f85149');
+        const bgColors = values.map(v => v >= 0 ? 'rgba(52, 211, 153, 0.72)' : 'rgba(251, 113, 133, 0.72)');
+        const borderColors = values.map(v => v >= 0 ? chartTheme.positive : chartTheme.negative);
 
         emptyEl.style.display = 'none';
         canvas.style.display = 'block';
@@ -379,8 +391,8 @@
                     data: values,
                     backgroundColor: bgColors,
                     borderColor: borderColors,
-                    borderWidth: 1,
-                    borderRadius: 4
+                    borderWidth: 0,
+                    borderRadius: 6
                 }]
             },
             options: {
@@ -388,11 +400,6 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1c2128',
-                        borderColor: '#30363d',
-                        borderWidth: 1,
-                        titleColor: '#e6edf3',
-                        bodyColor: '#8b949e',
                         callbacks: {
                             label: ctx => {
                                 const v = ctx.parsed.y;
@@ -402,13 +409,11 @@
                     }
                 },
                 scales: {
-                    x: { ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
+                    x: { ticks: { maxRotation: 45 }, grid: { display: false } },
                     y: {
                         ticks: {
-                            color: '#8b949e', font: { size: 11 },
                             callback: v => (v >= 0 ? '+' : '') + '$' + v.toLocaleString()
-                        },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        }
                     }
                 }
             }
@@ -427,21 +432,24 @@
                 labels: ['Market-Exposed (Stocks + Crypto + Metals)', 'Savings'],
                 datasets: [{
                     data: [invested, savings],
-                    backgroundColor: ['#3b82f6', '#10b981'],
-                    borderColor: '#161b22',
-                    borderWidth: 2
+                    backgroundColor: [chartTheme.stock, chartTheme.savings],
+                    borderColor: chartTheme.surface,
+                    borderWidth: 3,
+                    hoverBorderWidth: 3,
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
+                cutout: '72%',
                 plugins: {
-                    legend: { position: 'bottom', labels: { color: '#8b949e', font: { size: 12 }, padding: 14 } },
+                    doughnutCenter: {
+                        display: true,
+                        text: formatCompactCurrency(invested + savings),
+                        subtext: 'TOTAL VALUE'
+                    },
+                    legend: { position: 'bottom', labels: { padding: 16 } },
                     tooltip: {
-                        backgroundColor: '#1c2128',
-                        borderColor: '#30363d',
-                        borderWidth: 1,
-                        titleColor: '#e6edf3',
-                        bodyColor: '#8b949e',
                         callbacks: {
                             label: ctx => {
                                 const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
@@ -489,26 +497,24 @@
             data: {
                 labels,
                 datasets: [
-                    { label: 'Stocks',  data: snapshots.map(s => s.byType?.stock   || 0), backgroundColor: '#3b82f6', borderRadius: 2 },
-                    { label: 'Crypto',  data: snapshots.map(s => s.byType?.crypto  || 0), backgroundColor: '#f59e0b', borderRadius: 2 },
-                    { label: 'Metals',  data: snapshots.map(s => s.byType?.metal   || 0), backgroundColor: '#8b5cf6', borderRadius: 2 },
-                    { label: 'Savings', data: snapshots.map(s => s.byType?.savings || 0), backgroundColor: '#10b981', borderRadius: 2 }
+                    { label: 'Stocks',  data: snapshots.map(s => s.byType?.stock   || 0), backgroundColor: chartTheme.stock },
+                    { label: 'Crypto',  data: snapshots.map(s => s.byType?.crypto  || 0), backgroundColor: chartTheme.crypto },
+                    { label: 'Metals',  data: snapshots.map(s => s.byType?.metal   || 0), backgroundColor: chartTheme.metal },
+                    { label: 'Savings', data: snapshots.map(s => s.byType?.savings || 0), backgroundColor: chartTheme.savings }
                 ]
             },
             options: {
                 responsive: true,
                 interaction: { mode: 'index' },
                 plugins: {
-                    legend: { labels: { color: '#8b949e', font: { size: 12 } } },
+                    legend: { labels: { padding: 16 } },
                     tooltip: {
-                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
-                        titleColor: '#e6edf3', bodyColor: '#8b949e',
                         callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString('en-US', { minimumFractionDigits: 2 })}` }
                     }
                 },
                 scales: {
-                    x: { stacked: true, ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
-                    y: { stacked: true, ticks: { color: '#8b949e', font: { size: 11 }, callback: v => '$' + v.toLocaleString() }, grid: { color: 'rgba(48,54,61,0.6)' } }
+                    x: { stacked: true, ticks: { maxRotation: 45 }, grid: { display: false } },
+                    y: { stacked: true, ticks: { callback: v => '$' + v.toLocaleString() } }
                 }
             }
         });
@@ -546,10 +552,14 @@
         const data = filtered.map(s =>
             base > 0 ? parseFloat((((s.totalValue - base) / base) * 100).toFixed(2)) : 0
         );
-        const borderColor = data[data.length - 1] >= 0 ? '#3fb950' : '#f85149';
-        const bgColor = data[data.length - 1] >= 0 ? 'rgba(63,185,80,0.08)' : 'rgba(248,81,73,0.08)';
+        const isPositive = data[data.length - 1] >= 0;
+        const borderColor = isPositive ? chartTheme.positive : chartTheme.negative;
+        const context = canvas.getContext('2d');
+        const bgColor = context.createLinearGradient(0, 0, 0, 280);
+        bgColor.addColorStop(0, isPositive ? 'rgba(52, 211, 153, 0.22)' : 'rgba(251, 113, 133, 0.22)');
+        bgColor.addColorStop(1, isPositive ? 'rgba(52, 211, 153, 0)' : 'rgba(251, 113, 133, 0)');
 
-        cumulativeChartInstance = new Chart(canvas.getContext('2d'), {
+        cumulativeChartInstance = new Chart(context, {
             type: 'line',
             data: {
                 labels,
@@ -558,11 +568,12 @@
                     data,
                     borderColor,
                     backgroundColor: bgColor,
-                    borderWidth: 2.5,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHitRadius: 12,
                     fill: true,
-                    tension: 0.3
+                    tension: 0.35
                 }]
             },
             options: {
@@ -571,16 +582,13 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
-                        titleColor: '#e6edf3', bodyColor: '#8b949e',
                         callbacks: { label: ctx => ` ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%` }
                     }
                 },
                 scales: {
-                    x: { ticks: { color: '#8b949e', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(48,54,61,0.6)' } },
+                    x: { ticks: { maxRotation: 45 }, grid: { display: false } },
                     y: {
-                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        ticks: { callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' }
                     }
                 }
             }
@@ -618,11 +626,12 @@
                 datasets: [{
                     label: 'Assets',
                     data: points,
-                    backgroundColor: points.map(p => p.x >= 0 ? 'rgba(63,185,80,0.75)' : 'rgba(248,81,73,0.75)'),
-                    borderColor: points.map(p => p.x >= 0 ? '#3fb950' : '#f85149'),
-                    borderWidth: 1,
-                    pointRadius: 7,
-                    pointHoverRadius: 10
+                    backgroundColor: points.map(p => p.x >= 0 ? 'rgba(52, 211, 153, 0.72)' : 'rgba(251, 113, 133, 0.72)'),
+                    borderColor: points.map(p => p.x >= 0 ? chartTheme.positive : chartTheme.negative),
+                    borderWidth: 1.5,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    pointHitRadius: 12
                 }]
             },
             options: {
@@ -630,8 +639,6 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#1c2128', borderColor: '#30363d', borderWidth: 1,
-                        titleColor: '#e6edf3', bodyColor: '#8b949e',
                         callbacks: {
                             label: ctx => {
                                 const p = ctx.raw;
@@ -646,14 +653,12 @@
                 },
                 scales: {
                     x: {
-                        title: { display: true, text: "Today's Change (%)", color: '#8b949e' },
-                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => v + '%' },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        title: { display: true, text: "Today's Change (%)", color: chartTheme.subtle, padding: 8 },
+                        ticks: { callback: v => v + '%' }
                     },
                     y: {
-                        title: { display: true, text: 'Total Value ($)', color: '#8b949e' },
-                        ticks: { color: '#8b949e', font: { size: 11 }, callback: v => '$' + v.toLocaleString() },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        title: { display: true, text: 'Total Value ($)', color: chartTheme.subtle, padding: 8 },
+                        ticks: { callback: v => '$' + v.toLocaleString() }
                     }
                 }
             }

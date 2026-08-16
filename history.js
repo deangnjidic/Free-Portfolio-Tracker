@@ -3,6 +3,7 @@
     'use strict';
 
     let state = null;
+    const chartTheme = window.PortfolioChartTheme.colors;
 
     document.addEventListener('DOMContentLoaded', init);
 
@@ -11,6 +12,7 @@
 
     function init() {
         loadState();
+        window.PortfolioChartTheme.apply();
         initializeAPIKeys();
         setupEventListeners();
         render();
@@ -519,40 +521,47 @@
         const totalData  = snapshots.map(s => parseFloat(s.totalValue.toFixed(2)));
         const p1Data     = snapshots.map(s => parseFloat((s.p1Value || 0).toFixed(2)));
         const p2Data     = snapshots.map(s => parseFloat((s.p2Value || 0).toFixed(2)));
+        const historyContext = canvas.getContext('2d');
+        const totalGradient = historyContext.createLinearGradient(0, 0, 0, 320);
+        totalGradient.addColorStop(0, 'rgba(96, 165, 250, 0.22)');
+        totalGradient.addColorStop(1, 'rgba(96, 165, 250, 0)');
 
         const datasets = [
             {
                 label: 'Combined Total',
                 data: totalData,
-                borderColor: '#58a6ff',
-                backgroundColor: 'rgba(88,166,255,0.08)',
-                borderWidth: 2.5,
-                pointRadius: 4,
-                pointHoverRadius: 6,
+                borderColor: chartTheme.stock,
+                backgroundColor: totalGradient,
+                borderWidth: 2,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHitRadius: 12,
                 fill: true,
-                tension: 0.3
+                tension: 0.35
             },
             {
                 label: personLabels[0],
                 data: p1Data,
-                borderColor: '#3fb950',
-                backgroundColor: 'rgba(63,185,80,0.06)',
+                borderColor: chartTheme.savings,
+                backgroundColor: 'transparent',
                 borderWidth: 2,
-                pointRadius: 3,
-                pointHoverRadius: 5,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHitRadius: 12,
                 fill: false,
-                tension: 0.3
+                tension: 0.35
             },
             {
                 label: personLabels[1],
                 data: p2Data,
-                borderColor: '#d29922',
-                backgroundColor: 'rgba(210,153,34,0.06)',
+                borderColor: chartTheme.crypto,
+                backgroundColor: 'transparent',
                 borderWidth: 2,
-                pointRadius: 3,
-                pointHoverRadius: 5,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHitRadius: 12,
                 fill: false,
-                tension: 0.3
+                tension: 0.35
             }
         ];
 
@@ -563,11 +572,11 @@
             historyChartInstance.data.datasets[1].label = personLabels[0];
             historyChartInstance.data.datasets[2].data = p2Data;
             historyChartInstance.data.datasets[2].label = personLabels[1];
-            historyChartInstance.update();
+            historyChartInstance.update('none');
             return;
         }
 
-        historyChartInstance = new Chart(canvas, {
+        historyChartInstance = new Chart(historyContext, {
             type: 'line',
             data: { labels, datasets },
             options: {
@@ -575,14 +584,9 @@
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
                     legend: {
-                        labels: { color: '#8b949e', font: { size: 13 } }
+                        labels: { padding: 18 }
                     },
                     tooltip: {
-                        backgroundColor: '#1c2128',
-                        borderColor: '#30363d',
-                        borderWidth: 1,
-                        titleColor: '#e6edf3',
-                        bodyColor: '#8b949e',
                         callbacks: {
                             label: function(ctx) {
                                 return ` ${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}`;
@@ -592,16 +596,13 @@
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#8b949e', maxRotation: 45, font: { size: 11 } },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        ticks: { maxRotation: 45 },
+                        grid: { display: false }
                     },
                     y: {
                         ticks: {
-                            color: '#8b949e',
-                            font: { size: 11 },
                             callback: (v) => formatCurrency(v)
-                        },
-                        grid: { color: 'rgba(48,54,61,0.6)' }
+                        }
                     }
                 }
             }

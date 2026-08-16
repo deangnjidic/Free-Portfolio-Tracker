@@ -818,26 +818,165 @@ button, a, input, select, textarea {
 }
 
 /* Charts Page */
+.charts-page,
+.chart-surface-page {
+    --chart-surface: #18181b;
+    --chart-border: #2a2a2e;
+    --chart-border-hover: #3f3f46;
+    --chart-muted: #a1a1aa;
+    --chart-subtle: #71717a;
+    --chart-accent: #60a5fa;
+    background: #09090b;
+}
+
+.charts-page .header,
+.chart-surface-page .header {
+    background: #18181b;
+    border-color: var(--chart-border);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.28);
+}
+
+.charts-page .header-content,
+.chart-surface-page .header-content { margin-bottom: 0; }
+
+.charts-page-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.charts-page-heading h1 {
+    color: #fafafa;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+}
+
+.charts-page-heading p {
+    color: var(--chart-muted);
+    font-size: 13px;
+}
+
+.charts-eyebrow,
+.chart-kicker {
+    color: var(--chart-accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.charts-disclaimer {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    background: rgba(39, 39, 42, 0.58);
+    border: 1px solid var(--chart-border);
+    border-radius: 10px;
+    color: var(--chart-muted);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.charts-disclaimer strong {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
 .charts-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
 .chart-card {
-    background: #161b22;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--chart-surface);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    border: 1px solid #30363d;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.24);
+    border: 1px solid var(--chart-border);
+    contain: paint;
 }
 
 .chart-card h3 {
-    font-size: 16px;
+    margin: 1px 0 0;
+    color: #f4f4f5;
+    font-size: 15px;
     font-weight: 600;
-    color: #e6edf3;
-    margin-bottom: 15px;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+}
+
+.chart-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.chart-card-heading > div { min-width: 0; }
+
+.chart-card-heading > p {
+    max-width: 190px;
+    color: var(--chart-subtle);
+    font-size: 11px;
+    line-height: 1.45;
+    text-align: right;
+}
+
+.chart-kicker.positive { color: #34d399; }
+.chart-kicker.negative { color: #fb7185; }
+
+.chart-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.chart-card-header .chart-card-heading { margin-bottom: 0; }
+
+.chart-filter-bar {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: #0f0f12;
+    border: 1px solid var(--chart-border);
+    border-radius: 9px;
+}
+
+.chart-filter-btn {
+    min-width: 36px;
+    padding: 5px 8px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: var(--chart-subtle);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.03em;
+}
+
+.chart-filter-btn:hover { color: #e4e4e7; }
+
+.chart-filter-btn.active {
+    background: #27272a;
+    color: #fafafa;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+
+.chart-filter-btn:focus-visible {
+    outline: 2px solid var(--chart-accent);
+    outline-offset: 2px;
 }
 
 .chart-card-wide {
@@ -845,35 +984,203 @@ button, a, input, select, textarea {
 }
 
 .chart-card canvas {
-    max-height: 300px;
+    display: block;
+    width: 100% !important;
+    max-height: 290px;
 }
 
 .chart-card-wide canvas {
     max-height: 400px;
 }
 
+.chart-card-full { grid-column: 1 / -1; }
+
+.chart-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: 24px;
+    background: #131316;
+    border: 1px dashed #333338;
+    border-radius: 10px;
+    color: var(--chart-subtle);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .charts-page { padding-left: 12px; padding-right: 12px; }
+    .chart-card,
+    .performers-card { padding: 16px; border-radius: 12px; }
+    .chart-card-heading { gap: 10px; }
+    .chart-card-heading > p { display: none; }
+    .chart-card-header { align-items: stretch; }
+    .chart-card-header .chart-card-heading { width: 100%; }
+    .chart-filter-bar { width: 100%; }
+    .chart-filter-btn { flex: 1; }
+    .chart-empty-state { min-height: 180px; }
+}
+
+/* Shared chart treatment on History and Compare */
+.history-page .history-chart-card,
+.compare-page .compare-selector,
+.compare-page .compare-section {
+    background: var(--chart-surface);
+    border: 1px solid var(--chart-border);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.24);
+    contain: paint;
+}
+
+.history-page .history-chart-card { padding: 20px; }
+
+.history-page .chart-header {
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.history-page .chart-header .chart-card-heading { margin-bottom: 0; }
+
+.history-page .chart-header h2 {
+    margin: 1px 0 0 !important;
+    color: #f4f4f5;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+}
+
+.history-page .chart-filter-bar {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: #0f0f12;
+    border: 1px solid var(--chart-border);
+    border-radius: 9px;
+}
+
+.history-page .chart-filter-btn {
+    min-width: 36px;
+    padding: 5px 8px;
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    color: var(--chart-subtle);
+    font-size: 10px;
+}
+
+.history-page .chart-filter-btn:hover { color: #e4e4e7; }
+
+.history-page .chart-filter-btn.active {
+    background: #27272a;
+    border: 0;
+    color: #fafafa;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+
+.history-page #historyChartWrapper,
+.compare-chart-shell {
+    position: relative;
+    min-height: 300px;
+}
+
+.history-page #historyChart,
+.compare-chart-shell canvas {
+    display: block;
+    width: 100% !important;
+    max-height: 360px;
+}
+
+.history-page .history-chart-empty,
+.compare-chart-empty {
+    min-height: 240px;
+    height: auto;
+    background: #131316;
+    border: 1px dashed #333338;
+    border-radius: 10px;
+    color: var(--chart-subtle);
+    font-size: 12px;
+    font-style: normal;
+}
+
+.compare-page .compare-selector,
+.compare-page .compare-section { padding: 20px; }
+
+.compare-page .compare-section h3 {
+    color: #f4f4f5;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+.compare-page .compare-chart-section .chart-card-heading { margin-bottom: 18px; }
+
+.compare-page .asset-checkbox-item {
+    background: rgba(9,9,11,0.68);
+    border-color: var(--chart-border);
+    border-radius: 9px;
+}
+
+.compare-page .asset-checkbox-item:hover { border-color: var(--chart-border-hover); }
+
+@media (max-width: 640px) {
+    .history-page .history-chart-card,
+    .compare-page .compare-selector,
+    .compare-page .compare-section { padding: 16px; border-radius: 12px; }
+    .history-page .chart-header { align-items: stretch; }
+    .history-page .chart-filter-bar { width: 100%; }
+    .history-page .chart-filter-btn { flex: 1; }
+    .history-page #historyChartWrapper,
+    .compare-chart-shell { min-height: 240px; }
+}
+
 /* Performers Section */
 .performers-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
 }
 
 .performers-card {
-    background: #161b22;
+    background: var(--chart-surface);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    border: 1px solid #30363d;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.24);
+    border: 1px solid var(--chart-border);
+    contain: paint;
 }
 
 .performers-card h3 {
-    font-size: 16px;
+    margin: 1px 0 0;
+    font-size: 15px;
     font-weight: 600;
-    color: #e6edf3;
-    margin-bottom: 15px;
+    color: #f4f4f5;
+    letter-spacing: -0.015em;
 }
+
+.performers-card .chart-card-heading { margin-bottom: 16px; }
+
+.charts-page .performer-item {
+    padding: 12px 14px;
+    background: rgba(9, 9, 11, 0.68);
+    border-color: var(--chart-border);
+    border-radius: 9px;
+    gap: 16px;
+}
+
+.charts-page .performer-item:hover {
+    background: rgba(39, 39, 42, 0.72);
+}
+
+.charts-page .performer-name { color: #f4f4f5; }
+
+.charts-page .performer-symbol,
+.charts-page .performer-quantity { color: var(--chart-muted); }
+
+.charts-page .performer-type { color: var(--chart-subtle); }
 
 .performers-list {
     display: flex;
@@ -1873,7 +2180,7 @@ button, a, input, select, textarea {
 
 
 /* =====================================================================
-   AdSense / SEO support styles — content blocks, site footer, cookie banner
+   AdSense / SEO support styles â€” content blocks, site footer, cookie banner
    Added for AdSense approval (April 2026)
    ===================================================================== */
 
@@ -1888,6 +2195,19 @@ button, a, input, select, textarea {
     line-height: 1.7;
     color: #c9d1d9;
 }
+
+.charts-page .content-block {
+    background: rgba(24, 24, 27, 0.68);
+    border-color: var(--chart-border);
+    color: var(--chart-muted);
+}
+
+.charts-page .content-block h2 {
+    border-bottom-color: var(--chart-border);
+    color: #f4f4f5;
+}
+
+.charts-page .content-block h3 { color: var(--chart-accent); }
 
 .content-block h2 {
     font-size: 22px;
