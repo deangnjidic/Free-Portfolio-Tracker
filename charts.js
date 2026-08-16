@@ -178,6 +178,7 @@
 
         // 1. Asset Allocation Pie Chart
         const assetCtx = document.getElementById('assetAllocationChart').getContext('2d');
+        const assetAllocationColors = ['#3b82f6', colors.crypto, colors.metal, colors.savings];
         new Chart(assetCtx, {
             type: 'doughnut',
             data: {
@@ -189,12 +190,8 @@
                         totals.byType.metal,
                         totals.byType.savings
                     ],
-                    backgroundColor: [
-                        colors.stock,
-                        colors.crypto,
-                        colors.metal,
-                        colors.savings
-                    ],
+                    backgroundColor: assetAllocationColors,
+                    hoverBackgroundColor: assetAllocationColors,
                     borderColor: chartTheme.surface,
                     borderWidth: 3,
                     hoverBorderWidth: 3,
@@ -217,6 +214,14 @@
                     },
                     tooltip: {
                         callbacks: {
+                            labelColor: function(context) {
+                                const color = assetAllocationColors[context.dataIndex];
+                                return {
+                                    backgroundColor: color,
+                                    borderColor: color,
+                                    borderWidth: 0
+                                };
+                            },
                             label: function(context) {
                                 const value = context.parsed;
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);

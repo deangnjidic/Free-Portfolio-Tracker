@@ -21,7 +21,7 @@
 
     const doughnutCenterPlugin = {
         id: 'doughnutCenter',
-        afterDraw(chart, args, options) {
+        afterDatasetsDraw(chart, args, options) {
             if (!options?.display || chart.config.type !== 'doughnut') return;
             const { ctx, chartArea } = chart;
             if (!chartArea) return;
