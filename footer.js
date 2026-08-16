@@ -1,17 +1,15 @@
-// Site-wide footer injector. Adds a consistent footer with content + policy links
-// to every page so reviewers (and users) can find Privacy, Terms, About, Contact,
-// Guide, FAQ, Updates from anywhere on the site.
+// Shared footer for application and information pages.
 (() => {
-    if (document.querySelector('.site-footer')) return;
+    if (document.querySelector('.site-footer') || document.querySelector('.home-footer')) return;
 
     const year = new Date().getFullYear();
-
     const html = `
         <footer class="site-footer" role="contentinfo">
           <div class="site-footer-inner">
             <div class="site-footer-col">
               <h4>Free Portfolio Tracker</h4>
-              <p>A free, privacy-first portfolio tracker for stocks, crypto, precious metals, and savings. Your data stays on your device — we never store, sell, or share your holdings. Optional ads may appear on supported pages to help fund the project.</p>
+              <p>A free, local-first tracker for individual and joint stocks, crypto, precious metals, and savings. Portfolio holdings stay in your browser.</p>
+              <a class="site-footer-support" href="https://ko-fi.com/dekara" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
             </div>
             <div class="site-footer-col">
               <h4>Product</h4>
@@ -43,7 +41,7 @@
             </div>
           </div>
           <div class="site-footer-bottom">
-            <p>&copy; ${year} Free Portfolio Tracker. Educational use only — not financial advice. Always do your own research before investing.</p>
+            <p>&copy; ${year} Free Portfolio Tracker. Educational use only — not financial advice.</p>
           </div>
         </footer>`;
 
@@ -51,11 +49,9 @@
 
     const settingsLink = document.getElementById('open-cookie-settings');
     if (settingsLink) {
-        settingsLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (window.CookieConsent?.openSettings) {
-                window.CookieConsent.openSettings();
-            }
+        settingsLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (window.CookieConsent?.openSettings) window.CookieConsent.openSettings();
         });
     }
 })();

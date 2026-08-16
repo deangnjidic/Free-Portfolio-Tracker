@@ -5,7 +5,7 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ["John", "Maria"]
+            people: ["Person 1", "Person 2", "Combined Investments"]
         },
         assets: [],
         priceCache: {
@@ -22,6 +22,13 @@
         if (stored) {
             try {
                 state = JSON.parse(stored);
+                state.settings = state.settings || {};
+                const people = Array.isArray(state.settings.people) ? state.settings.people : [];
+                state.settings.people = [people[0] || 'Person 1', people[1] || 'Person 2', people[2] || 'Combined Investments'];
+                (state.assets || []).forEach(asset => {
+                    asset.holdings = asset.holdings || {};
+                    asset.holdings.p3 = asset.holdings.p3 || { qty: 0, avgCost: 0, dividend: 0 };
+                });
             } catch (e) {
                 console.error('Failed to parse stored data:', e);
             }
@@ -32,6 +39,8 @@
     let activeDailyFilter = 'all';
     let activeCumulativeFilter = 'all';
     let activeCompositionFilter = 'all';
+    let currentOwnerFilter = localStorage.getItem('portfolio_owner_filter') || 'all';
+    if (!['all', 'p1', 'p2', 'p3'].includes(currentOwnerFilter)) currentOwnerFilter = 'all';
 
     // Chart instances for re-renderable charts
     let dailyChartInstance = null;
@@ -45,6 +54,33 @@
             value,
             state.settings?.baseCurrency || 'USD'
         );
+    }
+
+    function getCompactOwnerLabel(name) {
+        return name === 'Combined Investments' ? 'Joint' : name;
+    }
+
+    function getActiveOwnerLabel() {
+        if (currentOwnerFilter === 'all') return 'TOTAL VALUE';
+        return getCompactOwnerLabel(state.settings.people[Number(currentOwnerFilter.slice(1)) - 1]).toUpperCase();
+    }
+
+    function getAssetQuantity(asset) {
+        if (currentOwnerFilter !== 'all') return asset.holdings?.[currentOwnerFilter]?.qty || 0;
+        return (asset.holdings?.p1?.qty || 0) + (asset.holdings?.p2?.qty || 0) + (asset.holdings?.p3?.qty || 0);
+    }
+
+    function getSnapshotValue(snapshot) {
+        if (currentOwnerFilter === 'all') return snapshot.totalValue || 0;
+        return snapshot[`${currentOwnerFilter}Value`] || 0;
+    }
+
+    function getSnapshotTypeValue(snapshot, type) {
+        if (currentOwnerFilter === 'all') return snapshot.byType?.[type] || 0;
+        if (!snapshot.assets?.length) return 0;
+        return snapshot.assets
+            .filter(asset => asset.type === type)
+            .reduce((sum, asset) => sum + (asset[`${currentOwnerFilter}Value`] || 0), 0);
     }
 
     // Shared snapshot range filter
@@ -67,6 +103,15 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         loadState();
+        const ownerFilter = document.getElementById('ownerFilter');
+        ownerFilter.options[1].textContent = state.settings.people[0];
+        ownerFilter.options[2].textContent = state.settings.people[1];
+        ownerFilter.options[3].textContent = getCompactOwnerLabel(state.settings.people[2]);
+        ownerFilter.value = currentOwnerFilter;
+        ownerFilter.addEventListener('change', event => {
+            localStorage.setItem('portfolio_owner_filter', event.target.value);
+            window.location.reload();
+        });
         window.PortfolioChartTheme.apply();
         createCharts();
         
@@ -114,6 +159,7 @@
         const totals = {
             p1: { value: 0 },
             p2: { value: 0 },
+            p3: { value: 0 },
             combined: { value: 0 },
             byType: {
                 stock: 0,
@@ -132,6 +178,12 @@
                 crypto: 0,
                 metal: 0,
                 savings: 0
+            },
+            p3ByType: {
+                stock: 0,
+                crypto: 0,
+                metal: 0,
+                savings: 0
             }
         };
 
@@ -141,18 +193,25 @@
 
             const p1Value = asset.holdings.p1.qty * price;
             const p2Value = asset.holdings.p2.qty * price;
+            const p3Value = (asset.holdings.p3?.qty || 0) * price;
             
             totals.p1.value += p1Value;
             totals.p2.value += p2Value;
+            totals.p3.value += p3Value;
             
             if (totals.byType[asset.type] !== undefined) {
-                totals.byType[asset.type] += p1Value + p2Value;
+                totals.byType[asset.type] += p1Value + p2Value + p3Value;
                 totals.p1ByType[asset.type] += p1Value;
                 totals.p2ByType[asset.type] += p2Value;
+                totals.p3ByType[asset.type] += p3Value;
             }
         });
 
-        totals.combined.value = totals.p1.value + totals.p2.value;
+        totals.combined.value = totals.p1.value + totals.p2.value + totals.p3.value;
+        if (currentOwnerFilter !== 'all') {
+            totals.byType = { ...totals[`${currentOwnerFilter}ByType`] };
+            totals.combined.value = totals[currentOwnerFilter].value;
+        }
         return totals;
     }
 
@@ -163,7 +222,7 @@
         // Update person comparison title
         const comparisonTitle = document.getElementById('personComparisonTitle');
         if (comparisonTitle) {
-            comparisonTitle.textContent = `${state.settings.people[0]} vs ${state.settings.people[1]} by Asset Type`;
+            comparisonTitle.textContent = 'Ownership by Asset Type';
         }
 
         // Chart colors
@@ -206,7 +265,7 @@
                     doughnutCenter: {
                         display: true,
                         text: formatCompactCurrency(totals.combined.value),
-                        subtext: 'TOTAL VALUE'
+                        subtext: getActiveOwnerLabel()
                     },
                     legend: {
                         position: 'bottom',
@@ -264,8 +323,20 @@
                         backgroundColor: colors.maria,
                         borderColor: colors.maria,
                         borderWidth: 1
+                    },
+                    {
+                        label: getCompactOwnerLabel(state.settings.people[2]),
+                        data: [
+                            totals.p3ByType.stock,
+                            totals.p3ByType.crypto,
+                            totals.p3ByType.metal,
+                            totals.p3ByType.savings
+                        ],
+                        backgroundColor: chartTheme.personThree,
+                        borderColor: chartTheme.personThree,
+                        borderWidth: 1
                     }
-                ]
+                ].filter((dataset, index) => currentOwnerFilter === 'all' || currentOwnerFilter === `p${index + 1}`)
             },
             options: {
                 responsive: true,
@@ -380,7 +451,10 @@
         const labels = sliced.map(s =>
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
         );
-        const values = sliced.map(s => parseFloat((s.changeFromPrevious || 0).toFixed(2)));
+        const values = sliced.map((snapshot, index) => {
+            const previous = filtered[index];
+            return parseFloat((getSnapshotValue(snapshot) - getSnapshotValue(previous)).toFixed(2));
+        });
         const bgColors = values.map(v => v >= 0 ? 'rgba(52, 211, 153, 0.72)' : 'rgba(251, 113, 133, 0.72)');
         const borderColors = values.map(v => v >= 0 ? chartTheme.positive : chartTheme.negative);
 
@@ -451,7 +525,7 @@
                     doughnutCenter: {
                         display: true,
                         text: formatCompactCurrency(invested + savings),
-                        subtext: 'TOTAL VALUE'
+                        subtext: getActiveOwnerLabel()
                     },
                     legend: { position: 'bottom', labels: { padding: 16 } },
                     tooltip: {
@@ -477,7 +551,10 @@
 
         if (compositionChartInstance) { compositionChartInstance.destroy(); compositionChartInstance = null; }
 
-        const snapshots = filterSnapshotsByRange(allSnapshots, activeCompositionFilter);
+        const rangedSnapshots = filterSnapshotsByRange(allSnapshots, activeCompositionFilter);
+        const snapshots = currentOwnerFilter === 'all'
+            ? rangedSnapshots
+            : rangedSnapshots.filter(snapshot => snapshot.assets?.length);
 
         if (snapshots.length < 2) {
             canvas.style.display = 'none';
@@ -485,7 +562,9 @@
             if (activeCompositionFilter !== 'all' && allSnapshots.length >= 2) {
                 emptyEl.textContent = `No snapshots found for the ${filterLabel}.`;
             } else {
-                emptyEl.textContent = 'Save at least 2 snapshots to see composition over time.';
+                emptyEl.textContent = currentOwnerFilter === 'all'
+                    ? 'Save at least 2 snapshots to see composition over time.'
+                    : 'Save 2 new snapshots to see owner composition over time.';
             }
             return;
         }
@@ -502,10 +581,10 @@
             data: {
                 labels,
                 datasets: [
-                    { label: 'Stocks',  data: snapshots.map(s => s.byType?.stock   || 0), backgroundColor: chartTheme.stock },
-                    { label: 'Crypto',  data: snapshots.map(s => s.byType?.crypto  || 0), backgroundColor: chartTheme.crypto },
-                    { label: 'Metals',  data: snapshots.map(s => s.byType?.metal   || 0), backgroundColor: chartTheme.metal },
-                    { label: 'Savings', data: snapshots.map(s => s.byType?.savings || 0), backgroundColor: chartTheme.savings }
+                    { label: 'Stocks',  data: snapshots.map(s => getSnapshotTypeValue(s, 'stock')), backgroundColor: chartTheme.stock },
+                    { label: 'Crypto',  data: snapshots.map(s => getSnapshotTypeValue(s, 'crypto')), backgroundColor: chartTheme.crypto },
+                    { label: 'Metals',  data: snapshots.map(s => getSnapshotTypeValue(s, 'metal')), backgroundColor: chartTheme.metal },
+                    { label: 'Savings', data: snapshots.map(s => getSnapshotTypeValue(s, 'savings')), backgroundColor: chartTheme.savings }
                 ]
             },
             options: {
@@ -550,12 +629,12 @@
         canvas.style.display = 'block';
 
         // Base is always the first snapshot in the filtered window
-        const base = filtered[0].totalValue;
+        const base = getSnapshotValue(filtered[0]);
         const labels = filtered.map(s =>
             new Date(s.timestamp).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: '2-digit' })
         );
         const data = filtered.map(s =>
-            base > 0 ? parseFloat((((s.totalValue - base) / base) * 100).toFixed(2)) : 0
+            base > 0 ? parseFloat((((getSnapshotValue(s) - base) / base) * 100).toFixed(2)) : 0
         );
         const isPositive = data[data.length - 1] >= 0;
         const borderColor = isPositive ? chartTheme.positive : chartTheme.negative;
@@ -612,7 +691,7 @@
             const price = state.priceCache.prices?.[cacheKey] || 0;
             const changePct = state.priceCache.changePercents?.[cacheKey];
             if (price > 0 && changePct !== undefined && changePct !== null) {
-                const qty = (asset.holdings?.p1?.qty || 0) + (asset.holdings?.p2?.qty || 0);
+                const qty = getAssetQuantity(asset);
                 const value = qty * price;
                 if (value > 0) {
                     points.push({ x: parseFloat(changePct.toFixed(2)), y: parseFloat(value.toFixed(2)), label: asset.symbol });
@@ -681,9 +760,7 @@
 
             if (currentPrice && changePercent !== undefined && changePercent !== null) {
                 // Calculate total quantity and value
-                const p1Qty = asset.holdings?.p1?.qty || 0;
-                const p2Qty = asset.holdings?.p2?.qty || 0;
-                const totalQty = p1Qty + p2Qty;
+                const totalQty = getAssetQuantity(asset);
                 const totalValue = totalQty * currentPrice;
 
                 performers.push({

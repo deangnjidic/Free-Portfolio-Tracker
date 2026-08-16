@@ -60,10 +60,10 @@
     <meta name="twitter:description" content="Track your investment growth over time with detailed historical snapshots.">
     <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=9">
     <link rel="stylesheet" href="navigation.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="chart-theme.js?v=2"></script>
+    <script src="chart-theme.js?v=5"></script>
 
     <style>
         /* Transaction Log Styles */
@@ -321,9 +321,15 @@
                 <p>Track snapshots, growth, and daily movement.</p>
             </div>
             <div class="header-controls">
-                <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Prices</button>
-                <button id="saveSnapshotBtn" class="btn btn-success">💾 Save Snapshot</button>
-                <button id="clearHistoryBtn" class="btn btn-danger">🗑️ Clear History</button>
+                <label class="owner-filter-control" for="ownerFilter"><span>View</span><select id="ownerFilter" aria-label="Filter history by owner"><option value="all">Total Portfolio</option><option value="p1">Person 1</option><option value="p2">Person 2</option><option value="p3">Joint</option></select></label>
+                <button id="refreshBtn" class="btn btn-secondary">Refresh Prices</button>
+                <button id="saveSnapshotBtn" class="btn btn-primary">Save Snapshot</button>
+                <details class="more-menu">
+                    <summary class="btn btn-secondary" aria-label="More history actions">•••</summary>
+                    <div class="more-menu-panel">
+                        <button id="clearHistoryBtn" class="danger-menu-item">Clear all history</button>
+                    </div>
+                </details>
             </div>
         </div>
         <div class="header-status">
@@ -334,6 +340,29 @@
         </div>
     </header>
 
+    <section class="history-overview" aria-label="History summary">
+        <article class="history-overview-primary">
+            <span>Current value</span>
+            <strong id="currentValue">$0.00</strong>
+            <small id="currentValueNote">No snapshots yet</small>
+        </article>
+        <article>
+            <span>Total change</span>
+            <strong id="totalChange">$0.00 (0%)</strong>
+            <small>Since first snapshot</small>
+        </article>
+        <article>
+            <span>Since last snapshot</span>
+            <strong id="lastChange">$0.00 (0%)</strong>
+            <small id="lastChangeNote">Waiting for another snapshot</small>
+        </article>
+        <article>
+            <span>Snapshots</span>
+            <strong id="snapshotMetric">0</strong>
+            <small id="snapshotMetricNote">Start your timeline</small>
+        </article>
+    </section>
+
     <!-- Portfolio Growth Chart -->
     <section class="history-chart-section">
         <div class="history-chart-card">
@@ -343,6 +372,7 @@
                     <button class="chart-filter-btn" data-filter="7d">7D</button>
                     <button class="chart-filter-btn" data-filter="30d">30D</button>
                     <button class="chart-filter-btn" data-filter="ytd">YTD</button>
+                    <button class="chart-filter-btn" data-filter="1y">1Y</button>
                     <button class="chart-filter-btn active" data-filter="all">All</button>
                 </div>
             </div>
@@ -353,19 +383,14 @@
         </div>
     </section>
 
-    <!-- History Stats -->
-    <section class="history-stats">
-        <div class="stat-card">
-            <span class="stat-label">Current Value</span>
-            <span class="stat-value" id="currentValue">$0.00</span>
-        </div>
+    <section class="history-secondary-stats" aria-label="Period highlights">
         <div class="stat-card">
             <span class="stat-label">First Snapshot</span>
             <span class="stat-value" id="firstValue">$0.00</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Total Gain/Loss</span>
-            <span class="stat-value" id="totalChange">$0.00 (0%)</span>
+            <span class="stat-label">Estimated Contributions</span>
+            <span class="stat-value" id="estimatedContributions">$0.00</span>
         </div>
         <div class="stat-card">
             <span class="stat-label">Best Day</span>
@@ -379,22 +404,28 @@
 
     <!-- History Table -->
     <section class="history-table-container">
+        <div class="history-table-heading">
+            <div>
+                <span class="chart-kicker">Snapshot log</span>
+                <h2>Portfolio history</h2>
+            </div>
+            <p>Select a row to see allocation and activity.</p>
+        </div>
         <table class="holdings-table">
             <thead>
                 <tr>
                     <th>Date/Time</th>
-                    <th>Total Value</th>
-                    <th>Change ($)</th>
-                    <th>Change (%)</th>
-                    <th>Assets Up</th>
-                    <th>Assets Down</th>
-                    <th>Total Assets</th>
+                    <th id="historyValueHeader">Total Value</th>
+                    <th>Change</th>
+                    <th id="historyHeader1">Person 1</th>
+                    <th id="historyHeader2">Person 2</th>
+                    <th id="historyHeader3">Joint</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="historyTableBody">
                 <tr>
-                    <td colspan="8" style="text-align: center; padding: 40px; color: #8b949e;">
+                    <td colspan="7" class="history-empty-cell">
                         No snapshots saved yet. Go to the main portfolio page and click "Save Snapshot" to start tracking your portfolio history.
                     </td>
                 </tr>
@@ -402,51 +433,17 @@
         </table>
     </section>
 
-    <section class="content-block" aria-labelledby="about-history-page">
-        <h2 id="about-history-page">Why a personal portfolio history matters</h2>
-        <p class="lead">The History page is where Free Portfolio Tracker turns from a snapshot tool into a long-term record. By saving the state of your portfolio at regular intervals, you build a personal performance dataset that no brokerage app can give you in one place — because no single brokerage holds <em>all</em> of your assets.</p>
-
-        <h3>What a snapshot actually captures</h3>
-        <p>When you click <strong>Save Snapshot</strong>, the app records the date, time, and the value of every holding in your portfolio at that moment, plus the totals per person and per asset class. Snapshots are stored in your browser's local storage alongside your portfolio itself, so they never leave your device. Each snapshot is a frozen photograph of your net worth that you can come back to weeks, months, or years later.</p>
-
-        <h3>How often should you save one?</h3>
-        <p>For most people, a weekly cadence is the sweet spot. Daily snapshots create more noise than signal — markets move enough in 24 hours that the day-to-day chart becomes a roller-coaster — and monthly snapshots leave gaps that hide important short-term moves. A weekend snapshot, taken after the markets close on Friday or any time on Saturday/Sunday, gives you a clean weekly cadence, avoids intraday volatility, and only takes about 30 seconds.</p>
-        <p>If you're going through a particularly active period — adding new positions, rebalancing, or watching a thesis play out — feel free to snapshot more often. The app doesn't limit how many you can keep, and you can delete individual entries from the table below if any get cluttered.</p>
-
-        <h3>Reading the Portfolio Value Over Time chart</h3>
-        <p>The line chart at the top plots your total portfolio value across every snapshot you've saved. The 7D / 30D / YTD / All filters let you zoom into recent activity or step back to see the full arc. A few things to look for:</p>
-        <ul>
-            <li><strong>Slope direction.</strong> Steady upward slope = you're either adding capital, gaining on price, or both. Flat = you're staying even, which during a bull market may actually be a sign of under-allocation. Downward = combination of withdrawals and/or losses.</li>
-            <li><strong>Step-ups.</strong> Sudden vertical jumps usually mean you added cash or a new position. They aren't &quot;performance&quot;; they're contributions. Try to mentally subtract them when judging returns.</li>
-            <li><strong>Smoothness.</strong> A smooth line generally means your allocation is on the conservative side. A jagged line means high-volatility assets dominate. Neither is right or wrong — but the chart tells the truth about your real risk profile, regardless of what you tell yourself.</li>
-        </ul>
-
-        <h3>The stat cards explained</h3>
-        <ul>
-            <li><strong>Current Value</strong> — the total of your most recent snapshot.</li>
-            <li><strong>First Snapshot</strong> — the value when you started tracking. This is your personal baseline; everything else is measured against it.</li>
-            <li><strong>Total Gain/Loss</strong> — the dollar and percentage change from your first snapshot to now. Note: this includes both market performance and any cash you've added or withdrawn, so treat it as a net worth indicator rather than a pure return on investment.</li>
-            <li><strong>Best Day / Worst Day</strong> — the largest single-day jump up and the largest drop, with their dates. Great for context when markets feel scary: that 4% red day will probably look like a small blip a year from now.</li>
-        </ul>
-
-        <h3>The history table</h3>
-        <p>Below the chart is the raw record. Each row is one snapshot with the date, total value, dollar change since the previous snapshot, percentage change, count of assets up vs. down on that snapshot, and a delete action. Sorting and scanning this table is the fastest way to find anomalies — for example, a snapshot where 80% of assets were down at once usually corresponds to a broad market event worth remembering.</p>
-
-        <h3>What about transactions?</h3>
-        <p>The transaction toggle on each row expands a sub-list showing what changed in your portfolio between that snapshot and the previous one — assets added, removed, or with quantity changes. This is the closest thing to a journaling feature in the app: it answers the question &quot;what did I actually <em>do</em> last quarter?&quot; without requiring you to keep a separate trade log. If you ever forget whether you bought into a position before or after a news event, the transaction history will tell you.</p>
-
-        <h3>Common questions about history tracking</h3>
-        <ol>
-            <li><strong>&quot;Will I lose my history if I clear my cache?&quot;</strong> Yes — local storage is browser-managed. Use Export on the main Portfolio page periodically to back up the full data file, and Import on a new device to restore it.</li>
-            <li><strong>&quot;Can I import historical prices to backfill?&quot;</strong> Not directly — the app records the value at the moment you click Save. Going forward, set a calendar reminder so the dataset grows organically.</li>
-            <li><strong>&quot;What's a healthy gain?&quot;</strong> There's no universal answer; it depends on your asset mix, market conditions, and time horizon. As a rough yardstick, a globally diversified equity portfolio has historically returned around 7–9% per year before inflation over multi-decade periods. Anything wildly above that probably means high concentration in a hot trend; anything wildly below probably means too much cash drag for the era you're in.</li>
-            <li><strong>&quot;Why is my percentage return different from what my brokerage shows?&quot;</strong> Because Free Portfolio Tracker measures snapshot-to-snapshot value change, not money-weighted return. Brokerages typically use IRR or time-weighted return, which adjust for the timing of contributions. Both are valid — they answer different questions.</li>
-        </ol>
-        <div class="callout"><strong>Backup reminder:</strong> Snapshots are stored in this browser only. From the main <a href="app.html">Portfolio</a> page, click <em>Export</em> every few weeks to download your full data file, including history, and keep it somewhere safe.</div>
-    </section>
+    <details class="content-block history-about">
+        <summary id="about-history-page">About this page</summary>
+        <div class="history-about-content app-page-help-content">
+            <p>Snapshots record portfolio value, ownership totals, and allocation at a point in time. Select any table row to inspect its breakdown and holding activity.</p>
+            <p><strong>History is stored locally.</strong> Export your portfolio regularly so browser-data removal cannot erase your snapshots.</p>
+            <div class="app-help-links"><a href="guide.html">Read snapshot guidance</a><a href="faq.html">View FAQ</a></div>
+        </div>
+    </details>
 
     <!-- config.js is optional and gitignored; history.js handles missing APP_CONFIG. -->
-    <script src="history.js"></script>
+    <script src="history.js?v=7"></script>
     
     <!-- Cookie Consent System (Consent Mode v2) -->
     <script src="cookie-consent.js"></script>

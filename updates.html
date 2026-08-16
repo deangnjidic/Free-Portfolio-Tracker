@@ -41,7 +41,7 @@
     <title>Updates & Changelog - Free Portfolio Tracker | Latest Features & Improvements</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Stay updated with the latest features, improvements, and bug fixes for Free Portfolio Tracker. View our complete changelog and release history.">
+    <meta name="description" content="Free Portfolio Tracker 2.0 introduces Joint ownership, owner filters, redesigned dashboards and charts, richer history, and automatic backup reminders.">
     <meta name="keywords" content="portfolio tracker updates, changelog, new features, software updates, release notes, version history">
     <meta name="author" content="Free Portfolio Tracker">
     <meta name="robots" content="index, follow">
@@ -51,19 +51,19 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freeportfoliotracker.com/updates.html">
     <meta property="og:title" content="Updates & Changelog - Free Portfolio Tracker">
-    <meta property="og:description" content="Latest features, improvements, and updates to Free Portfolio Tracker.">
+    <meta property="og:description" content="Version 2.0 adds Joint ownership, owner filters, redesigned dashboards, improved charts, and automatic backup reminders.">
     <meta property="og:image" content="https://freeportfoliotracker.com/icon-192.png">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Updates & Changelog - Free Portfolio Tracker">
-    <meta name="twitter:description" content="Latest features, improvements, and updates to Free Portfolio Tracker.">
+    <meta name="twitter:description" content="Version 2.0 adds Joint ownership, owner filters, redesigned dashboards, improved charts, and automatic backup reminders.">
     <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=9">
     <link rel="stylesheet" href="navigation.css">
     <script defer src="nav.js"></script>
 
@@ -244,6 +244,48 @@
         <div class="updates-header">
             <h1>📋 What's New</h1>
             <p>Latest features, improvements, and bug fixes for Free Portfolio Tracker</p>
+        </div>
+
+        <!-- v2.0 -->
+        <div class="update-card" style="border-color: #60a5fa; box-shadow: 0 10px 32px rgba(37, 99, 235, 0.12);">
+            <div class="update-header">
+                <span class="update-version" style="padding: 5px 10px; background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 7px; color: #fff; font-size: 16px;">v2.0.0</span>
+                <span class="update-date">August 16, 2026</span>
+            </div>
+            <div class="update-section new">
+                <h3>✨ Three-Way Ownership</h3>
+                <ul class="update-list">
+                    <li><strong>Joint holdings</strong> — every asset can now be assigned to Person 1, Person 2, or Joint, while Total Portfolio remains the calculated household total</li>
+                    <li><strong>Shared owner filters</strong> — switch between Total Portfolio and individual ownership views across Portfolio, Charts, History, and Compare</li>
+                    <li><strong>Complete data support</strong> — Joint holdings are included in snapshots, transactions, comparisons, charts, JSON backups, and CSV imports</li>
+                </ul>
+            </div>
+            <div class="update-section changed">
+                <h3>🎨 Dashboard &amp; Chart Redesign</h3>
+                <ul class="update-list">
+                    <li><strong>Compact Portfolio dashboard</strong> — denser holdings, clearer ownership totals, a segmented allocation overview, and collapsible detail panels</li>
+                    <li><strong>Modern chart system</strong> — consistent card styling, tooltips, colors, legends, filters, empty states, and improved rendering performance</li>
+                    <li><strong>Redesigned History</strong> — full-width value chart, compact metrics, owner-aware values, expandable snapshots, allocation details, and holding activity</li>
+                    <li><strong>Unified application shell</strong> — consistent headers, actions, spacing, owner controls, and responsive behavior across functional pages</li>
+                    <li><strong>Cleaner page endings</strong> — long instructional articles were replaced with compact About disclosures linking to the Guide and FAQ</li>
+                </ul>
+            </div>
+            <div class="update-section new">
+                <h3>🛡️ Data Safety</h3>
+                <ul class="update-list">
+                    <li><strong>Automatic backup reminders</strong> — receive a reminder after seven days without an initial export and whenever the latest backup becomes 30 days old</li>
+                    <li><strong>Export tracking and snooze</strong> — completed exports reset the reminder, while Remind Me Later postpones it for seven days</li>
+                </ul>
+            </div>
+            <div class="update-section fixed">
+                <h3>🔧 Fixes</h3>
+                <ul class="update-list">
+                    <li>Removed chart jitter and slow scrolling caused by unnecessary animation and redraw work</li>
+                    <li>Fixed Asset Allocation tooltip opacity, stacking, and overlap with the chart center value</li>
+                    <li>Removed obsolete hard-coded owner identifiers and standardized neutral Person 1 / Person 2 defaults</li>
+                    <li>Improved cache handling so redesigned scripts and styles load reliably after updates</li>
+                </ul>
+            </div>
         </div>
 
         <!-- v1.40 -->

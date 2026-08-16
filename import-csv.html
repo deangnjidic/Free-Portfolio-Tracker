@@ -57,7 +57,7 @@
     <meta name="twitter:description" content="Import your portfolio from any major broker.">
     <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=9">
     <style>
         * {
             box-sizing: border-box;
@@ -564,19 +564,263 @@
             }
         }
     </style>
+    <style>
+        /* Import workflow V2 */
+        .import-page .import-container {
+            max-width: 1200px;
+            padding: 0 0 42px;
+        }
+
+        .steps-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 3px 0 10px;
+        }
+
+        .steps-heading strong { color: #d4d4d8; font-size: 12px; }
+        .steps-heading span { color: #71717a; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+
+        .import-page .steps {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            margin-bottom: 14px;
+            overflow: visible;
+        }
+
+        .import-page .step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 28px minmax(0, 1fr);
+            align-items: center;
+            gap: 9px;
+            min-width: 0;
+            min-height: 54px;
+            padding: 9px 11px;
+            border: 1px solid #303036;
+            border-radius: 10px;
+            background: #18181b;
+            text-align: left;
+            cursor: default;
+        }
+
+        .import-page .step.active {
+            border-color: rgba(96,165,250,.52);
+            background: rgba(59,130,246,.08);
+        }
+
+        .import-page .step.complete {
+            border-color: rgba(52,211,153,.32);
+            background: rgba(16,185,129,.055);
+        }
+
+        .import-page .step-number {
+            display: grid;
+            width: 28px;
+            height: 28px;
+            margin: 0;
+            place-items: center;
+            border-radius: 50%;
+            color: #a1a1aa;
+            background: #27272a;
+            font-size: 11px;
+            font-weight: 750;
+        }
+
+        .import-page .step.active .step-number { color: #dbeafe; background: #2563eb; }
+        .import-page .step.complete .step-number { color: #d1fae5; background: #166534; }
+        .import-page .step-label { color: #a1a1aa; font-size: 11px; font-weight: 650; }
+        .import-page .step.active .step-label { color: #e4e4e7; }
+
+        .import-page .section {
+            margin-bottom: 14px;
+            padding: 22px;
+            border: 1px solid #303036;
+            border-radius: 12px;
+            background: #18181b;
+            box-shadow: 0 1px 2px rgba(0,0,0,.24);
+        }
+
+        .import-page .section h2 {
+            margin: 0 0 5px;
+            color: #f4f4f5;
+            font-size: 16px;
+            font-weight: 650;
+            letter-spacing: -.015em;
+        }
+
+        .import-section-lead {
+            margin: 0 0 17px;
+            color: #8b8b95;
+            font-size: 11px;
+        }
+
+        .import-local-note {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 18px;
+            padding: 11px 12px;
+            border: 1px solid rgba(52,211,153,.22);
+            border-radius: 9px;
+            color: #9ca3af;
+            background: rgba(16,185,129,.055);
+            font-size: 10px;
+        }
+
+        .import-local-note svg { flex: 0 0 auto; color: #34d399; }
+        .import-local-note strong { display: block; margin-bottom: 1px; color: #d1fae5; font-size: 11px; }
+
+        .import-page .provider-select {
+            display: grid;
+            grid-template-columns: minmax(170px, .4fr) minmax(240px, 1fr);
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 14px;
+            padding: 12px;
+            border: 1px solid #29292e;
+            border-radius: 9px;
+            background: #141417;
+        }
+
+        .import-page .provider-select label { margin: 0; color: #a1a1aa; font-size: 11px; }
+        .import-page .provider-select select { width: 100%; background: #202024; border-color: #35353a; font-size: 12px; }
+
+        .import-page .file-upload {
+            display: grid;
+            min-height: 178px;
+            margin-bottom: 16px;
+            padding: 27px;
+            place-items: center;
+            align-content: center;
+            border: 1px dashed #3f3f46;
+            border-radius: 11px;
+            color: #d4d4d8;
+            background: #131316;
+            transition: border-color .15s ease, background-color .15s ease;
+        }
+
+        .import-page .file-upload:hover,
+        .import-page .file-upload.dragover {
+            border-color: #60a5fa;
+            background: rgba(59,130,246,.06);
+        }
+
+        .import-page .file-upload-icon {
+            display: grid;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 12px;
+            place-items: center;
+            border-radius: 12px;
+            color: #93c5fd;
+            background: rgba(59,130,246,.12);
+            font-size: 0;
+        }
+
+        .import-page .file-upload-icon svg { width: 23px; height: 23px; }
+
+        .import-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+            color: #71717a;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .import-divider::before,
+        .import-divider::after { content: ""; height: 1px; background: #29292e; flex: 1; }
+
+        .import-page textarea {
+            min-height: 168px;
+            height: 168px;
+            border-color: #303036;
+            border-radius: 9px;
+            color: #d4d4d8;
+            background: #111114;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .import-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .import-page .import-actions .btn { min-height: 36px; margin: 0; padding: 7px 13px; font-size: 11px; }
+
+        .import-page .person-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+            margin: 17px 0;
+        }
+
+        .import-page .person-option {
+            display: flex;
+            align-items: center;
+            min-height: 48px;
+            margin: 0;
+            padding: 11px 13px;
+            border: 1px solid #303036;
+            border-radius: 9px;
+            color: #c4c4cc;
+            background: #131316;
+            font-size: 11px;
+        }
+
+        .import-page .person-option:has(input:checked) {
+            border-color: rgba(96,165,250,.5);
+            background: rgba(59,130,246,.08);
+        }
+
+        .import-page .person-option input { accent-color: #3b82f6; }
+        .import-page .provider-badge { padding: 5px 9px; border-radius: 999px; background: #166534; font-size: 10px; }
+        .import-page .alert { border-width: 1px; border-left-width: 3px; border-radius: 9px; font-size: 11px; }
+
+        @media (max-width: 720px) {
+            .import-page .import-container { padding: 0 0 28px; }
+            .steps-heading { display: none; }
+            .import-page .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .import-page .section { padding: 16px; }
+            .import-page .provider-select { grid-template-columns: 1fr; gap: 7px; }
+            .import-page .person-options { grid-template-columns: 1fr; }
+            .import-page .import-actions { align-items: stretch; flex-direction: column; }
+            .import-page .import-actions .btn { width: 100%; margin: 0; }
+        }
+    </style>
     <link rel="stylesheet" href="navigation.css">
     <script defer src="nav.js"></script>
 </head>
-<body>
+<body class="import-page chart-surface-page">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWHJ9WLH"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <header class="header">
+        <div class="header-content">
+            <div class="charts-page-heading">
+                <span class="charts-eyebrow">Portfolio transfer</span>
+                <h1>Import Portfolio</h1>
+                <p>Bring holdings in from a brokerage or spreadsheet CSV.</p>
+            </div>
+            <div class="header-controls"><button type="button" onclick="window.location.href='app.html'" class="btn btn-secondary">Portfolio</button></div>
+        </div>
+    </header>
+
     <main class="import-container">
-    <h1>📥 Import Portfolio</h1>
-    <p class="subtitle">Import from Robinhood, M1 Finance, Schwab, Fidelity, Coinbase, and more with auto-detection</p>
     
+    <div class="steps-heading"><strong>Import workflow</strong><span>Four guided steps</span></div>
     <!-- Progress Steps -->
     <div class="steps">
         <div class="step active" data-step="1">
@@ -589,7 +833,7 @@
         </div>
         <div class="step" data-step="3">
             <span class="step-number">3</span>
-            <span class="step-label">Assign Person</span>
+            <span class="step-label">Assign Owner</span>
         </div>
         <div class="step" data-step="4">
             <span class="step-number">4</span>
@@ -599,12 +843,18 @@
     
     <!-- Step 1: Load CSV -->
     <div class="section active" id="step1">
-        <h2>Step 1: Load Your CSV File</h2>
+        <h2>Load your CSV</h2>
+        <p class="import-section-lead">Choose a brokerage export or paste spreadsheet data below.</p>
+
+        <div class="import-local-note">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2.2 16 4.4V9c0 3.8-2.4 7.1-6 8.8C6.4 16.1 4 12.8 4 9V4.4l6-2.2Z" stroke="currentColor" stroke-width="1.5"/><path d="m7.2 10 1.8 1.8 4-4.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><strong>Parsed locally in your browser</strong>Your CSV is not uploaded. Export a current JSON backup before replacing existing quantities.</span>
+        </div>
         
         <div class="provider-select">
-            <label for="providerOverride">Provider (Auto-detect or choose manually):</label>
+            <label for="providerOverride">Broker or CSV format</label>
             <select id="providerOverride">
-                <option value="auto">🔍 Auto-Detect</option>
+                <option value="auto">Auto-detect format</option>
                 <option value="m1">M1 Finance</option>
                 <option value="robinhood">Robinhood</option>
                 <option value="schwab">Charles Schwab</option>
@@ -619,21 +869,21 @@
         </div>
         
         <div class="file-upload" id="fileUpload">
-            <div class="file-upload-icon">📂</div>
-            <div><strong>Click to choose a CSV file</strong> or drag and drop here</div>
-            <div style="color: #8b949e; font-size: 13px; margin-top: 8px;">Supports .csv files</div>
+            <div class="file-upload-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6.5h5l1.6 2H20v9.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 17v-5m0 0-2 2m2-2 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><strong>Choose a CSV file</strong> or drag and drop it here</div>
+            <div style="color: #71717a; font-size: 11px; margin-top: 5px;">CSV files only</div>
             <input type="file" id="fileInput" accept=".csv">
         </div>
         
-        <div style="text-align: center; margin: 20px 0; color: #8b949e;">— OR —</div>
+        <div class="import-divider">or paste CSV data</div>
         
         <label for="csvPaste">Paste CSV data directly:</label>
         <textarea id="csvPaste" placeholder="Symbol,Name,Quantity,Price...
 AAPL,Apple Inc,10.5,182.50
 NVDA,NVIDIA,5,450.75"></textarea>
         
-        <div style="margin-top: 20px;">
-            <button class="btn" id="parseBtn">Parse CSV →</button>
+        <div class="import-actions">
+            <button class="btn" id="parseBtn">Review CSV →</button>
             <button class="btn-secondary btn" onclick="location.href='app.html'">Cancel</button>
         </div>
         
@@ -702,8 +952,8 @@ NVDA,NVIDIA,5,450.75"></textarea>
     
     <!-- Step 3: Assign to Person -->
     <div class="section" id="step3">
-        <h2>Step 3: Assign to Person</h2>
-        <p style="color: #8b949e; margin-bottom: 20px;">Who should own these assets?</p>
+        <h2>Assign an owner</h2>
+        <p class="import-section-lead">Choose where these holdings should appear in your portfolio.</p>
         
         <div class="person-options">
             <label class="person-option">
@@ -715,12 +965,16 @@ NVDA,NVIDIA,5,450.75"></textarea>
                 <span id="person2Label">Person 2</span> only
             </label>
             <label class="person-option">
+                <input type="radio" name="person" value="p3">
+                <span id="person3Label">Joint</span>
+            </label>
+            <label class="person-option">
                 <input type="radio" name="person" value="both">
                 Both (split 50/50)
             </label>
         </div>
         
-        <div style="margin-top: 20px;">
+        <div class="import-actions">
             <button class="btn" id="continueToStep4Btn">Continue to Step 4 →</button>
             <button class="btn-secondary btn" id="backToStep2Btn">← Back</button>
         </div>
@@ -728,11 +982,11 @@ NVDA,NVIDIA,5,450.75"></textarea>
     
     <!-- Step 4: Confirm Import -->
     <div class="section" id="step4">
-        <h2>Step 4: Confirm Import</h2>
+        <h2>Confirm import</h2>
         
         <div id="importSummary"></div>
         
-        <div style="margin-top: 20px;">
+        <div class="import-actions">
             <button class="btn" id="confirmImportBtn">✓ Import Assets</button>
             <button class="btn-secondary btn" id="backToStep3Btn">← Back</button>
         </div>
@@ -748,16 +1002,19 @@ NVDA,NVIDIA,5,450.75"></textarea>
         let csvData = '';
         let detectedProvider = 'auto';
         let parsedAssets = [];
-        let peopleNames = ['Person 1', 'Person 2'];
+        let peopleNames = ['Person 1', 'Person 2', 'Combined Investments'];
+        const compactOwnerName = (name) => name === 'Combined Investments' ? 'Joint' : name;
         
         // Load person names from localStorage
         try {
             const stored = localStorage.getItem('portfolio_v1');
             if (stored) {
                 const state = JSON.parse(stored);
-                peopleNames = state.settings?.people || ['Person 1', 'Person 2'];
+                const storedPeople = state.settings?.people || [];
+                peopleNames = [storedPeople[0] || 'Person 1', storedPeople[1] || 'Person 2', storedPeople[2] || 'Combined Investments'];
                 document.getElementById('person1Label').textContent = peopleNames[0];
                 document.getElementById('person2Label').textContent = peopleNames[1];
+                document.getElementById('person3Label').textContent = compactOwnerName(peopleNames[2]);
             }
         } catch (e) {
             console.log('Using default person names');
@@ -1228,7 +1485,7 @@ NVDA,NVIDIA,5,450.75"></textarea>
                 }
             });
             
-            if (!mapping.symbol || mapping.quantity === undefined) {
+            if (mapping.symbol === undefined || mapping.quantity === undefined) {
                 alert('Please map at least Symbol and Quantity columns');
                 return;
             }
@@ -1252,7 +1509,7 @@ NVDA,NVIDIA,5,450.75"></textarea>
                 return;
             }
             
-            showPrev();
+            showPreview();
         });
         
         // Crypto Symbol Resolver
@@ -1398,6 +1655,7 @@ NVDA,NVIDIA,5,450.75"></textarea>
             const personSelection = document.querySelector('input[name="person"]:checked').value;
             const personLabel = personSelection === 'p1' ? peopleNames[0] :
                                personSelection === 'p2' ? peopleNames[1] :
+                               personSelection === 'p3' ? compactOwnerName(peopleNames[2]) :
                                `Both (${peopleNames[0]} & ${peopleNames[1]})`;
             
             const summary = `
@@ -1448,6 +1706,7 @@ NVDA,NVIDIA,5,450.75"></textarea>
                     if (existingIndex !== -1) {
                         // Update existing
                         const existing = state.assets[existingIndex];
+                        existing.holdings.p3 = existing.holdings.p3 || { qty: 0, avgCost: 0, dividend: 0 };
                         
                         if (personSelection === 'both') {
                             const half = asset.quantity / 2;
@@ -1467,7 +1726,8 @@ NVDA,NVIDIA,5,450.75"></textarea>
                             name: asset.name,
                             holdings: {
                                 p1: { qty: 0, avgCost: 0, dividend: 0 },
-                                p2: { qty: 0, avgCost: 0, dividend: 0 }
+                                p2: { qty: 0, avgCost: 0, dividend: 0 },
+                                p3: { qty: 0, avgCost: 0, dividend: 0 }
                             }
                         };
                         
@@ -1531,36 +1791,15 @@ NVDA,NVIDIA,5,450.75"></textarea>
     })();
     </script>
 
-    <section class="content-block" aria-labelledby="about-import-page">
-        <h2 id="about-import-page">How CSV import works (and why we built it this way)</h2>
-        <p class="lead">CSV import lets you bring in an existing portfolio from a brokerage export, a spreadsheet, or another tracker without retyping every position. The whole process happens entirely in your browser — your file never leaves the device.</p>
-
-        <h3>What kinds of files this accepts</h3>
-        <p>Any plain CSV (comma-separated values) file works as long as it has at least two columns: a symbol/ticker column and a quantity column. Optional columns we'll auto-detect include cost basis, asset type, asset name, and which person owns the holding. Most brokerage exports work out of the box — we ship column-mapping presets for the major US brokers and you can adjust the mapping by hand if your file uses different headers.</p>
-        <p>Excel files (.xlsx) need to be saved as .csv first. In Excel/Numbers/Google Sheets: <em>File → Save As → CSV</em>.</p>
-
-        <h3>Step-by-step walk-through</h3>
-        <ol>
-            <li><strong>Pick your file.</strong> Click <em>Choose File</em> and select your CSV. The app reads it locally; no upload happens.</li>
-            <li><strong>Confirm the column mapping.</strong> The mapping screen shows your file's columns on the left and the app's expected fields on the right. Adjust any mismatches by clicking the dropdowns. Required: symbol, quantity. Optional but recommended: cost basis, asset type.</li>
-            <li><strong>Review the parsed preview.</strong> A sample of rows is rendered exactly as they will be imported. Check three things: tickers look right, quantities are not orders of magnitude off, and asset types match what you expect.</li>
-            <li><strong>Choose merge mode.</strong> &quot;Add to existing&quot; appends the new rows to your current portfolio (with duplicate-detection on ticker + person). &quot;Replace&quot; clears your portfolio first — use only when you really mean to start fresh.</li>
-            <li><strong>Confirm.</strong> The import runs in milliseconds and you're taken back to the main <a href="app.html">Portfolio</a> page where everything is now in place.</li>
-        </ol>
-
-        <h3>Common issues and how to fix them</h3>
-        <ul>
-            <li><strong>Tickers not recognised.</strong> Some brokerages append exchange suffixes (&quot;.US&quot;, &quot;:NYSE&quot;) that Finnhub doesn't expect. Edit the CSV to use plain tickers (AAPL, MSFT, GOOGL) before importing.</li>
-            <li><strong>Quantities in scientific notation.</strong> Excel sometimes saves very small or very large numbers as <code>1.23E+05</code>. Format the column as plain number before exporting to CSV.</li>
-            <li><strong>European decimal separators.</strong> If your CSV uses commas as decimal separators (e.g. <code>1,234</code> meaning 1.234), the parser will misread them. Convert to dots before importing.</li>
-            <li><strong>Crypto symbols.</strong> Use the exchange's standard symbol (BTC, ETH, SOL) rather than display names (Bitcoin, Ether). The app maps these to live-price feeds automatically.</li>
-        </ul>
-
-        <h3>Why we don't store your CSV</h3>
-        <p>Many tracker apps run CSV imports on their servers, which means your historical positions, cost bases, and account structure get logged in a database somewhere. We do the parsing in the browser using JavaScript so the file is read into memory, processed, and discarded — only the resulting portfolio entries are saved (locally, to your browser). It's a small but meaningful privacy difference, and it's why this page works even with no internet connection.</p>
-        <div class="callout"><strong>Backup tip:</strong> Before doing a large import or a &quot;replace&quot; merge, click <em>Export</em> on the main Portfolio page first. That gives you a JSON snapshot you can restore from if anything goes wrong.</div>
+    <details class="content-block app-page-help">
+        <summary id="about-import-page">About this page</summary>
+        <div class="app-page-help-content">
+            <p>Import a brokerage or spreadsheet CSV using symbol and quantity columns. Your file is parsed locally and is never uploaded.</p>
+            <p><strong>Back up first:</strong> Export your current portfolio before using Replace mode.</p>
+            <div class="app-help-links"><a href="guide.html">Read import guidance</a><a href="faq.html">Troubleshooting</a></div>
+        </div>
+    </details>
     </main>
-    </section>
 
     <!-- Cookie Consent System (Consent Mode v2) -->
     <script src="cookie-consent.js"></script>

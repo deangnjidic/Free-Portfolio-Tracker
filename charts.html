@@ -60,10 +60,10 @@
     <meta name="twitter:description" content="Visualize your investments with interactive charts and analytics.">
     <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=9">
     <link rel="stylesheet" href="navigation.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="chart-theme.js?v=4"></script>
+    <script src="chart-theme.js?v=5"></script>
     <script defer src="nav.js"></script>
 </head>
 <body class="charts-page">
@@ -82,8 +82,9 @@
                 <p>Allocation, performance, and risk at a glance.</p>
             </div>
             <div class="header-controls">
-                <button onclick="window.location.href='app.html'" class="btn btn-secondary">← Back to Portfolio</button>
-                <button onclick="window.location.href='history.html'" class="btn btn-secondary">📈 History</button>
+                <label class="owner-filter-control" for="ownerFilter"><span>View</span><select id="ownerFilter" aria-label="Filter charts by owner"><option value="all">Total Portfolio</option><option value="p1">Person 1</option><option value="p2">Person 2</option><option value="p3">Joint</option></select></label>
+                <button onclick="window.location.href='app.html'" class="btn btn-secondary">Portfolio</button>
+                <button onclick="window.location.href='history.html'" class="btn btn-secondary">History</button>
             </div>
         </div>
     </header>
@@ -196,44 +197,17 @@
         </div>
     </section>
 
-    <section class="content-block" aria-labelledby="about-charts-page">
-        <h2 id="about-charts-page">How to read these charts</h2>
-        <p class="lead">The Charts page turns the rows in your portfolio table into something you can absorb at a glance. Pie slices, bar groups, lines, and scatter points each answer a different question about your investments. Here's what each chart is showing and how to use it to make better decisions about your money.</p>
-
-        <h3>Asset Allocation (pie)</h3>
-        <p>The first pie shows the percentage of your total portfolio held in each individual asset, sorted from largest to smallest. This is the fastest way to spot a concentration problem — if a single ticker takes up 40% of the pie, a bad week for that one company moves your whole net worth. Most personal-finance writers suggest no single position should exceed 5–10% of a long-term portfolio, but the right number depends on your risk tolerance, time horizon, and conviction. Use this chart to confirm your reality matches your intent.</p>
-
-        <h3>Person Comparison (bar)</h3>
-        <p>Grouped bars show how each person's holdings break down across stocks, crypto, metals, and savings. This is useful for couples or partners who want to see whether one of them is taking on more equity risk than the other, or whether the cash buffer is sitting heavily on one side. It's also a quick sanity check before tax season — sometimes you discover that what felt like a balanced household is actually two very differently-shaped portfolios held in two names.</p>
-
-        <h3>Portfolio Breakdown (doughnut)</h3>
-        <p>The doughnut aggregates value by asset type across both people. Use it to see your overall exposure to each market: equities, digital assets, hard assets, and cash. A common diversification heuristic is the <em>age in bonds</em> rule (roughly your age in fixed income / cash), but for a holistic tracker like this, the more useful question is: &quot;If equities dropped 30% next month, how much of my total would still be intact?&quot; The chart answers that visually.</p>
-
-        <h3>Daily Gain / Loss</h3>
-        <p>Once you have at least two snapshots saved on the <a href="history.html">History</a> page, this column chart plots how much your total portfolio gained or lost each day. Green bars are up days, red bars are down days. The 7D / 30D / YTD / All filters at the top let you zoom into recent performance or pull back to look at the full record. Watching daily gain/loss helps build emotional resilience: most people overestimate how often markets fall, and seeing the real distribution of green vs. red bars makes the noise feel less personal.</p>
-
-        <h3>Savings vs Invested</h3>
-        <p>This stacked bar contrasts what you're keeping in cash-equivalents versus what you've actively put to work in markets. The healthy ratio depends on your situation — a recent retiree might want a much larger cash bucket than a 25-year-old just starting out — but visualising it stops you from drifting into accidental over-cashing during scary headlines or accidentally letting your safety net shrink during euphoric markets.</p>
-
-        <h3>Portfolio Composition Over Time</h3>
-        <p>This is a stacked area chart of how your asset-class mix has evolved across every snapshot you've saved. Dramatic shifts (crypto going from 5% to 30% of the pie, for example) usually mean either you've been adding to a class or that class has rallied hard. Either way it's a prompt to consider rebalancing back toward your target allocation.</p>
-
-        <h3>Cumulative Return (%)</h3>
-        <p>Cumulative return shows the percentage change in your total portfolio value since your first snapshot. It's the single most honest performance number you can look at, because it ignores absolute dollar amounts and just answers: &quot;Per dollar I had at the start, how much do I have today?&quot; A line that climbs steadily is the goal; a jagged line that crosses zero often is a sign of high-volatility holdings dominating returns.</p>
-
-        <h3>Asset Performance Scatter</h3>
-        <p>Each dot represents one asset, plotted with today's percentage change on the X-axis and current value on the Y-axis. Big dots far to the right are your stars of the day, big dots far to the left are the drags. Small dots clustered near zero are doing what they're supposed to: behaving themselves. This view makes it obvious when a single small position is responsible for an outsized chunk of today's gain or loss.</p>
-
-        <h3>Top &amp; Bottom Performers</h3>
-        <p>Below the charts we list the five best and five worst performing assets in your portfolio. Use the leaders list to celebrate (and to ask whether the position is now too large), and the laggards list to ask honest questions: is the thesis still intact, did something change, or am I just being impatient? Keeping a written note alongside each holding — even just a sentence about why you bought it — makes those conversations with yourself much easier.</p>
-
-        <h3>Why save snapshots regularly?</h3>
-        <p>Several charts on this page (daily gain/loss, composition over time, cumulative return) can only render meaningful data after you've captured at least two snapshots, and they get more useful with every additional one. The fastest way to build that history is to set a recurring calendar reminder — Sunday evening works well for most people — to refresh prices and click <em>Save Snapshot</em> on the History page. After three or four months you'll have a personal performance record more detailed than what most brokerages provide.</p>
-        <div class="callout"><strong>Reminder:</strong> Charts here are based purely on the snapshots and prices in your own browser. They are not investment advice and don't account for taxes, trading fees, or dividends. Use them to spot trends and stay organised, not as a substitute for proper financial planning.</div>
-    </section>
+    <details class="content-block app-page-help">
+        <summary id="about-charts-page">About this page</summary>
+        <div class="app-page-help-content">
+            <p>Charts use your latest locally stored prices and snapshots. Historical charts need at least two saved snapshots before they can show a trend.</p>
+            <p>Use these views to understand allocation and movement—not as investment advice or audited performance reporting.</p>
+            <div class="app-help-links"><a href="guide.html">Read chart guidance</a><a href="history.html">Manage snapshots</a></div>
+        </div>
+    </details>
 
     <!-- config.js is optional and gitignored; charts.js handles missing APP_CONFIG. -->
-    <script src="charts.js?v=3"></script>
+    <script src="charts.js?v=7"></script>
     
     <!-- Cookie Consent System (Consent Mode v2) -->
     <script src="cookie-consent.js"></script>

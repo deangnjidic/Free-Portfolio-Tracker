@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Free Portfolio Tracker for Couples</title>
+  <desc id="description">Track individual and joint investments in one portfolio.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1419"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="chartArea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f81f7" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#2f81f7" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="50"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <circle cx="1010" cy="105" r="210" fill="#1f6feb" opacity=".16" filter="url(#glow)"/>
+  <circle cx="950" cy="570" r="180" fill="#238636" opacity=".1" filter="url(#glow)"/>
+  <rect x="64" y="58" width="198" height="38" rx="19" fill="#13233a" stroke="#264e78"/>
+  <circle cx="86" cy="77" r="5" fill="#3fb950"/>
+  <text x="102" y="83" fill="#79c0ff" font-family="Segoe UI, Arial, sans-serif" font-size="16" font-weight="700">VERSION 2.0</text>
+  <text x="64" y="175" fill="#f0f6fc" font-family="Segoe UI, Arial, sans-serif" font-size="58" font-weight="750" letter-spacing="-2">Free Portfolio Tracker</text>
+  <text x="64" y="241" fill="#58a6ff" font-family="Segoe UI, Arial, sans-serif" font-size="43" font-weight="700" letter-spacing="-1">Individual + joint investments.</text>
+  <text x="64" y="300" fill="#aab4c0" font-family="Segoe UI, Arial, sans-serif" font-size="24">A clearer portfolio for couples—without an account.</text>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="17" font-weight="650">
+    <rect x="64" y="348" width="112" height="40" rx="7" fill="#161b22" stroke="#30363d"/><text x="82" y="374" fill="#c9d1d9">Person 1</text>
+    <rect x="188" y="348" width="112" height="40" rx="7" fill="#161b22" stroke="#30363d"/><text x="206" y="374" fill="#c9d1d9">Person 2</text>
+    <rect x="312" y="348" width="82" height="40" rx="7" fill="#161b22" stroke="#30363d"/><text x="330" y="374" fill="#c9d1d9">Joint</text>
+    <rect x="406" y="348" width="143" height="40" rx="7" fill="#13261a" stroke="#2e6639"/><text x="424" y="374" fill="#56d364">Total Portfolio</text>
+  </g>
+  <g transform="translate(694 106)">
+    <rect width="430" height="416" rx="18" fill="#0d1117" stroke="#3b526b" stroke-width="2"/>
+    <rect x="1" y="1" width="428" height="44" rx="17" fill="#161b22"/>
+    <circle cx="22" cy="23" r="4" fill="#484f58"/><circle cx="36" cy="23" r="4" fill="#484f58"/><circle cx="50" cy="23" r="4" fill="#484f58"/>
+    <text x="70" y="28" fill="#8b949e" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">Portfolio Overview</text>
+    <rect x="22" y="67" width="386" height="176" rx="10" fill="#161b22" stroke="#30363d"/>
+    <text x="42" y="96" fill="#8b949e" font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="700">TOTAL VALUE</text>
+    <text x="42" y="136" fill="#f0f6fc" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="750">$128,640.25</text>
+    <text x="316" y="105" fill="#56d364" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">+$2,184</text>
+    <path d="M42 213 C73 205 86 181 116 188 S161 160 191 169 S232 148 260 153 S302 117 330 126 S365 101 389 108 V225 H42Z" fill="url(#chartArea)"/>
+    <path d="M42 213 C73 205 86 181 116 188 S161 160 191 169 S232 148 260 153 S302 117 330 126 S365 101 389 108" fill="none" stroke="#58a6ff" stroke-width="3" stroke-linecap="round"/>
+    <g font-family="Segoe UI, Arial, sans-serif">
+      <rect x="22" y="257" width="122" height="66" rx="8" fill="#161b22" stroke="#30363d"/><text x="36" y="278" fill="#8b949e" font-size="10">Person 1</text><text x="36" y="302" fill="#e6edf3" font-size="17" font-weight="700">$54,240</text>
+      <rect x="154" y="257" width="122" height="66" rx="8" fill="#161b22" stroke="#30363d"/><text x="168" y="278" fill="#8b949e" font-size="10">Person 2</text><text x="168" y="302" fill="#e6edf3" font-size="17" font-weight="700">$39,180</text>
+      <rect x="286" y="257" width="122" height="66" rx="8" fill="#161b22" stroke="#30363d"/><text x="300" y="278" fill="#8b949e" font-size="10">Joint</text><text x="300" y="302" fill="#e6edf3" font-size="17" font-weight="700">$35,220</text>
+    </g>
+    <rect x="22" y="337" width="386" height="56" rx="8" fill="#161b22" stroke="#30363d"/>
+    <text x="40" y="371" fill="#c9d1d9" font-family="Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Stocks · Crypto · Metals · Savings</text>
+  </g>
+  <text x="64" y="555" fill="#e6edf3" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="700">freeportfoliotracker.com</text>
+  <text x="64" y="588" fill="#6e7681" font-family="Segoe UI, Arial, sans-serif" font-size="16">Free · Open source · Portfolio data stored locally</text>
+</svg>

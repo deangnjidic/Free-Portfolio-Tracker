@@ -15,6 +15,7 @@
         savings: '#34d399',
         personOne: '#fb7185',
         personTwo: '#22d3ee',
+        personThree: '#a78bfa',
         positive: '#34d399',
         negative: '#fb7185'
     });

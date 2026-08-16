@@ -38,10 +38,10 @@
     <!-- Google AdSense loader (Auto Ads) - gated at runtime by Consent Mode v2 -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1783396140582876"
             crossorigin="anonymous"></script>
-    <title>Portfolio Tracker for Couples | Track Shared &amp; Individual Investments</title>
+    <title>Free Portfolio Tracker for Couples | Individual &amp; Joint Investments</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Track shared and individual portfolios as a couple. Simple, private, and free portfolio tracking for stocks, crypto, precious metals, and savings — no account required.">
+    <meta name="description" content="Track individual and joint investments in one free portfolio tracker for couples. Follow stocks, crypto, metals, and savings with no signup required.">
     <meta name="keywords" content="portfolio tracker for couples, couples investing, shared portfolio tracker, joint investment tracker, family finances, partners investing, stock tracker, crypto tracker, free portfolio manager, privacy-first investing, local portfolio tracker">
     <meta name="author" content="Free Portfolio Tracker">
     <meta name="robots" content="index, follow">
@@ -50,17 +50,19 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://freeportfoliotracker.com/">
-    <meta property="og:title" content="Portfolio Tracker for Couples | Track Shared &amp; Individual Investments">
-    <meta property="og:description" content="Track shared and individual portfolios as a couple. Simple, private, and free portfolio tracking — no account required.">
-    <meta property="og:image" content="https://freeportfoliotracker.com/icon-192.png">
+    <meta property="og:title" content="Free Portfolio Tracker for Couples">
+    <meta property="og:description" content="Track Person 1, Person 2, and Joint investments together — without creating an account.">
+    <meta property="og:image" content="https://freeportfoliotracker.com/social-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="Free Portfolio Tracker">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://freeportfoliotracker.com/">
-    <meta name="twitter:title" content="Portfolio Tracker for Couples | Track Shared &amp; Individual Investments">
-    <meta name="twitter:description" content="Track shared and individual portfolios as a couple. Simple, private, and free portfolio tracking — no account required.">
-    <meta name="twitter:image" content="https://freeportfoliotracker.com/icon-192.png">
+    <meta name="twitter:title" content="Free Portfolio Tracker for Couples">
+    <meta name="twitter:description" content="Track Person 1, Person 2, and Joint investments together — without creating an account.">
+    <meta name="twitter:image" content="https://freeportfoliotracker.com/social-preview.png">
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -72,8 +74,8 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "Portfolio Tracker for Couples",
-      "description": "A free, privacy-first portfolio tracker designed for couples. Track shared and individual stock, crypto, precious metal, and savings portfolios directly in your browser — no account or server required.",
+      "name": "Free Portfolio Tracker",
+      "description": "A free portfolio tracker for couples. Track individual and joint stocks, crypto, precious metals, and savings directly in your browser with no account required.",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -84,204 +86,592 @@
       "url": "https://freeportfoliotracker.com/",
       "featureList": [
         "Couples investing",
-        "Shared portfolio view",
+        "Person 1, Person 2, Joint, and Total Portfolio views",
         "Individual portfolio tracking",
         "Joint investment tracker",
-        "Privacy-first, data stays on device",
+        "Portfolio data stored on device",
+        "Owner filters and automatic backup reminders",
         "Stocks, crypto, precious metals, savings"
       ]
     }
     </script>
 
     <style>
-        /* Landing Page Specific Styles */
-        .landing-container {
-            max-width: 1200px;
+        /* Homepage V2 */
+        .home-v2 {
+            max-width: 1180px;
             margin: 0 auto;
+            padding: 28px 20px 48px;
+        }
+
+        .home-v2 a:focus-visible {
+            outline: 3px solid rgba(88, 166, 255, 0.45);
+            outline-offset: 3px;
+        }
+
+        .home-hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
+            align-items: center;
+            gap: 48px;
+            min-height: 610px;
+            padding: 64px 0 72px;
+        }
+
+        .home-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 11px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(88, 166, 255, 0.28);
+            border-radius: 999px;
+            background: rgba(31, 111, 235, 0.1);
+            color: #79c0ff;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .home-eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #3fb950;
+            box-shadow: 0 0 0 4px rgba(63, 185, 80, 0.12);
+        }
+
+        .home-hero h1 {
+            max-width: 700px;
+            margin: 0 0 22px;
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 1.04;
+            letter-spacing: -0.045em;
+            color: #f0f6fc;
+        }
+
+        .home-hero h1 span {
+            color: #58a6ff;
+        }
+
+        .home-lead {
+            max-width: 620px;
+            margin: 0 0 26px;
+            color: #aab4c0;
+            font-size: 19px;
+            line-height: 1.65;
+        }
+
+        .ownership-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .ownership-pills span {
+            padding: 7px 11px;
+            border: 1px solid #30363d;
+            border-radius: 7px;
+            background: #161b22;
+            color: #c9d1d9;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .ownership-pills span:last-child {
+            border-color: rgba(63, 185, 80, 0.35);
+            color: #56d364;
+        }
+
+        .home-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .home-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 21px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #e6edf3;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .home-action-primary {
+            border-color: #238636;
+            background: #238636;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(35, 134, 54, 0.18);
+        }
+
+        .home-action-primary:hover {
+            border-color: #2ea043;
+            background: #2ea043;
+        }
+
+        .home-action-secondary {
+            background: #161b22;
+        }
+
+        .home-action-secondary:hover {
+            border-color: #58a6ff;
+            background: #1c2128;
+        }
+
+        .home-trust {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #8b949e;
+            font-size: 13px;
+        }
+
+        .home-trust svg {
+            flex: 0 0 auto;
+            color: #56d364;
+        }
+
+        .product-preview {
+            position: relative;
+            padding: 1px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, rgba(88, 166, 255, 0.48), rgba(63, 185, 80, 0.15) 55%, #30363d);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+        }
+
+        .product-preview::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            inset: 15% -8% -8% 18%;
+            border-radius: 50%;
+            background: rgba(31, 111, 235, 0.14);
+            filter: blur(40px);
+        }
+
+        .preview-window {
+            overflow: hidden;
+            border-radius: 14px;
+            background: #0d1117;
+        }
+
+        .preview-topbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 38px;
+            padding: 0 13px;
+            border-bottom: 1px solid #21262d;
+            background: #161b22;
+        }
+
+        .preview-topbar i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #484f58;
+        }
+
+        .preview-topbar span {
+            margin-left: 6px;
+            color: #8b949e;
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .preview-content {
             padding: 20px;
         }
 
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
-            border-radius: 12px;
-            margin-bottom: 40px;
-            border: 1px solid #30363d;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #58a6ff 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 20px;
-            color: #8b949e;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
+        .preview-heading,
+        .preview-card-head,
+        .preview-owner,
+        .preview-holding {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
         }
 
-        .btn-hero {
-            padding: 15px 40px;
-            font-size: 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-block;
+        .preview-heading {
+            margin-bottom: 13px;
         }
 
-        .btn-primary-hero {
-            background: #238636;
-            color: white;
-            border: 2px solid #238636;
-        }
-
-        .btn-primary-hero:hover {
-            background: #2ea043;
-            border-color: #2ea043;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary-hero {
-            background: transparent;
-            color: #58a6ff;
-            border: 2px solid #58a6ff;
-        }
-
-        .btn-secondary-hero:hover {
-            background: rgba(88, 166, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .feature-card {
-            background: #161b22;
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid #30363d;
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-            border-color: #58a6ff;
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .feature-card h3 {
-            color: #e6edf3;
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        .feature-card p {
-            color: #8b949e;
-            line-height: 1.6;
-        }
-
-        .stats-section {
-            background: #161b22;
-            padding: 40px;
-            border-radius: 8px;
-            margin-bottom: 40px;
-            text-align: center;
-            border: 1px solid #30363d;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .stat-item-landing {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #58a6ff;
-            margin-bottom: 10px;
-        }
-
-        .stat-label-landing {
-            color: #8b949e;
+        .preview-heading strong {
             font-size: 14px;
         }
 
-        .cta-section {
-            background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
-            padding: 50px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 40px;
+        .preview-filter {
+            padding: 5px 8px;
+            border: 1px solid #30363d;
+            border-radius: 5px;
+            color: #c9d1d9;
+            background: #21262d;
+            font-size: 9px;
         }
 
-        .cta-section h2 {
-            color: white;
-            font-size: 32px;
-            margin-bottom: 20px;
+        .preview-total {
+            padding: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #30363d;
+            border-radius: 9px;
+            background: #161b22;
         }
 
-        .cta-section p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .footer-landing {
-            text-align: center;
-            padding: 30px;
+        .preview-label {
             color: #8b949e;
-            border-top: 1px solid #30363d;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
         }
 
-        .footer-landing a {
+        .preview-value {
+            display: block;
+            margin-top: 2px;
+            font-size: 25px;
+            line-height: 1.25;
+        }
+
+        .preview-gain {
+            color: #56d364;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .preview-chart {
+            display: block;
+            width: 100%;
+            height: 74px;
+            margin-top: 10px;
+        }
+
+        .preview-owners {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .preview-owner {
+            display: block;
+            padding: 10px;
+            border: 1px solid #30363d;
+            border-radius: 7px;
+            background: #161b22;
+        }
+
+        .preview-owner span {
+            display: block;
+            margin-bottom: 2px;
+            color: #8b949e;
+            font-size: 8px;
+        }
+
+        .preview-owner strong {
+            font-size: 12px;
+        }
+
+        .preview-holdings {
+            padding: 3px 13px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            background: #161b22;
+        }
+
+        .preview-holding {
+            padding: 9px 0;
+            border-bottom: 1px solid #21262d;
+            font-size: 9px;
+        }
+
+        .preview-holding:last-child {
+            border-bottom: 0;
+        }
+
+        .preview-asset {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .preview-asset i {
+            display: grid;
+            width: 20px;
+            height: 20px;
+            place-items: center;
+            border-radius: 5px;
+            color: #79c0ff;
+            background: rgba(31, 111, 235, 0.14);
+            font-size: 8px;
+            font-style: normal;
+        }
+
+        .home-section {
+            padding: 76px 0;
+            border-top: 1px solid #21262d;
+        }
+
+        .section-intro {
+            max-width: 660px;
+            margin-bottom: 34px;
+        }
+
+        .section-kicker {
+            margin-bottom: 8px;
             color: #58a6ff;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .section-intro h2,
+        .privacy-copy h2,
+        .home-cta h2 {
+            margin-bottom: 12px;
+            color: #f0f6fc;
+            font-size: clamp(28px, 3vw, 38px);
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+        }
+
+        .section-intro p,
+        .privacy-copy p {
+            color: #8b949e;
+            font-size: 16px;
+        }
+
+        .v2-features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .v2-feature {
+            min-height: 230px;
+            padding: 22px;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            background: #161b22;
+        }
+
+        .v2-feature-number {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            margin-bottom: 34px;
+            place-items: center;
+            border-radius: 8px;
+            color: #79c0ff;
+            background: rgba(31, 111, 235, 0.13);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .v2-feature h3 {
+            margin-bottom: 9px;
+            color: #e6edf3;
+            font-size: 17px;
+        }
+
+        .v2-feature p {
+            color: #8b949e;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .privacy-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+            padding: 38px;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            background: #161b22;
+        }
+
+        .privacy-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .privacy-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            padding: 13px;
+            border-radius: 8px;
+            background: #0d1117;
+            color: #c9d1d9;
+            font-size: 14px;
+        }
+
+        .privacy-check {
+            color: #56d364;
+            font-weight: 800;
+        }
+
+        .home-cta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            padding: 42px;
+            border: 1px solid rgba(46, 160, 67, 0.42);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(35, 134, 54, 0.18), rgba(22, 27, 34, 0.95) 58%);
+        }
+
+        .home-cta h2 {
+            margin-bottom: 7px;
+        }
+
+        .home-cta p {
+            color: #8b949e;
+        }
+
+        .home-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 22px;
+            padding: 32px 0 0;
+            color: #6e7681;
+            font-size: 12px;
+        }
+
+        .home-footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+
+        .home-footer a {
+            color: #8b949e;
             text-decoration: none;
         }
 
-        .footer-landing a:hover {
-            text-decoration: underline;
+        .home-footer a:hover {
+            color: #58a6ff;
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 32px;
+        @media (max-width: 960px) {
+            .home-hero {
+                grid-template-columns: 1fr;
+                min-height: 0;
+                padding: 54px 0 64px;
             }
 
-            .hero p {
-                font-size: 16px;
+            .home-hero-copy {
+                max-width: 740px;
             }
 
-            .btn-hero {
-                padding: 12px 30px;
-                font-size: 16px;
+            .product-preview {
+                width: min(100%, 620px);
+                margin: 0 auto;
+            }
+
+            .v2-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 680px) {
+            .home-v2 {
+                padding: 16px 0 32px;
+            }
+
+            .home-hero {
+                gap: 38px;
+                padding: 40px 0 52px;
+            }
+
+            .home-hero h1 {
+                font-size: clamp(38px, 12vw, 52px);
+            }
+
+            .home-lead {
+                font-size: 17px;
+            }
+
+            .home-actions,
+            .home-action {
+                width: 100%;
+            }
+
+            .preview-content {
+                padding: 13px;
+            }
+
+            .preview-value {
+                font-size: 21px;
+            }
+
+            .preview-owners {
+                gap: 5px;
+            }
+
+            .preview-owner {
+                padding: 8px;
+            }
+
+            .preview-owner strong {
+                font-size: 10px;
+            }
+
+            .home-section {
+                padding: 54px 0;
+            }
+
+            .v2-features,
+            .privacy-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .v2-feature {
+                min-height: 0;
+            }
+
+            .v2-feature-number {
+                margin-bottom: 24px;
+            }
+
+            .privacy-panel,
+            .home-cta {
+                padding: 24px;
+            }
+
+            .home-cta,
+            .home-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .home-footer-links {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .home-v2 *,
+            .home-v2 *::before,
+            .home-v2 *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
             }
         }
     </style>
@@ -295,127 +685,127 @@
     <!-- End Google Tag Manager (noscript) -->
 
     
-    <div class="landing-container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>Portfolio Tracker for Couples</h1>
-            <p>Track shared and individual investments together. A beautiful, privacy-first portfolio tracker for stocks, crypto, and precious metals.</p>
-            <p style="font-size: 22px; font-weight: 700; color: #58a6ff; margin-top: 15px; text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);">
-                🔒 No server, no database, and no account required — your data stays on your device.
-            </p>
-            
-            <!-- Row 1: Read Guide and View on GitHub -->
-            <div class="hero-buttons" style="justify-content: center; margin-bottom: 15px;">
-                <a href="guide.html" class="btn-hero btn-secondary-hero">📖 Read Guide</a>
-                <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker" target="_blank" class="btn-hero btn-secondary-hero">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle; margin-right: 5px;">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                    View on GitHub
-                </a>
-            </div>
-            
-            <!-- Row 2: Bigger Launch App button -->
-            <div class="hero-buttons" style="justify-content: center; margin-bottom: 15px;">
-                <a href="app.html" class="btn-hero btn-primary-hero" style="padding: 20px 60px; font-size: 22px;">🚀 Launch App</a>
-            </div>
-            
-            <!-- Row 3: Smaller Ko-fi button -->
-            <div class="hero-buttons" style="justify-content: center;">
-                <a href="https://ko-fi.com/dekara" target="_blank" class="btn-hero btn-secondary-hero" style="background: #FF5E5B; color: #fff; border-color: #FF5E5B; font-weight: 600; padding: 10px 25px; font-size: 14px;">
-                    ☕ Support on Ko-fi
-                </a>
-            </div>
-        </section>
-
-        <!-- Features Grid -->
-        <section class="features-grid">
-            <div class="feature-card" data-ad-slot="ezoic">
-                <div class="feature-icon">📊</div>
-                <h3>Multi-Asset Support</h3>
-                <p>Track stocks, cryptocurrencies, precious metals (gold, silver, platinum), and savings accounts all in one place.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">👥</div>
-                <h3>Multi-Person Tracking</h3>
-                <p>Perfect for couples or joint investments. Track holdings for two people with individual and combined portfolio views.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3>Real-Time Prices</h3>
-                <p>Live price updates from trusted APIs (Finnhub, CoinGecko, Metals.dev) with 24-hour price change tracking.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3>100% Private</h3>
-                <p>All data is stored locally in your browser. No server, no database, and no account required. Your portfolio data stays on your device.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Import & Export</h3>
-                <p>Backup and restore as JSON. Bulk import from M1 Finance CSV or custom CSV files. Never lose your data.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Lightning Fast</h3>
-                <p>Built with vanilla JavaScript. No frameworks, no dependencies. Works offline after initial load.</p>
-            </div>
-        </section>
-
-        <!-- Stats Section -->
-        <section class="stats-section">
-            <h2>Why Portfolio Tracker?</h2>
-            <div class="stats-grid">
-                <div class="stat-item-landing">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label-landing">Privacy Protected</div>
+    <main class="home-v2">
+        <section class="home-hero" aria-labelledby="home-title">
+            <div class="home-hero-copy">
+                <div class="home-eyebrow">Free Portfolio Tracker 2.0</div>
+                <h1 id="home-title">One portfolio. <span>Individual and joint investments.</span></h1>
+                <p class="home-lead">Track stocks, crypto, metals, and savings across Person 1, Person 2, and Joint—with a clear view of your complete portfolio.</p>
+                <div class="ownership-pills" aria-label="Available ownership views">
+                    <span>Person 1</span>
+                    <span>Person 2</span>
+                    <span>Joint</span>
+                    <span>Total Portfolio</span>
                 </div>
-                <div class="stat-item-landing">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label-landing">Data Collection</div>
+                <div class="home-actions">
+                    <a href="app.html" class="home-action home-action-primary">Launch App&nbsp; →</a>
+                    <a href="guide.html" class="home-action home-action-secondary">Read the Guide</a>
                 </div>
-                <div class="stat-item-landing">
-                    <div class="stat-number">Free</div>
-                    <div class="stat-label-landing">Forever & Open Source</div>
+                <div class="home-trust">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5 13 3.3v3.9c0 3.2-2 5.9-5 7.3-3-1.4-5-4.1-5-7.3V3.3L8 1.5Z" stroke="currentColor" stroke-width="1.4"/><path d="m5.5 8 1.6 1.6 3.5-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    No signup required. Portfolio data is stored in your browser.
                 </div>
-                <div class="stat-item-landing">
-                    <div class="stat-number">∞</div>
-                    <div class="stat-label-landing">Assets Supported</div>
+            </div>
+
+            <div class="product-preview" aria-label="Preview of the portfolio dashboard">
+                <div class="preview-window">
+                    <div class="preview-topbar"><i></i><i></i><i></i><span>Free Portfolio Tracker</span></div>
+                    <div class="preview-content">
+                        <div class="preview-heading"><strong>Portfolio Overview</strong><span class="preview-filter">Total Portfolio</span></div>
+                        <div class="preview-total">
+                            <div class="preview-card-head">
+                                <div><span class="preview-label">Total value</span><strong class="preview-value">$128,640.25</strong></div>
+                                <span class="preview-gain">+$2,184.60</span>
+                            </div>
+                            <svg class="preview-chart" viewBox="0 0 420 74" preserveAspectRatio="none" role="img" aria-label="Example portfolio growth chart">
+                                <defs><linearGradient id="previewArea" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2f81f7" stop-opacity=".3"/><stop offset="1" stop-color="#2f81f7" stop-opacity="0"/></linearGradient></defs>
+                                <path d="M0 62 C35 59,48 45,78 49 S125 35,151 40 S198 31,222 33 S262 17,292 22 S334 13,358 17 S392 6,420 8 V74 H0Z" fill="url(#previewArea)"/>
+                                <path d="M0 62 C35 59,48 45,78 49 S125 35,151 40 S198 31,222 33 S262 17,292 22 S334 13,358 17 S392 6,420 8" fill="none" stroke="#58a6ff" stroke-width="2.3" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="preview-owners">
+                            <div class="preview-owner"><span>Person 1</span><strong>$54,240</strong></div>
+                            <div class="preview-owner"><span>Person 2</span><strong>$39,180</strong></div>
+                            <div class="preview-owner"><span>Joint</span><strong>$35,220</strong></div>
+                        </div>
+                        <div class="preview-holdings">
+                            <div class="preview-holding"><span class="preview-asset"><i>ST</i>Stocks</span><strong>$72,940.25</strong></div>
+                            <div class="preview-holding"><span class="preview-asset"><i>CR</i>Crypto</span><strong>$24,380.00</strong></div>
+                            <div class="preview-holding"><span class="preview-asset"><i>SV</i>Savings</span><strong>$31,320.00</strong></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <h2>Start Tracking Together &mdash; Free, Forever</h2>
-            <p>No signup, no installation, no hassle. Perfect for couples investing together.</p>
-            <a href="app.html" class="btn-hero btn-secondary-hero" style="background: white; color: #238636; border-color: white;">
-                Launch Your Shared Portfolio Tracker &rarr;
-            </a>
+        <section class="home-section" aria-labelledby="features-title">
+            <div class="section-intro">
+                <div class="section-kicker">Built for shared finances</div>
+                <h2 id="features-title">A complete view without losing individual ownership</h2>
+                <p>Keep every holding organized by owner, then move between individual and household-level views whenever you need them.</p>
+            </div>
+            <div class="v2-features">
+                <article class="v2-feature">
+                    <span class="v2-feature-number">01</span>
+                    <h3>Individual + Joint</h3>
+                    <p>Assign each holding to Person 1, Person 2, or Joint while Total Portfolio stays automatically calculated.</p>
+                </article>
+                <article class="v2-feature">
+                    <span class="v2-feature-number">02</span>
+                    <h3>Owner Filters</h3>
+                    <p>Filter the portfolio, charts, history, and comparisons by owner without maintaining separate trackers.</p>
+                </article>
+                <article class="v2-feature">
+                    <span class="v2-feature-number">03</span>
+                    <h3>Useful History</h3>
+                    <p>Follow portfolio value over time with clearer charts, ownership breakdowns, and saved snapshots.</p>
+                </article>
+                <article class="v2-feature">
+                    <span class="v2-feature-number">04</span>
+                    <h3>Backup Reminders</h3>
+                    <p>Get a helpful reminder when it is time to export a fresh local backup of your portfolio.</p>
+                </article>
+            </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="footer-landing">
-            <p>
-                <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker" target="_blank">GitHub</a> • 
-                <a href="updates.html">Updates</a> •
-                <a href="guide.html">Documentation</a> •
-                <a href="faq.html">FAQ</a> •
-                <a href="about.html">About</a> •
-                <a href="terms.html">Terms of Use</a> •
-                <a href="privacy.html">Privacy Policy</a> • 
-                <a href="https://github.com/deangnjidic/Personal-Portfolio-Tracker/issues" target="_blank">Report Issues</a>
-            </p>
-            <p style="margin-top: 20px; font-size: 12px;">
-                Licensed under CC BY-NC-SA 4.0 • 100% Privacy-First • Optional advertising helps support the project
-            </p>
+        <section class="home-section" aria-labelledby="privacy-title">
+            <div class="privacy-panel">
+                <div class="privacy-copy">
+                    <div class="section-kicker">Local-first by design</div>
+                    <h2 id="privacy-title">Your portfolio stays under your control</h2>
+                    <p>The app does not require an account or upload your portfolio to an application database. Your holdings are stored locally in your browser.</p>
+                </div>
+                <div class="privacy-list">
+                    <div class="privacy-item"><span class="privacy-check">✓</span><span>No signup or portfolio account required</span></div>
+                    <div class="privacy-item"><span class="privacy-check">✓</span><span>Stocks, crypto, metals, and savings in one place</span></div>
+                    <div class="privacy-item"><span class="privacy-check">✓</span><span>Latest available market prices from supported providers</span></div>
+                    <div class="privacy-item"><span class="privacy-check">✓</span><span>JSON backup and CSV import tools included</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-cta" aria-labelledby="cta-title">
+            <div>
+                <h2 id="cta-title">Start tracking together</h2>
+                <p>Free, open source, and ready to use—no installation needed.</p>
+            </div>
+            <a href="app.html" class="home-action home-action-primary">Open Your Portfolio&nbsp; →</a>
+        </section>
+
+        <footer class="home-footer">
+            <span>Free Portfolio Tracker 2.0 · Licensed under CC BY-NC-SA 4.0</span>
+            <nav class="home-footer-links" aria-label="Footer navigation">
+                <a href="https://github.com/deangnjidic/Free-Portfolio-Tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="updates.html">Updates</a>
+                <a href="guide.html">Guide</a>
+                <a href="faq.html">FAQ</a>
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="https://ko-fi.com/dekara" target="_blank" rel="noopener noreferrer">Buy me a coffee</a>
+            </nav>
         </footer>
-    </div>
+    </main>
 
     <!-- Cookie Consent System (Consent Mode v2) -->
     <script src="cookie-consent.js"></script>

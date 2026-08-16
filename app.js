@@ -52,7 +52,7 @@
     let state = {
         settings: {
             baseCurrency: "USD",
-            people: ['John', 'Maria'],
+            people: ['John', 'Maria', 'Combined Investments'],
             apiKeys: {
                 FINNHUB_KEY: '',
                 METALS_DEV_KEY: ''
@@ -70,6 +70,8 @@
     };
 
     let currentFilter = 'all';
+    let currentOwnerFilter = localStorage.getItem('portfolio_owner_filter') || 'all';
+    if (!['all', 'p1', 'p2', 'p3'].includes(currentOwnerFilter)) currentOwnerFilter = 'all';
     let currentSearch = '';
     let currentSort = { column: null, ascending: true };
 
@@ -79,9 +81,11 @@
     async function init() {
         loadState();
         initializeSettings();
+        document.body.dataset.ownerFilter = currentOwnerFilter;
         
         setupEventListeners();
         render();
+        updateBackupReminder();
     }
 
     // Storage
@@ -105,6 +109,31 @@
             // Load demo data for first-time visitors
             loadDemoData();
         }
+        normalizePortfolioState();
+        saveState();
+    }
+
+    function normalizePortfolioState() {
+        state.settings = state.settings || {};
+        const people = Array.isArray(state.settings.people) ? state.settings.people : [];
+        state.settings.people = [
+            people[0] || 'Person 1',
+            people[1] || 'Person 2',
+            people[2] || 'Combined Investments'
+        ];
+        state.assets = Array.isArray(state.assets) ? state.assets : [];
+        state.assets.forEach(asset => {
+            asset.holdings = asset.holdings || {};
+            ['p1', 'p2', 'p3'].forEach(owner => {
+                asset.holdings[owner] = {
+                    qty: Number(asset.holdings[owner]?.qty) || 0,
+                    avgCost: Number(asset.holdings[owner]?.avgCost) || 0,
+                    dividend: Number(asset.holdings[owner]?.dividend) || 0
+                };
+            });
+        });
+        state.snapshots = Array.isArray(state.snapshots) ? state.snapshots : [];
+        state.transactions = Array.isArray(state.transactions) ? state.transactions : [];
     }
 
     // Demo data for first-time visitors - Realistic diversified portfolio
@@ -270,10 +299,12 @@
 
     // Record transaction (quantity change)
     function recordTransaction(action, assetData, oldQuantities = null) {
+        const cacheKey = `${assetData.type}:${assetData.symbol}`;
         const transaction = {
             timestamp: Date.now(),
             date: new Date().toISOString(),
             action: action, // 'add', 'increase', 'decrease', 'remove'
+            price: state.priceCache?.prices?.[cacheKey] || 0,
             asset: {
                 type: assetData.type,
                 symbol: assetData.symbol,
@@ -281,7 +312,8 @@
             },
             quantities: {
                 p1: assetData.holdings.p1.qty,
-                p2: assetData.holdings.p2.qty
+                p2: assetData.holdings.p2.qty,
+                p3: assetData.holdings.p3.qty
             }
         };
 
@@ -290,7 +322,8 @@
             transaction.oldQuantities = oldQuantities;
             transaction.changes = {
                 p1: assetData.holdings.p1.qty - oldQuantities.p1,
-                p2: assetData.holdings.p2.qty - oldQuantities.p2
+                p2: assetData.holdings.p2.qty - oldQuantities.p2,
+                p3: assetData.holdings.p3.qty - (oldQuantities.p3 || 0)
             };
         }
 
@@ -302,8 +335,9 @@
 
     // Initialize settings with defaults if not present
     function initializeSettings() {
-        if (!state.settings.people || state.settings.people.length !== 2) {
-            state.settings.people = ['Dean', 'Sam'];
+        if (!state.settings.people || state.settings.people.length !== 3) {
+            const people = state.settings.people || [];
+            state.settings.people = [people[0] || 'Person 1', people[1] || 'Person 2', people[2] || 'Combined Investments'];
             saveState();
         }
         // Initialize API keys if not present
@@ -330,28 +364,38 @@
     function updateLabels() {
         const p1Name = state.settings.people[0];
         const p2Name = state.settings.people[1];
+        const p3Name = state.settings.people[2];
         
         // Summary cards
-        document.getElementById('person1TotalLabel').textContent = `${p1Name}'s Total`;
-        document.getElementById('person2TotalLabel').textContent = `${p2Name}'s Total`;
-        
-        // Asset type breakdown
-        document.getElementById('person1StocksLabel').textContent = `${p1Name}'s Stocks`;
-        document.getElementById('person2StocksLabel').textContent = `${p2Name}'s Stocks`;
-        document.getElementById('person1CryptoLabel').textContent = `${p1Name}'s Crypto`;
-        document.getElementById('person2CryptoLabel').textContent = `${p2Name}'s Crypto`;
-        document.getElementById('person1MetalsLabel').textContent = `${p1Name}'s Metals`;
-        document.getElementById('person2MetalsLabel').textContent = `${p2Name}'s Metals`;
-        document.getElementById('person1SavingsLabel').textContent = `${p1Name}'s Savings`;
-        document.getElementById('person2SavingsLabel').textContent = `${p2Name}'s Savings`;
+        document.getElementById('person1TotalLabel').textContent = p1Name;
+        document.getElementById('person2TotalLabel').textContent = p2Name;
+        document.getElementById('person3TotalLabel').textContent = p3Name;
         
         // Table headers
         document.getElementById('tableHeader1').textContent = p1Name;
         document.getElementById('tableHeader2').textContent = p2Name;
+        document.getElementById('tableHeader3').textContent = getCompactOwnerLabel(p3Name);
+        document.getElementById('breakdownHeader1').textContent = p1Name;
+        document.getElementById('breakdownHeader2').textContent = p2Name;
+        document.getElementById('breakdownHeader3').textContent = getCompactOwnerLabel(p3Name);
+
+        const ownerFilter = document.getElementById('ownerFilter');
+        ownerFilter.options[1].textContent = p1Name;
+        ownerFilter.options[2].textContent = p2Name;
+        ownerFilter.options[3].textContent = getCompactOwnerLabel(p3Name);
+        ownerFilter.value = currentOwnerFilter;
+        document.getElementById('tableTotalHeader').textContent = currentOwnerFilter === 'all'
+            ? 'Total ⇅'
+            : `${getCompactOwnerLabel(state.settings.people[Number(currentOwnerFilter.slice(1)) - 1])} Total ⇅`;
         
         // Form labels
         document.getElementById('formPerson1Label').textContent = `${p1Name}'s Holdings`;
         document.getElementById('formPerson2Label').textContent = `${p2Name}'s Holdings`;
+        document.getElementById('formPerson3Label').textContent = p3Name;
+    }
+
+    function getCompactOwnerLabel(name) {
+        return name === 'Combined Investments' ? 'Joint' : name;
     }
 
     // Event Listeners
@@ -363,6 +407,18 @@
             document.getElementById('importFile').click();
         });
         document.getElementById('importFile').addEventListener('change', importData);
+        document.getElementById('ownerFilter').addEventListener('change', event => {
+            currentOwnerFilter = event.target.value;
+            localStorage.setItem('portfolio_owner_filter', currentOwnerFilter);
+            document.body.dataset.ownerFilter = currentOwnerFilter;
+            updateLabels();
+            renderTable();
+        });
+        document.getElementById('backupNowBtn').addEventListener('click', exportData);
+        document.getElementById('backupLaterBtn').addEventListener('click', () => {
+            localStorage.setItem('portfolio_backup_snoozed', Date.now().toString());
+            document.getElementById('backupReminder').hidden = true;
+        });
 
         // Settings button
         document.getElementById('settingsBtn').addEventListener('click', openSettingsModal);
@@ -505,6 +561,7 @@
         document.getElementById('assetId').value = '';
         document.getElementById('p1Adjust').style.display = 'none';
         document.getElementById('p2Adjust').style.display = 'none';
+        document.getElementById('p3Adjust').style.display = 'none';
         handleTypeChange();
         document.getElementById('assetModal').classList.add('active');
     }
@@ -524,12 +581,15 @@
 
         document.getElementById('p1Qty').value = asset.holdings.p1.qty;
         document.getElementById('p2Qty').value = asset.holdings.p2.qty;
+        document.getElementById('p3Qty').value = asset.holdings.p3.qty;
         
         // Show adjust controls when editing
         document.getElementById('p1Adjust').style.display = 'block';
         document.getElementById('p2Adjust').style.display = 'block';
+        document.getElementById('p3Adjust').style.display = 'block';
         document.getElementById('p1AdjustAmount').value = '';
         document.getElementById('p2AdjustAmount').value = '';
+        document.getElementById('p3AdjustAmount').value = '';
 
         handleTypeChange();
         document.getElementById('assetModal').classList.add('active');
@@ -544,6 +604,7 @@
     function openSettingsModal() {
         document.getElementById('person1Name').value = state.settings.people[0];
         document.getElementById('person2Name').value = state.settings.people[1];
+        document.getElementById('person3Name').value = state.settings.people[2];
         document.getElementById('finnhubKey').value = state.settings.apiKeys?.FINNHUB_KEY || '';
         document.getElementById('metalsDevKey').value = state.settings.apiKeys?.METALS_DEV_KEY || '';
         document.getElementById('settingsModal').classList.add('active');
@@ -558,15 +619,16 @@
         
         const person1 = document.getElementById('person1Name').value.trim();
         const person2 = document.getElementById('person2Name').value.trim();
+        const person3 = document.getElementById('person3Name').value.trim();
         const finnhubKey = document.getElementById('finnhubKey').value.trim();
         const metalsDevKey = document.getElementById('metalsDevKey').value.trim();
         
-        if (!person1 || !person2) {
-            alert('Please enter names for both people');
+        if (!person1 || !person2 || !person3) {
+            alert('Please enter labels for all three ownership categories');
             return;
         }
         
-        state.settings.people = [person1, person2];
+        state.settings.people = [person1, person2, person3];
         state.settings.apiKeys = {
             FINNHUB_KEY: finnhubKey,
             METALS_DEV_KEY: metalsDevKey
@@ -747,6 +809,7 @@
 
         const p1Qty = parseFloat(document.getElementById('p1Qty').value) || 0;
         const p2Qty = parseFloat(document.getElementById('p2Qty').value) || 0;
+        const p3Qty = parseFloat(document.getElementById('p3Qty').value) || 0;
 
         const asset = {
             id: assetId || `asset_${Date.now()}`,
@@ -755,7 +818,8 @@
             name,
             holdings: {
                 p1: { qty: p1Qty, avgCost: 0, dividend: 0 },
-                p2: { qty: p2Qty, avgCost: 0, dividend: 0 }
+                p2: { qty: p2Qty, avgCost: 0, dividend: 0 },
+                p3: { qty: p3Qty, avgCost: 0, dividend: 0 }
             }
         };
 
@@ -770,17 +834,19 @@
                 const oldAsset = state.assets[index];
                 const oldQty = {
                     p1: oldAsset.holdings.p1.qty,
-                    p2: oldAsset.holdings.p2.qty
+                    p2: oldAsset.holdings.p2.qty,
+                    p3: oldAsset.holdings.p3.qty
                 };
                 const newQty = {
                     p1: asset.holdings.p1.qty,
-                    p2: asset.holdings.p2.qty
+                    p2: asset.holdings.p2.qty,
+                    p3: asset.holdings.p3.qty
                 };
                 
                 // Record transaction if quantities changed
-                if (oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2) {
-                    const totalOld = oldQty.p1 + oldQty.p2;
-                    const totalNew = newQty.p1 + newQty.p2;
+                if (oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2 || oldQty.p3 !== newQty.p3) {
+                    const totalOld = oldQty.p1 + oldQty.p2 + oldQty.p3;
+                    const totalNew = newQty.p1 + newQty.p2 + newQty.p3;
                     const action = totalNew > totalOld ? 'increase' : 'decrease';
                     recordTransaction(action, asset, oldQty);
                 }
@@ -789,7 +855,7 @@
                 trackEvent('edit_asset', {
                     asset_type: asset.type,
                     symbol: asset.symbol,
-                    quantity_changed: oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2
+                    quantity_changed: oldQty.p1 !== newQty.p1 || oldQty.p2 !== newQty.p2 || oldQty.p3 !== newQty.p3
                 });
             }
         } else {
@@ -1215,18 +1281,23 @@
             qty: asset.holdings.p2.qty,
             value: asset.holdings.p2.qty * price
         };
-
-        const combined = {
-            value: p1.value + p2.value
+        const p3 = {
+            qty: asset.holdings.p3.qty,
+            value: asset.holdings.p3.qty * price
         };
 
-        return { price, p1, p2, combined };
+        const combined = {
+            value: p1.value + p2.value + p3.value
+        };
+
+        return { price, p1, p2, p3, combined };
     }
 
     function calculateTotals() {
         const totals = {
             p1: { value: 0, dividend: 0 },
             p2: { value: 0, dividend: 0 },
+            p3: { value: 0, dividend: 0 },
             combined: { value: 0, dividend: 0 },
             byType: {
                 stock: 0,
@@ -1245,6 +1316,12 @@
                 crypto: 0,
                 metal: 0,
                 savings: 0
+            },
+            p3ByType: {
+                stock: 0,
+                crypto: 0,
+                metal: 0,
+                savings: 0
             }
         };
 
@@ -1253,6 +1330,7 @@
             
             totals.p1.value += calc.p1.value;
             totals.p2.value += calc.p2.value;
+            totals.p3.value += calc.p3.value;
             
             // Track by asset type (combined)
             if (totals.byType[asset.type] !== undefined) {
@@ -1266,9 +1344,12 @@
             if (totals.p2ByType[asset.type] !== undefined) {
                 totals.p2ByType[asset.type] += calc.p2.value;
             }
+            if (totals.p3ByType[asset.type] !== undefined) {
+                totals.p3ByType[asset.type] += calc.p3.value;
+            }
         });
 
-        totals.combined.value = totals.p1.value + totals.p2.value;
+        totals.combined.value = totals.p1.value + totals.p2.value + totals.p3.value;
 
         return totals;
     }
@@ -1310,6 +1391,7 @@
         renderLastUpdated();
         renderQuickStats();
         checkApiKeySetup();
+        updateBackupReminder();
     }
 
     function checkApiKeySetup() {
@@ -1331,9 +1413,13 @@
 
         document.getElementById('personATotal').textContent = formatCurrency(totals.p1.value);
         document.getElementById('personBTotal').textContent = formatCurrency(totals.p2.value);
+        document.getElementById('personCTotal').textContent = formatCurrency(totals.p3.value);
         
         // Render asset type totals with percentages
         const total = totals.combined.value;
+        document.getElementById('personAPercent').textContent = total > 0 ? `${((totals.p1.value / total) * 100).toFixed(1)}%` : '0%';
+        document.getElementById('personBPercent').textContent = total > 0 ? `${((totals.p2.value / total) * 100).toFixed(1)}%` : '0%';
+        document.getElementById('personCPercent').textContent = total > 0 ? `${((totals.p3.value / total) * 100).toFixed(1)}%` : '0%';
         
         document.getElementById('stocksTotal').textContent = formatCurrency(totals.byType.stock);
         document.getElementById('stocksPercent').textContent = total > 0 ? 
@@ -1350,19 +1436,34 @@
         document.getElementById('savingsTotal').textContent = formatCurrency(totals.byType.savings);
         document.getElementById('savingsPercent').textContent = total > 0 ? 
             `${((totals.byType.savings / total) * 100).toFixed(1)}%` : '0%';
+
+        const segmentMap = { stocks: 'stock', crypto: 'crypto', metals: 'metal', savings: 'savings' };
+        Object.entries(segmentMap).forEach(([idPrefix, type]) => {
+            document.getElementById(`${idPrefix}Segment`).style.width = total > 0
+                ? `${(totals.byType[type] / total) * 100}%`
+                : '0%';
+        });
         
         // Render person by asset type breakdowns
-        document.getElementById('deanStocks').textContent = formatCurrency(totals.p1ByType.stock);
-        document.getElementById('samStocks').textContent = formatCurrency(totals.p2ByType.stock);
+        document.getElementById('owner1Stocks').textContent = formatCurrency(totals.p1ByType.stock);
+        document.getElementById('owner2Stocks').textContent = formatCurrency(totals.p2ByType.stock);
+        document.getElementById('jointStocks').textContent = formatCurrency(totals.p3ByType.stock);
+        document.getElementById('allStocks').textContent = formatCurrency(totals.byType.stock);
         
-        document.getElementById('deanCrypto').textContent = formatCurrency(totals.p1ByType.crypto);
-        document.getElementById('samCrypto').textContent = formatCurrency(totals.p2ByType.crypto);
+        document.getElementById('owner1Crypto').textContent = formatCurrency(totals.p1ByType.crypto);
+        document.getElementById('owner2Crypto').textContent = formatCurrency(totals.p2ByType.crypto);
+        document.getElementById('jointCrypto').textContent = formatCurrency(totals.p3ByType.crypto);
+        document.getElementById('allCrypto').textContent = formatCurrency(totals.byType.crypto);
         
-        document.getElementById('deanMetals').textContent = formatCurrency(totals.p1ByType.metal);
-        document.getElementById('samMetals').textContent = formatCurrency(totals.p2ByType.metal);
+        document.getElementById('owner1Metals').textContent = formatCurrency(totals.p1ByType.metal);
+        document.getElementById('owner2Metals').textContent = formatCurrency(totals.p2ByType.metal);
+        document.getElementById('jointMetals').textContent = formatCurrency(totals.p3ByType.metal);
+        document.getElementById('allMetals').textContent = formatCurrency(totals.byType.metal);
         
-        document.getElementById('deanSavings').textContent = formatCurrency(totals.p1ByType.savings);
-        document.getElementById('samSavings').textContent = formatCurrency(totals.p2ByType.savings);
+        document.getElementById('owner1Savings').textContent = formatCurrency(totals.p1ByType.savings);
+        document.getElementById('owner2Savings').textContent = formatCurrency(totals.p2ByType.savings);
+        document.getElementById('jointSavings').textContent = formatCurrency(totals.p3ByType.savings);
+        document.getElementById('allSavings').textContent = formatCurrency(totals.byType.savings);
     }
 
     function renderTable() {
@@ -1377,6 +1478,9 @@
                 const searchLower = currentSearch.toLowerCase();
                 return asset.name.toLowerCase().includes(searchLower) ||
                        asset.symbol.toLowerCase().includes(searchLower);
+            }
+            if (currentOwnerFilter !== 'all' && (asset.holdings?.[currentOwnerFilter]?.qty || 0) <= 0) {
+                return false;
             }
             return true;
         });
@@ -1407,8 +1511,8 @@
                 } else if (currentSort.column === 'combined') {
                     const aCalc = calculateAssetValues(a);
                     const bCalc = calculateAssetValues(b);
-                    aVal = aCalc.combined.value;
-                    bVal = bCalc.combined.value;
+                    aVal = currentOwnerFilter === 'all' ? aCalc.combined.value : aCalc[currentOwnerFilter].value;
+                    bVal = currentOwnerFilter === 'all' ? bCalc.combined.value : bCalc[currentOwnerFilter].value;
                 }
                 
                 if (aVal < bVal) return currentSort.ascending ? -1 : 1;
@@ -1417,20 +1521,29 @@
             });
         }
 
+        document.getElementById('visibleAssetsCount').textContent = filtered.length;
+
         if (filtered.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No assets found.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state">No assets found.</td></tr>';
             return;
         }
 
         // Calculate total for percentages
         const totals = calculateTotals();
-        const totalValue = totals.combined.value;
+        const totalValue = currentOwnerFilter === 'all' ? totals.combined.value : totals[currentOwnerFilter].value;
 
         tbody.innerHTML = filtered.map(asset => {
             const calc = calculateAssetValues(asset);
+            const displayedHolding = currentOwnerFilter === 'all' ? calc.combined : calc[currentOwnerFilter];
             const cacheKey = `${asset.type}:${asset.symbol}`;
             const hasPrice = state.priceCache.prices[cacheKey] !== undefined;
             const priceChange = hasPrice ? getPriceChange(cacheKey, calc.price) : { arrow: '', className: '', percent: '' };
+            const ownerCell = owner => `
+                <div class="owner-holding-cell">
+                    <strong>${formatCurrency(owner.value)}</strong>
+                    <span>${owner.qty.toLocaleString()} qty</span>
+                </div>`;
+            const allocation = totalValue > 0 ? ((displayedHolding.value / totalValue) * 100).toFixed(1) : '0';
 
             return `
                 <tr>
@@ -1448,17 +1561,12 @@
                             </div>
                         ` : '<span class="price-error">ERR</span>'}
                     </td>
-                    <td>${calc.p1.qty}</td>
-                    <td>${formatCurrency(calc.p1.value)}</td>
-                    <td>${calc.p2.qty}</td>
-                    <td>${formatCurrency(calc.p2.value)}</td>
-                    <td>${formatCurrency(calc.combined.value)}</td>
-                    <td class="percent-cell">${totalValue > 0 ? ((calc.combined.value / totalValue) * 100).toFixed(1) : '0'}%</td>
+                    <td>${ownerCell(calc.p1)}</td>
+                    <td>${ownerCell(calc.p2)}</td>
+                    <td>${ownerCell(calc.p3)}</td>
+                    <td><div class="total-holding-cell"><strong>${formatCurrency(displayedHolding.value)}</strong><span>${allocation}% of selected view</span></div></td>
                     <td>
-                        <div class="action-btns">
-                            <button onclick="window.portfolioApp.editAsset('${asset.id}')">Edit</button>
-                            <button onclick="window.portfolioApp.deleteAsset('${asset.id}')" class="delete-btn">Delete</button>
-                        </div>
+                        <div class="compact-row-actions"><button onclick="window.portfolioApp.editAsset('${asset.id}')">Edit</button><button onclick="window.portfolioApp.deleteAsset('${asset.id}')" class="delete-btn">Delete</button></div>
                     </td>
                 </tr>
             `;
@@ -1548,6 +1656,35 @@
         a.click();
         
         URL.revokeObjectURL(url);
+        localStorage.setItem('portfolio_last_export', Date.now().toString());
+        localStorage.removeItem('portfolio_backup_snoozed');
+        document.getElementById('backupReminder').hidden = true;
+    }
+
+    function updateBackupReminder() {
+        const reminder = document.getElementById('backupReminder');
+        if (!state.assets.length) {
+            reminder.hidden = true;
+            return;
+        }
+        const now = Date.now();
+        const lastExport = Number(localStorage.getItem('portfolio_last_export')) || 0;
+        const snoozedAt = Number(localStorage.getItem('portfolio_backup_snoozed')) || 0;
+        let trackingStarted = Number(localStorage.getItem('portfolio_backup_tracking_started')) || 0;
+        if (!trackingStarted) {
+            trackingStarted = now;
+            localStorage.setItem('portfolio_backup_tracking_started', trackingStarted.toString());
+        }
+        const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+        const sevenDays = 7 * 24 * 60 * 60 * 1000;
+        const backupDue = lastExport ? now - lastExport >= thirtyDays : now - trackingStarted >= sevenDays;
+        const snoozeActive = snoozedAt && now - snoozedAt < sevenDays;
+        reminder.hidden = !backupDue || snoozeActive;
+        if (!reminder.hidden) {
+            document.getElementById('backupReminderText').textContent = lastExport
+                ? `Your last export was ${Math.floor((now - lastExport) / (24 * 60 * 60 * 1000))} days ago.`
+                : 'Your data is stored only in this browser and has not been exported yet.';
+        }
     }
 
     function importData(e) {
@@ -1595,6 +1732,7 @@
                 }
 
                 state = imported;
+                normalizePortfolioState();
                 
                 // Update APP_CONFIG with imported keys
                 if (state.settings.apiKeys.FINNHUB_KEY) {
