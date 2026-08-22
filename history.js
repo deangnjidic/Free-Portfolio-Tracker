@@ -216,19 +216,33 @@
 
     // Refresh prices
     async function refreshPrices() {
+        // This app is meant to be refreshed about once a day to take a
+        // snapshot (metals.dev's free plan only allows ~100 requests/month,
+        // so repeated same-day refreshes burn through that fast). Nudge
+        // instead of blocking, since there are legitimate reasons to refresh
+        // again (added an asset, fixed a key).
+        if (window.PriceService.isSameLocalDay(state.priceCache.lastUpdated)) {
+            const lastTime = new Date(state.priceCache.lastUpdated).toLocaleTimeString();
+            const proceed = confirm(
+                `Prices were already refreshed today at ${lastTime}.\n\n` +
+                `This tracker is designed for one refresh per day, and the metals.dev free plan only allows ~100 requests per month. Refresh again anyway?`
+            );
+            if (!proceed) return;
+        }
+
         const btn = document.getElementById('refreshBtn');
         const statusEl = document.getElementById('updateStatus');
-        
+
         btn.disabled = true;
         btn.textContent = '🔄 Refreshing...';
         statusEl.textContent = 'Fetching prices...';
-        
+
         try {
             // Collect all symbols by type
             const stocks = [];
             const cryptos = [];
             const metals = [];
-            
+
             state.assets.forEach(asset => {
                 if (asset.type === 'stock') stocks.push(asset.symbol);
                 else if (asset.type === 'crypto') cryptos.push(asset.symbol);
@@ -238,25 +252,31 @@
             // Update status with progress
             const totalAssets = stocks.length + cryptos.length + metals.length;
             let fetchedCount = 0;
-            
+
             const updateProgress = () => {
                 fetchedCount++;
-                const percent = ((fetchedCount / totalAssets) * 100).toFixed(0);
+                const percent = totalAssets > 0 ? ((fetchedCount / totalAssets) * 100).toFixed(0) : '100';
                 statusEl.textContent = `Fetching prices... ${fetchedCount}/${totalAssets} (${percent}%)`;
             };
 
-            // Fetch prices with progress updates
-            if (stocks.length > 0) {
-                await fetchStockPrices(stocks, updateProgress);
-            }
-            
-            if (cryptos.length > 0) {
-                await fetchCryptoPrices(cryptos, updateProgress);
-            }
-            
-            if (metals.length > 0) {
-                await fetchMetalPrices(metals, state.settings.baseCurrency, updateProgress);
-            }
+            // Fetch prices: Finnhub (stocks + crypto) via a concurrent pool, and
+            // every tracked metal in a single metals.dev batch call.
+            const priceMap = await window.PriceService.refreshAll({
+                stocks,
+                cryptos,
+                metals,
+                baseCurrency: state.settings.baseCurrency,
+                finnhubKey: window.APP_CONFIG?.FINNHUB_KEY,
+                metalsKey: window.APP_CONFIG?.METALS_DEV_KEY,
+                onProgress: updateProgress
+            });
+
+            if (!state.priceCache.changePercents) state.priceCache.changePercents = {};
+
+            priceMap.forEach((priceData, cacheKey) => {
+                state.priceCache.prices[cacheKey] = priceData.price;
+                state.priceCache.changePercents[cacheKey] = priceData.changePercent;
+            });
 
             // Update cache timestamp
             state.priceCache.lastUpdated = Date.now();
@@ -284,115 +304,6 @@
             const date = new Date(state.priceCache.lastUpdated);
             lastUpdated.textContent = `Last updated: ${date.toLocaleString()}`;
         }
-    }
-
-    // Fetch functions (simplified versions from app.js)
-    async function fetchStockPrices(symbols, onProgress) {
-        const apiKey = window.APP_CONFIG?.FINNHUB_KEY;
-        if (!apiKey) {
-            console.warn('No Finnhub API key configured');
-            return;
-        }
-
-        for (const symbol of symbols) {
-            try {
-                const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`);
-                if (response.status === 429) {
-                    console.warn('Rate limit hit, waiting...');
-                    await delay(5000);
-                    continue;
-                }
-                
-                const data = await response.json();
-                if (data.c) {
-                    const cacheKey = `stock:${symbol}`;
-                    state.priceCache.prices[cacheKey] = data.c;
-                    
-                    if (data.pc && data.pc > 0) {
-                        const change = ((data.c - data.pc) / data.pc) * 100;
-                        state.priceCache.changePercents[cacheKey] = change;
-                    }
-                }
-                
-                if (onProgress) onProgress();
-                await delay(1100);
-            } catch (error) {
-                console.error(`Error fetching ${symbol}:`, error);
-                if (onProgress) onProgress();
-            }
-        }
-    }
-
-    async function fetchCryptoPrices(symbols, onProgress) {
-        const apiKey = window.APP_CONFIG?.FINNHUB_KEY;
-        if (!apiKey) {
-            console.warn('No Finnhub API key configured');
-            return;
-        }
-
-        for (const symbol of symbols) {
-            try {
-                const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${apiKey}`);
-                if (response.status === 429) {
-                    console.warn('Rate limit hit, waiting...');
-                    await delay(5000);
-                    continue;
-                }
-                
-                const data = await response.json();
-                
-                if (data.c && data.c > 0) {
-                    const cacheKey = `crypto:${symbol}`;
-                    state.priceCache.prices[cacheKey] = data.c;
-                    
-                    if (data.pc && data.pc > 0) {
-                        const change = ((data.c - data.pc) / data.pc) * 100;
-                        state.priceCache.changePercents[cacheKey] = change;
-                    }
-                }
-                
-                if (onProgress) onProgress();
-                await delay(1100);
-            } catch (error) {
-                console.error(`Error fetching ${symbol}:`, error);
-                if (onProgress) onProgress();
-            }
-        }
-    }
-
-    async function fetchMetalPrices(metals, currency, onProgress) {
-        const apiKey = window.APP_CONFIG?.METALS_DEV_KEY;
-        if (!apiKey) {
-            console.warn('No metals.dev API key configured');
-            return;
-        }
-
-        for (const metal of metals) {
-            try {
-                const response = await fetch(`https://api.metals.dev/v1/latest?api_key=${apiKey}&currency=${currency}&unit=toz`);
-                const data = await response.json();
-                
-                if (data.metals && data.metals[metal]) {
-                    const metalData = data.metals[metal];
-                    const cacheKey = `metal:${metal}`;
-                    state.priceCache.prices[cacheKey] = metalData.price;
-                    
-                    if (metalData.change_pct) {
-                        state.priceCache.changePercents[cacheKey] = metalData.change_pct;
-                    }
-                }
-                
-                if (onProgress) onProgress();
-                await delay(1100);
-            } catch (error) {
-                console.error(`Error fetching ${metal}:`, error);
-                if (onProgress) onProgress();
-            }
-        }
-    }
-
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     function clearHistory() {
