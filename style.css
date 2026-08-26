@@ -1690,6 +1690,19 @@ button, a, input, select, textarea {
     font-size: 14px;
 }
 
+.performer-price-change {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.performer-price-change.positive {
+    color: #3fb950;
+}
+
+.performer-price-change.negative {
+    color: #f85149;
+}
+
 .performer-change {
     font-weight: 600;
     font-size: 13px;

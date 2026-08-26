@@ -763,6 +763,10 @@
                 const totalQty = getAssetQuantity(asset);
                 const totalValue = totalQty * currentPrice;
 
+                // $ change in the price itself vs. the last snapshot (per unit)
+                const previousPrice = currentPrice / (1 + changePercent / 100);
+                const priceChange = currentPrice - previousPrice;
+
                 performers.push({
                     name: asset.name,
                     symbol: asset.symbol,
@@ -770,7 +774,8 @@
                     currentPrice: currentPrice,
                     changePercent: changePercent,
                     quantity: totalQty,
-                    value: totalValue
+                    value: totalValue,
+                    priceChange: priceChange
                 });
             }
         });
@@ -793,7 +798,7 @@
                     <span class="performer-value">Value: $${p.value.toFixed(2)}</span>
                 </div>
                 <div class="performer-stats">
-                    <span class="performer-price">$${p.currentPrice.toFixed(2)}</span>
+                    <span class="performer-price">$${p.currentPrice.toFixed(2)} <span class="performer-price-change positive">(+$${Math.abs(p.priceChange).toFixed(2)})</span></span>
                     <span class="performer-change positive">+${p.changePercent.toFixed(2)}%</span>
                 </div>
             </div>
@@ -814,7 +819,7 @@
                     <span class="performer-value">Value: $${p.value.toFixed(2)}</span>
                 </div>
                 <div class="performer-stats">
-                    <span class="performer-price">$${p.currentPrice.toFixed(2)}</span>
+                    <span class="performer-price">$${p.currentPrice.toFixed(2)} <span class="performer-price-change negative">(-$${Math.abs(p.priceChange).toFixed(2)})</span></span>
                     <span class="performer-change negative">${p.changePercent.toFixed(2)}%</span>
                 </div>
             </div>
