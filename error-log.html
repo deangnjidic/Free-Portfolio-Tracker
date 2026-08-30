@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Error Log - Free Portfolio Tracker</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <!-- Error Catcher: client-side error monitoring (no server/admin panel) -->
+    <script src="error-catcher.js"></script>
+    <style>
+        .el-wrap { max-width: 1000px; margin: 20px auto; }
+        .el-note {
+            background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+            padding: 14px 16px; margin-bottom: 20px; color: #8b949e; font-size: 14px;
+        }
+        .el-note strong { color: #e6edf3; }
+        .el-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+        .el-empty {
+            background: #161b22; border: 1px dashed #30363d; border-radius: 8px;
+            padding: 40px 20px; text-align: center; color: #8b949e;
+        }
+        .el-entry {
+            background: #161b22; border: 1px solid #30363d; border-left: 3px solid #da3633;
+            border-radius: 6px; padding: 14px 16px; margin-bottom: 10px;
+        }
+        .el-entry.resource { border-left-color: #d29922; }
+        .el-entry-top {
+            display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+            font-size: 12px; color: #8b949e; margin-bottom: 6px;
+        }
+        .el-type {
+            text-transform: uppercase; font-weight: 600; letter-spacing: 0.03em;
+            color: #f85149;
+        }
+        .el-entry.resource .el-type { color: #d29922; }
+        .el-message { color: #e6edf3; font-size: 14px; margin-bottom: 4px; word-break: break-word; }
+        .el-meta { color: #8b949e; font-size: 12px; word-break: break-all; }
+        .el-stack {
+            margin-top: 8px; font-size: 12px; color: #8b949e; white-space: pre-wrap;
+            word-break: break-word; background: #0f1419; border-radius: 4px; padding: 8px;
+            max-height: 200px; overflow-y: auto;
+        }
+        .el-count { color: #8b949e; font-size: 13px; margin-bottom: 14px; }
+    </style>
+</head>
+<body>
+    <div class="el-wrap">
+        <div class="header">
+            <div class="header-content">
+                <h1>🐞 Error Log</h1>
+            </div>
+            <div class="header-status">
+                <span>Free Portfolio Tracker diagnostics — <a href="index.html" style="color:#58a6ff;">back to app</a></span>
+            </div>
+        </div>
+
+        <div class="el-note">
+            <strong>This log is local to this browser only.</strong> There's no server or admin
+            panel for this site, so errors are captured on-device via
+            <code>error-catcher.js</code> and never leave your machine unless you copy them
+            yourself. To see errors from <em>other</em> visitors (aggregated, anonymous), check
+            Google Analytics 4 → Reports → Engagement → Events → <code>js_error</code>.
+        </div>
+
+        <div class="el-actions">
+            <button class="btn btn-secondary" id="el-refresh">🔄 Refresh</button>
+            <button class="btn btn-primary" id="el-copy">📋 Copy log as JSON</button>
+            <button class="btn btn-danger" id="el-clear">🗑 Clear log</button>
+        </div>
+
+        <div id="el-count" class="el-count"></div>
+        <div id="el-list"></div>
+    </div>
+
+    <script>
+        (() => {
+            'use strict';
+
+            const listEl = document.getElementById('el-list');
+            const countEl = document.getElementById('el-count');
+
+            const esc = (s) => String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+            const fmtTime = (iso) => {
+                try { return new Date(iso).toLocaleString(); } catch (e) { return iso; }
+            };
+
+            function render() {
+                const entries = (window.FPT_ERRORS ? window.FPT_ERRORS.list() : []).slice().reverse();
+
+                if (!entries.length) {
+                    countEl.textContent = '';
+                    listEl.innerHTML = '<div class="el-empty">No errors logged in this browser yet. ' +
+                        'That\'s a good sign — or nobody has hit a bug here yet.</div>';
+                    return;
+                }
+
+                countEl.textContent = `${entries.length} error${entries.length === 1 ? '' : 's'} (most recent first, up to the last 40 kept)`;
+
+                listEl.innerHTML = entries.map(e => `
+                    <div class="el-entry ${e.type === 'resource' ? 'resource' : ''}">
+                        <div class="el-entry-top">
+                            <span class="el-type">${esc(e.type || 'error')}</span>
+                            <span>${esc(fmtTime(e.ts))}</span>
+                        </div>
+                        <div class="el-message">${esc(e.message)}</div>
+                        <div class="el-meta">
+                            page: ${esc(e.page)}${e.source ? ` &middot; source: ${esc(e.source)}` : ''}${e.line ? ` &middot; line ${esc(e.line)}${e.col ? ':' + esc(e.col) : ''}` : ''}
+                        </div>
+                        ${e.stack ? `<div class="el-stack">${esc(e.stack)}</div>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('el-refresh').addEventListener('click', render);
+
+            document.getElementById('el-copy').addEventListener('click', () => {
+                if (window.FPT_ERRORS) window.FPT_ERRORS.copy();
+            });
+
+            document.getElementById('el-clear').addEventListener('click', () => {
+                if (!confirm('Clear the local error log on this device? This cannot be undone.')) return;
+                if (window.FPT_ERRORS) window.FPT_ERRORS.clear();
+                render();
+            });
+
+            render();
+        })();
+    </script>
+</body>
+</html>
